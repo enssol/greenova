@@ -1,6 +1,6 @@
 {
   "name": "Greenova Development",
-  "image": "mcr.microsoft.com/devcontainers/python:3.9-buster",
+  "image": "mcr.microsoft.com/devcontainers/python:3.9",
   "features": {},
   "hostRequirements": {
     "cpus": 4,
@@ -11,7 +11,7 @@
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=delegated",
     "source=dotfiles,target=/home/vscode/dotfiles,type=volume"
   ],
-  "workspaceMount": "source=dev_greenova,target=${containerWorkspaceFolder},type=volume",
+  "workspaceMount": "source=greenova,target=${containerWorkspaceFolder},type=volume",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "vscode",
   "containerUser": "vscode",

@@ -25,8 +25,8 @@ setup_nvm() {
     return 1
   }
 
-  nvm install node &&
-    nvm use node &&
+  nvm install 18.20.7 &&
+    nvm use 18.20.7 &&
     nvm alias default node || {
     echo "Error: Node.js setup failed" >&2
     return 1
@@ -44,7 +44,7 @@ command -v npm >/dev/null 2>&1 &&
 
 # Setup Python virtual environment
 setup_venv() {
-  VENV_PATH="/workspaces/dev_greenova/.venv"
+  VENV_PATH="/workspaces/greenova/.venv"
 
   # Create virtual environment if it doesn't exist
   if [ ! -d "$VENV_PATH" ]; then

@@ -788,7 +788,7 @@ CREATE TRIGGER update_obligations_timestamp
 1. Node.js Environment:
 
    - Node.js 18.20.7 (exact version)
-   - npm 11.1.0 (exact version)
+   - npm 10.8.2 (exact version)
 
 2. Required Libraries:
    - @picocss/pico==2.0.6
