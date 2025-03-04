@@ -46,6 +46,7 @@ enssol-app-prod-001
 - **CPU Credits**: Standard
 - **AMI ID**: ami-0b87a8055f0211d32 (Ubuntu Pro 16.04 LTS)
 - **Elastic IP**: 13.238.199.122
+- **Public DNS**: ec2-13-238-199-122.ap-southeast-2.compute.amazonaws.com
 
 ### Storage
 - **Application Storage**: EBS standard volumes (8GB per instance)

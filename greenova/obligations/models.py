@@ -3,9 +3,9 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from projects.models import Project
 from typing import Any, Type, Optional, ClassVar
+from django.core.exceptions import ValidationError
 import logging
 import re
-from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -28,40 +28,15 @@ class Obligation(models.Model):
         null=True,
         verbose_name='Environmental Mechanism'
     )
-    procedure: Optional[str] = models.TextField(blank=True, null=True)
-    environmental_aspect: str = models.CharField(
-        max_length=255,
-        choices=[
-            ('Air', 'Air'),
-            ('Water', 'Water'),
-            ('Waste', 'Waste'),
-            ('Energy', 'Energy'),
-            ('Biodiversity', 'Biodiversity'),
-            ('Noise', 'Noise'),
-            ('Chemicals', 'Chemicals'),
-            ('Soil', 'Soil'),
-            ('Other', 'Other')
-        ]
-    )
-    obligation: str = models.TextField()
-    accountability: str = models.CharField(max_length=255)
-    responsibility: str = models.CharField(max_length=255)
-    project_phase: Optional[str] = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        choices=[
-            ('Pre-Construction', 'Pre-Construction'),
-            ('Construction', 'Construction'),
-            ('Operation', 'Operation'),
-            ('Decommissioning', 'Decommissioning'),
-            ('Post-Closure', 'Post-Closure'),
-            ('Other', 'Other')
-        ]
-    )
-    action_due_date: Optional[models.DateField] = models.DateField(null=True, blank=True)
-    close_out_date: Optional[models.DateField] = models.DateField(null=True, blank=True)
-    status: str = models.CharField(
+    procedure = models.TextField(blank=True, null=True)
+    environmental_aspect = models.TextField(blank=True, null=True)
+    obligation = models.TextField(blank=True)
+    accountability = models.CharField(max_length=255, blank=True, null=True)
+    responsibility = models.CharField(max_length=255, blank=True, null=True)
+    project_phase = models.CharField(max_length=100, blank=True, null=True)
+    action_due_date = models.DateField(null=True, blank=True)
+    close_out_date = models.DateField(null=True, blank=True)
+    status = models.CharField(
         max_length=20,
         choices=[
             ('not started', 'Not Started'),
@@ -70,41 +45,39 @@ class Obligation(models.Model):
         ],
         default='not started'
     )
-    supporting_information: Optional[str] = models.TextField(blank=True, null=True)
-    general_comments: Optional[str] = models.TextField(blank=True, null=True)
-    compliance_comments: Optional[str] = models.TextField(blank=True, null=True)
-    non_conformance_comments: Optional[str] = models.TextField(blank=True, null=True)
-    evidence: Optional[str] = models.TextField(blank=True, null=True)
-    person_email: Optional[str] = models.EmailField(blank=True, null=True)
-    recurring_obligation: bool = models.BooleanField(default=False)
-    recurring_frequency: Optional[str] = models.CharField(max_length=50, blank=True, null=True)
-    recurring_status: Optional[str] = models.CharField(max_length=50, blank=True, null=True)
-    recurring_forcasted_date: Optional[models.DateField] = models.DateField(blank=True, null=True)
-    inspection: bool = models.BooleanField(default=False)
-    inspection_frequency: Optional[str] = models.CharField(max_length=50, blank=True, null=True)
-    site_or_desktop: Optional[str] = models.CharField(
-        max_length=10,
-        choices=[('Site', 'Site'), ('Desktop', 'Desktop')],
+    supporting_information = models.TextField(blank=True, null=True)
+    general_comments = models.TextField(blank=True, null=True)
+    compliance_comments = models.TextField(blank=True, null=True)
+    non_conformance_comments = models.TextField(blank=True, null=True)
+    evidence = models.TextField(blank=True, null=True)
+    person_email = models.EmailField(blank=True, null=True)
+    recurring_obligation = models.BooleanField(default=False)
+    recurring_frequency = models.CharField(max_length=50, blank=True, null=True)
+    recurring_status = models.CharField(max_length=50, blank=True, null=True)
+    recurring_forcasted_date = models.DateField(null=True, blank=True)
+    inspection = models.BooleanField(default=False)
+    inspection_frequency = models.CharField(max_length=50, blank=True, null=True)
+    site_or_desktop = models.CharField(
+        max_length=50,
+        choices=[
+            ('Site', 'Site'),
+            ('Desktop', 'Desktop')
+        ],
         blank=True,
         null=True
     )
-    new_control_action_required: bool = models.BooleanField(default=False)
-    obligation_type: Optional[str] = models.CharField(max_length=50, blank=True, null=True)
-    gap_analysis: Optional[str] = models.TextField(blank=True, null=True)
-    notes_for_gap_analysis: Optional[str] = models.TextField(blank=True, null=True)
-    covered_in_which_inspection_checklist: Optional[str] = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="Specifies which inspection checklist covers this obligation"
-    )
-    created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
-    updated_at: models.DateTimeField = models.DateTimeField(auto_now=True)
+    new_control_action_required = models.BooleanField(default=False)
+    obligation_type = models.CharField(max_length=50, blank=True, null=True)
+    gap_analysis = models.TextField(blank=True, null=True)
+    notes_for_gap_analysis = models.TextField(blank=True, null=True)
+    covered_in_which_inspection_checklist = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Obligation'
         verbose_name_plural = 'Obligations'
-        ordering = ['action_due_date', 'obligation_number']
+        ordering = ['obligation_number']
         indexes = [
             models.Index(fields=['status']),
             models.Index(fields=['action_due_date']),
@@ -112,7 +85,7 @@ class Obligation(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"{self.obligation_number}"
+        return f"{self.obligation_number} - {self.project.name}"
 
     @classmethod
     def get_next_obligation_number(cls) -> str:
@@ -173,15 +146,35 @@ class Obligation(models.Model):
         if self.primary_environmental_mechanism:
             self.primary_environmental_mechanism.update_obligation_counts()
 
+    @property
+    def is_overdue(self):
+        """Check if obligation is overdue."""
+        from django.utils import timezone
+        if self.status != 'completed' and self.action_due_date:
+            return self.action_due_date < timezone.now().date()
+        return False
+
 # Signal handlers to update mechanism counts
 @receiver(post_save, sender=Obligation)
-def update_mechanism_counts_on_save(_sender: Type[Obligation], instance: Obligation, **_kwargs: Any) -> None:
+def update_mechanism_counts_on_save(sender, instance, **kwargs):
     """Update mechanism counts when an obligation is saved."""
-    if instance.primary_environmental_mechanism:
-        instance.primary_environmental_mechanism.update_obligation_counts()
+    try:
+        if instance.primary_environmental_mechanism:
+            instance.primary_environmental_mechanism.update_obligation_counts()
+            logger.info(
+                f"Updated counts for mechanism {instance.primary_environmental_mechanism.name}"
+            )
+    except Exception as e:
+        logger.error(f"Error updating mechanism counts on save: {str(e)}")
 
 @receiver(post_delete, sender=Obligation)
-def update_mechanism_counts_on_delete(_sender: Type[Obligation], instance: Obligation, **_kwargs: Any) -> None:
+def update_mechanism_counts_on_delete(sender, instance, **kwargs):
     """Update mechanism counts when an obligation is deleted."""
-    if instance.primary_environmental_mechanism:
-        instance.primary_environmental_mechanism.update_obligation_counts()
+    try:
+        if instance.primary_environmental_mechanism:
+            instance.primary_environmental_mechanism.update_obligation_counts()
+            logger.info(
+                f"Updated counts for mechanism {instance.primary_environmental_mechanism.name} after deletion"
+            )
+    except Exception as e:
+        logger.error(f"Error updating mechanism counts on delete: {str(e)}")

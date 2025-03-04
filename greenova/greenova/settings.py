@@ -14,6 +14,7 @@ import sys
 import os
 from pathlib import Path
 from typing import Dict, List, TypedDict, Union
+from django.contrib import admin
 
 class DatabaseConfig(TypedDict):
     ENGINE: str
@@ -55,7 +56,8 @@ SECRET_KEY = "django-insecure-y4iiuwh@r27)q36u55%8k3l(gwyp7s&i$zl_+m0f+ljwm1c#hy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: List[str] = ["127.0.0.1", "localhost", "*"]  # Add '*' for development
+# Update allowed hosts for production
+ALLOWED_HOSTS: List[str] = ["app.enssol.com.au", "localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -66,22 +68,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "landing.apps.LandingConfig",
-    "authentication.apps.AuthenticationConfig",
-    "dashboard.apps.DashboardConfig",
+    "core.apps.CoreConfig",
     "projects.apps.ProjectsConfig",
     "obligations.apps.ObligationsConfig",
-    "chatbot.apps.ChatbotConfig",
     "mechanisms.apps.MechanismsConfig",
 ]
 
 MIDDLEWARE = [
-    'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',  # Keep CSRF for form handling
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-]
+    ]
 
 ROOT_URLCONF = "greenova.urls"
 
@@ -153,9 +152,9 @@ STATICFILES_FINDERS = [
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'  # Basic storage without manifest
 
 # Authentication settings
-LOGIN_REDIRECT_URL = "dashboard:home"
-LOGOUT_REDIRECT_URL = "landing:home"
-LOGIN_URL = "authentication:login"
+LOGIN_REDIRECT_URL = "admin:index"
+LOGOUT_REDIRECT_URL = "admin:login"
+LOGIN_URL = "admin:login"
 
 # Application version
 APP_VERSION = "0.1.0"

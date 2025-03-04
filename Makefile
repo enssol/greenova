@@ -22,7 +22,7 @@ user:
 	$(CD_CMD) python3 manage.py createsuperuser
 
 import:
-	$(CD_CMD) python3 manage.py import_obligations clean_output_with_nulls.csv
+	$(CD_CMD) python3 manage.py import_obligations clean_output_with_nulls.csv --skip-counts-update
 
 sync:
 	$(CD_CMD) python3 manage.py sync_mechanisms

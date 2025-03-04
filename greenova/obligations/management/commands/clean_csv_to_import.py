@@ -26,7 +26,7 @@ class Command(BaseCommand):
             dest='output_file',
             type=str,
             help='Path where the cleaned CSV will be saved',
-            default='clean_output_with_nullsV2.csv'
+            default='clean_output_with_nulls.csv'
         )
 
     def handle(self, *args, **options):
