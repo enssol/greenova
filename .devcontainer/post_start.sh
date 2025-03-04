@@ -71,9 +71,9 @@ main() {
   echo "Setting up NVM and Node.js..."
   setup_nvm
 
-  # Install latest npm
+  # Install latest npm for node18x
   echo "Upgrading npm..."
-  npm install -g npm@latest
+  npm install -g npm@10.8.2
 
   # Install node packages if package.json exists
   [ -f package.json ] && npm install
