@@ -36,7 +36,7 @@ setup_nvm() {
 # Setup NVM and Node.js
 setup_nvm || exit 1
 command -v npm >/dev/null 2>&1 &&
-  npm install -g npm@latest || {
+  npm install -g npm@10.8.2 || {
   echo "Error: npm upgrade failed" >&2
   exit 1
 }
@@ -71,8 +71,8 @@ main() {
   echo "Setting up NVM and Node.js..."
   setup_nvm
 
-  # Install latest npm for node18x
-  echo "Upgrading npm..."
+  # Install npm 10.8.2 (compatible with Node.js 18.20.7)
+  echo "Installing npm 10.8.2..."
   npm install -g npm@10.8.2
 
   # Install node packages if package.json exists
