@@ -10,7 +10,7 @@
     "modern-normalize": "3.0.1"
   },
   "engines": {
-    "node": "23.9.0"
+    "node": "18.20.7"
   },
   "packageManager": "npm@11.1.0",
   "scripts": {

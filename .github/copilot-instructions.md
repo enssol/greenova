@@ -787,7 +787,7 @@ CREATE TRIGGER update_obligations_timestamp
 
 1. Node.js Environment:
 
-   - Node.js 23.9.0 (exact version)
+   - Node.js 18.20.7 (exact version)
    - npm 11.1.0 (exact version)
 
 2. Required Libraries:
@@ -872,7 +872,7 @@ CREATE TRIGGER update_obligations_timestamp
 
 1. Python Version:
 
-   - Python 3.13.1 (exact version)
+   - Python 3.9 (exact version)
    - Email: `agallo@enveng-group.com.au`
 
 ### Project Metadata

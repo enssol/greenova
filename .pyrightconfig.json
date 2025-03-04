@@ -22,7 +22,7 @@
     "DEBUG": true
   },
   "venvPath": ".venv",
-  "pythonVersion": "3.13",
+  "pythonVersion": "3.9",
   "pythonPlatform": "Linux",
   "typeCheckingMode": "strict",
   "useLibraryCodeForTypes": true,
@@ -36,5 +36,5 @@
   "reportUnknownArgumentType": "warning",
   "reportUnusedCoroutine": "warning",
   "reportUntypedFunctionDecorator": "warning",
-  "stubPath": ".venv/lib/python3.13/site-packages/django-stubs"
+  "stubPath": ".venv/lib/python3.9/site-packages/django-stubs"
 }
