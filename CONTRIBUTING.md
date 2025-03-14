@@ -28,8 +28,8 @@ Once completed, the feature's changes will be integrated into the main branch as
 Thank you for contributing to our project! This document outlines our git workflow for integrating feature branches into the main branch.
 
 ## Project Status
-Current release: v0.0.2
-Next pre-release branch: pre-release/v0.0.3
+Current release: v0.0.3
+Next pre-release branch: pre-release/v0.0.4
 
 ## Fork-Based Development Workflow
 
