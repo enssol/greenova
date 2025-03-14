@@ -33,9 +33,23 @@ def get_mechanism_chart(mechanism_id: int, fig_width: int = 300, fig_height: int
 
         # Only plot if there's data
         if sum(sizes) > 0:
-            ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+            # Modified pie chart code - use legend instead of direct labels
+            patches, _, autotexts = ax.pie(
+                sizes,
+                colors=colors,
+                autopct='%1.1f%%',
+                startangle=90,
+                labels=None  # Remove direct labels
+            )
+
+            # Make percentage text smaller and more readable
+            for autotext in autotexts:
+                autotext.set_fontsize(8)
+
+            # Add a legend instead
+            ax.legend(patches, labels, loc="best", fontsize=8)
         else:
-            ax.text(0.5, 0.5, 'No obligations', horizontalalignment='center', verticalalignment='center')
+            ax.text(0.5, 0.5, "No data available", horizontalalignment='center', verticalalignment='center')
 
         ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle
         fig.tight_layout()
@@ -75,9 +89,23 @@ def get_overall_chart(project_id: int, fig_width: int = 300, fig_height: int = 2
 
         # Only plot if there's data
         if sum(sizes) > 0:
-            ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+            # Modified pie chart code - use legend instead of direct labels
+            patches, _, autotexts = ax.pie(
+                sizes,
+                colors=colors,
+                autopct='%1.1f%%',
+                startangle=90,
+                labels=None  # Remove direct labels
+            )
+
+            # Make percentage text smaller and more readable
+            for autotext in autotexts:
+                autotext.set_fontsize(8)
+
+            # Add a legend instead
+            ax.legend(patches, labels, loc="best", fontsize=8)
         else:
-            ax.text(0.5, 0.5, 'No obligations', horizontalalignment='center', verticalalignment='center')
+            ax.text(0.5, 0.5, "No data available", horizontalalignment='center', verticalalignment='center')
 
         ax.axis('equal')
         fig.tight_layout()
@@ -86,7 +114,7 @@ def get_overall_chart(project_id: int, fig_width: int = 300, fig_height: int = 2
 
     except Exception as e:
         logger.error(f"Error generating overall chart: {str(e)}")
-        # Return a simple error figure
+        # Return error figure
         fig = Figure(figsize=(fig_width/100, fig_height/100), dpi=100)
         ax = fig.add_subplot(111)
         ax.text(0.5, 0.5, f"Error: {str(e)}", horizontalalignment='center', verticalalignment='center')

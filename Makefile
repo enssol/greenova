@@ -1,7 +1,10 @@
-.PHONY: app check run run-django run-tailwind dev check-tailwind tailwind tailwind-install migrations migrate static user db import update sync update-update_recurring-inspection-dates normalize-frequencies clean-csv prod lint-templates format-templates check-templates format-lint
+.PHONY: app install venv dotenv-pull dotenv-push check run run-django run-tailwind dev check-tailwind tailwind tailwind-install migrations migrate static user db import update sync update-update_recurring-inspection-dates normalize-frequencies clean-csv prod lint-templates format-templates check-templates format-lint
 
 # Change to greenova directory before running commands
 CD_CMD = cd greenova &&
+
+# Define the virtual environment path
+VENV = .venv
 
 # Create virtual environment
 venv:
@@ -17,9 +20,22 @@ install:
 	$(VENV)/bin/pip install -r requirements.txt -c constraints.txt
 	@echo "Dependencies installed."
 
+freeze:
+	@echo "Freezing dependencies..."
+	$(VENV)/bin/pip freeze > requirements.txt
+	@echo "Dependencies frozen."
+
 app:
 	@if [ -z "$(name)" ]; then echo "Error: Please provide app name with 'make app name=yourappname'"; exit 1; fi
 	$(CD_CMD) python3 manage.py startapp $(name)
+
+dotenv-pull:
+	@echo "Pulling .env file from dotenv-vault"
+	@npx dotenv-vault@latest pull
+
+dotenv-push:
+	@echo "Pushing .env file to dotenv-vault"
+	@npx dotenv-vault@latest push
 
 check:
 	$(CD_CMD) python3 manage.py check
@@ -141,6 +157,9 @@ help:
 	@echo "  make migrations   - Create new migrations"
 	@echo "  make run          - Start development server"
 	@echo "  make tailwind     - Start Tailwind CSS server"
-	@echo "make venv           - Create virtual environment"
-	@echo "make install        - Install dependencies"
-	@echo "make clean          - Remove virtual environment and clean temporary files"
+	@echo "	make venv           - Create virtual environment"
+	@echo "	make install        - Install dependencies"
+	@echo "	make clean          - Remove virtual environment and clean temporary files"
+	@echo "	make freeze		- Freeze dependencies"
+	@echo "	make dotenv-pull	- Pull .env file from dotenv-vault"
+	@echo "	make dotenv-push	- Push .env file to dotenv-vault"

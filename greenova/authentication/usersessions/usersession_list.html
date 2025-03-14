@@ -41,14 +41,6 @@
                                     <span title="{{ session.last_seen_at }}">{{ session.last_seen_at|naturaltime }}</span>
                                 </td>
                             {% endif %}
-                            <td>
-                                {% if session.is_current %}
-                                    {% element badge tags="session,current" %}
-                                        {% translate "Current" %}
-                                    {% endelement %}
-                                {% else %}
-                                {% endif %}
-                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

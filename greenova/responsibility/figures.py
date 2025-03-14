@@ -59,8 +59,9 @@ def get_responsibility_chart(mechanism_id: int, fig_width: int = 600, fig_height
             # Set title with accessible font size
             ax.set_title('Obligations by Responsibility', fontsize=12)
         else:
-            ax.text(0.5, 0.5, 'No obligations with responsibility data',
-                   horizontalalignment='center', verticalalignment='center')
+            ax.text(0.5, 0.5, "No data available",
+                    horizontalalignment='center',
+                    verticalalignment='center')
 
         # Ensure proper layout with enough room for labels
         fig.tight_layout()

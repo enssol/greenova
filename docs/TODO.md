@@ -64,3 +64,15 @@ https://setuptools.pypa.io/en/latest/index.html
 3. **Environment Diagram**:
    - Map out the different environments (development, staging, production).
    - Show how containers are deployed and managed in each environment.
+
+
+- django-allauth[MFA]
+- django-allauth[user-sessions]
+- [certbot let's encrypt](https://medium.com/@samson_sham/setup-lets-encrypt-https-server-fa54abff688)
+- [Typescript](https://www.webdevtutor.net/blog/typescript-and-django)
+- [Arial](https://learn.microsoft.com/en-us/typography/font-list/arial)
+- [DoltDB](https://www.dolthub.com/blog/2024-01-31-dolt-django/)
+- [lit](https://lit.dev)
+- [SASS](https://sass-lang.com)
+- [PostCSS](https://postcss.org)
+- [Pyodide](https://pyodide.org/en/stable/index.html)

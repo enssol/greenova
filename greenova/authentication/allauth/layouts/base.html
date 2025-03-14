@@ -74,6 +74,12 @@
                                 <a href="{{ signup_url_ }}">{% trans "Sign Up" %}</a>
                             </li>
                         {% endif %}
+                        {% url 'provider_login_url' as github %}
+                        {% if github %}
+                            <li>
+                                <a href="{{ github }}">{% trans "Login with GitHub" %}</a>
+                            </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </div>

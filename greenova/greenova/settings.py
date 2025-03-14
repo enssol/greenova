@@ -123,10 +123,10 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google", #TODO must setup google cloud api
+    'allauth.socialaccount.providers.github',
     "allauth.usersessions",
     "landing",
-    #removed "authentication",
+    "allauth.mfa",
     "dashboard",
     "projects",
     "obligations",
@@ -142,6 +142,7 @@ INSTALLED_APPS = [
     "theme",  # Make sure this is present
     "django_browser_reload",
     "debug_toolbar",
+    "django.contrib.humanize",
 ]
 
 # Django-Matplotlib configuration
@@ -168,10 +169,17 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-]
+    #'allauth.usersessions.middleware.UserSessionMiddleware',
+    ]
 
 # Authentication settings
-AUTHENTICATION_BACKENDS = ('allauth.account.auth_backends.AuthenticationBackend',)
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 LOGIN_REDIRECT_URL = "dashboard:home" # OR LOGIN_REDIRECT_URL = "dashboard:profile"
 #LOGOUT_REDIRECT_URL = "landing:home"
@@ -179,7 +187,20 @@ LOGIN_URL = "authentication:login"
 #LOGIN_REDIRECT_URL = "admin:index"
 #LOGOUT_REDIRECT_URL = "admin:login"
 #LOGIN_URL = "admin:login"
-SOCIALACCOUNT_PROVIDERS = {}
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+        'VERIFIED_EMAIL': True,
+        'APP': {
+            'client_id': os.environ.get("GITHUB_CLIENT_ID"),
+            'secret': os.environ.get("GITHUB_CLIENT_SECRET"),
+        },
+    }
+}
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = "greenova.urls"
@@ -258,7 +279,7 @@ STATICFILES_FINDERS = [
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'  # Basic storage without manifest
 
 # Application version
-APP_VERSION = "0.1.0"
+APP_VERSION = "0.0.3"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -362,3 +383,6 @@ mimetypes.add_type("image/tiff", ".tif", True)
 mimetypes.add_type("image/vnd.microsoft.icon", ".ico", True)
 mimetypes.add_type("text/html", ".html", True)
 mimetypes.add_type("text/plain", ".txt", True)
+
+# User sessions configuration
+# USERSESSIONS_TRACK_ACTIVITY = True
