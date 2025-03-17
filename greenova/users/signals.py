@@ -1,23 +1,22 @@
-<<<<<<< HEAD
-from django.apps import AppConfig
-
-
-class UsersConfig(AppConfig):
-    name = 'users'
-
-    def ready(self):
-        import users.signals  # Ensure the signal is connected
-=======
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile
 
 @receiver(post_save, sender=User)
-def create_or_update_profile(sender, instance, created, **kwargs):
-    """Create or update the user's profile when a user is saved."""
+def create_user_profile(sender, instance, created, **kwargs):
+    """Create a Profile instance when a new User is created."""
     if created:
         Profile.objects.create(user=instance)
-    else:
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    """Save the Profile instance when the User is saved."""
+    try:
+        # Try to save the profile if it exists
         instance.profile.save()
->>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
+    except ObjectDoesNotExist:
+        # If the profile doesn't exist, create it
+        Profile.objects.create(user=instance)
