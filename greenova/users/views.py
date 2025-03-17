@@ -37,28 +37,16 @@ def profile_edit(request):
     profile = request.user.profile
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated successfully.")
+            messages.success(request, "Profile updated successfully!")
 
-            # If this is an HTMX request, return just the updated profile detail
             if request.htmx:
-                response = render(request, 'users/partials/profile_detail.html', {
-                    'profile': profile,
-                })
-                return trigger_client_event(response, 'profileUpdated', {})
-
+                return render(request, 'users/partials/profile_detail.html', {'profile': profile})
             return redirect('users:profile')
-        else:
-            messages.error(request, "Please correct the errors below.")
     else:
-        # Initialize form with current user data
-        form = UserProfileForm(instance=profile, initial={
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
-        })
+        form = UserProfileForm(instance=profile)
 
     context = {
         'form': form,

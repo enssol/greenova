@@ -1,7 +1,10 @@
 from django.apps import AppConfig
 
+
 class UsersConfig(AppConfig):
-    name = 'users'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "users"
+    verbose_name = "User Profiles"
 
     def ready(self):
-        import users.signals  # Ensure the signal is connected
+        import users.signals  # noqa

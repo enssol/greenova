@@ -3,8 +3,6 @@
 {% load tailwind_tags %}
 {% load user_tags %}
 {% load core_tags %}
-{% load user_tags %}
-{% load core_tags %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light dark">
   <head>
@@ -48,6 +46,16 @@
         <!-- LEFT ALIGNED: Theme switcher -->
         {% theme_switcher %}
 
+        <!-- RIGHT ALIGNED: Authentication links -->
+        <div class="auth-status-container">
+          {% auth_menu %}
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" role="main">
+      {% block body %}
         <!-- BREADCRUMB NAVIGATION: Top of content area -->
         <nav aria-label="Breadcrumb navigation" role="navigation" class="breadcrumb-container">
           <ul>
@@ -55,8 +63,61 @@
             <li class="menubar-breadcrumbs">
               {% breadcrumb_navigation %}
             </li>
+
+            <!-- RIGHT ALIGNED: Additional auth actions -->
+            <li class="auth-actions">
+              {% if user.is_authenticated %}
+                <!-- AUTHENTICATED: Chat widget and logout -->
+                <div class="authenticated-actions">
+                  {% load chatbot_tags %}
+                  {% chat_widget %}
+
+                  <!-- Logout form -->
+                  <form hx-post="{% url 'account_logout' %}"
+                        hx-push-url="true"
+                        hx-target="body"
+                        hx-redirect="/"
+                        class="logout-form">
+                      {% csrf_token %}
+                      <button type="submit" role="menuitem">Logout</button>
+                  </form>
+                </div>
+              {% else %}
+                <!-- UNAUTHENTICATED: Login links -->
+                <div class="unauthenticated-actions">
+                  <a href="{% url 'account_signup' %}"
+                     role="menuitem"
+                     aria-label="Register"
+                     _="on load if location.pathname is '{% url 'account_signup' %}' then hide me">
+                    Register
+                  </a>
+                  <a href="{% url 'account_login' %}"
+                     role="menuitem"
+                     aria-label="Login"
+                     _="on load if location.pathname is '{% url 'account_login' %}' then hide me">
+                    Login
+                  </a>
+                  <a href="{% url 'admin:index' %}"
+                    role="menuitem"
+                    aria-label="Admin"
+                    _="on load if location.pathname.startsWith('/admin/') then hide me">
+                    Admin
+                  </a>
+                </div>
+              {% endif %}
+            </li>
           </ul>
         </nav>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="page-content">
+          {% block content %}
+          {% endblock content %}
+        </div>
+      {% endblock body %}
+      {% block extra_body %}
+      {% endblock extra_body %}
+    </main>
 
     <!-- FOOTER: Full-width at bottom of page -->
     {% block footer %}
