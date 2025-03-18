@@ -65,6 +65,10 @@ button#chat-toggle>span {
   background-color: var(--greenova-green-primary);
 }
 
+.btn-primary {
+  background-color: var(--greenova-green-primary);
+}
+
 .btn-secondary {
   background-color: var(--greenova-green-secondary);
 }
