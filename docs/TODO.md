@@ -1,11 +1,6 @@
-# Greenova Project TODO
+# TODO
 
-This document tracks tasks and action items for the Greenova environmental
-management application.
 
-<<<<<<< HEAD
-## Completed Tasks
-=======
 profile
 company
 
@@ -98,6 +93,7 @@ company
      </a>
      <div id="obligation-list"></div>
      ```
+     
 8. **Leverage CSS Frameworks and Libraries Effectively**
    - **Context**: The project uses PicoCSS, but there may be opportunities to leverage more of its features or integrate additional frameworks like Tailwind CSS to enhance styling.
    - **Implementation**:
@@ -359,6 +355,7 @@ Replacing `app.js` with a combination of TypeScript and AssemblyScript can enhan
          const add = module.instance.exports.add as (a: number, b: number) => number;
          console.log(add(2, 3)); // Output: 5
        }
+       
        loadWasm();
        ```
 
@@ -398,19 +395,16 @@ reset password
 register
 interactivity of the mechanism charts
 html first by design principles, python and django first, html second picoclasscss third, custom plain css fourth, hyperscript fifth, htmx sixth, native web apis seventh, plain javascript eighth
->>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
 
-The following tasks have been completed and moved to `done.txt`:
+Tuesday - charts and obligations list back online
+Wednesday - add obligation conditionally to projects and tested with CRUD
+Thursday - detailed view
+Friday - login page with customer or admin endpoint choice
+Monday - profile
+Tuesday - company
+Wednesday - reset password
+Thursday - register
 
-<<<<<<< HEAD
-- Charts and obligations list back online
-- Add obligation conditionally to projects with CRUD testing
-- Implement detailed view
-- Create login page with customer/admin endpoint choice
-- Implement user profile functionality
-- Develop company features
-- Implement stylelint for CSS linting
-=======
 https://djlint.com/ - DONE
 https://stylelint.io/
 https://prettier.io/ - DONE
@@ -420,95 +414,45 @@ https://github.com/microsoft/pylance - DONE
 https://github.com/hadolint/hadolint
 https://eslint.org/ - DONE
 https://setuptools.pypa.io/en/latest/index.html
->>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
 
-## Technology Integration Tasks
 
-### Frontend Tools & Libraries
+### Written Plan
 
-- [ ] Organize CSS files for better readability and maintainability
-- [ ] Optimize CSS for performance
-- [ ] Enhance responsiveness and cross-browser compatibility
-- [ ] Implement PostCSS or Sass for advanced styling
-- [ ] Set up TypeScript development environment
-- [ ] Set up AssemblyScript development environment
-- [ ] Identify performance-critical sections in app.js
-- [ ] Write TypeScript code for DOM manipulation and event handling
-- [ ] Write AssemblyScript code for performance-critical parts
-- [ ] Compile AssemblyScript to WebAssembly
-- [ ] Integrate WebAssembly modules with TypeScript
-- [ ] Improve mechanism charts interactivity
-- [ ] Implement detailed chart view
+1. **Project Overview**:
+   - Define the purpose and scope of your Docker project.
+   - List the main components and services that will be containerized.
 
-### Authentication & User Management
+2. **Technical Requirements**:
+   - Specify the software and hardware requirements.
+   - Detail the dependencies and configurations needed for each service.
 
-- [ ] Add reset password functionality
-- [ ] Create registration flow
-- [ ] `django-allauth[MFA]`
-- [ ] `django-allauth[user-sessions]`
+3. **Dockerfile and Docker Compose**:
+   - Create a `Dockerfile` for each service to define how the Docker image should be built.
+   - Use `docker-compose.yml` to manage multi-container Docker applications.
 
-### DevOps & Infrastructure
+4. **Build and Deployment Process**:
+   - Outline the steps for building Docker images and running containers.
+   - Include commands and scripts for automation (e.g., `build.sh`, `run.sh`).
 
-- [ ] Integrate commitlint into devtool stack
-- [ ] Integrate Dive for optimizing Docker/OCI image size
-- [ ] Introduce cloudflared for tunnel
-- [ ] certbot let's encrypt SSL setup
-- [ ] Configure MySQL or PostgreSQL in devcontainer
-- [ ] Set up Caddy with devcontainer feature
-- [ ] Configure cloudflared devcontainer feature
-- [ ] Evaluate DoltDB integration
-- [ ] Set up django-channels
-- [ ] Configure daphne as web server
-- [ ] Implement websockets
-- [ ] Configure proper direnv setup
-- [ ] Set up gh-cli properly
+5. **Testing and Validation**:
+   - Describe the testing strategy for your Docker containers.
+   - Include any tools or frameworks used for testing.
 
-### Code Quality & CI/CD
+### Visual Plan
 
-- [ ] Configure pre-commit hooks
-- [ ] Set up GPG commit signing
-- [ ] Better integration of git-crypt and git-lfs
-- [ ] Create Makefile for common development tasks
-- [ ] Add `npx dotenv-vault@latest pull` to post_create.sh
+1. **Architecture Diagram**:
+   - Create a visual representation of your application's architecture.
+   - Show how different services interact within containers.
 
-### Documentation & Architecture
+2. **Workflow Diagram**:
+   - Illustrate the build and deployment workflow.
+   - Include steps from code commit to running containers in production.
 
-- [ ] Modularize base.html template
-- [ ] Document HTML-first design principles
-- [ ] Create architecture diagrams for Docker setup
+3. **Environment Diagram**:
+   - Map out the different environments (development, staging, production).
+   - Show how containers are deployed and managed in each environment.
 
-### Migrate Templates from DTL to Jinja2
 
-<<<<<<< HEAD
-- [ ] Authentication
-- [ ] Chatbot
-- [ ] Company
-- [ ] Core
-- [] Dashboard
-- [x] Feedback
-- [ ] Landing
-- [ ] Mechanisms
-- [ ] Obligations
-- [] Procedures
-- [ ] Projects
-- [ ] Responsibility
-- [ ] Templates
-- [ ] Users
-
-## References
-
-- [djlint](https://djlint.com/)
-- [stylelint](https://stylelint.io/)
-- [prettier](https://prettier.io/)
-- [autopep8](https://pypi.org/project/autopep8/)
-- [Django Testing](https://docs.djangoproject.com/en/4.2/topics/testing/overview/)
-- [pylance](https://github.com/microsoft/pylance)
-- [hadolint](https://github.com/hadolint/hadolint)
-- [eslint](https://eslint.org/)
-- [setuptools](https://setuptools.pypa.io/en/latest/index.html)
-- [pre-commit](https://pre-commit.com)
-- [pre-commit hooks](https://pre-commit.com/hooks.html)
-=======
 - django-allauth[MFA]
 - django-allauth[user-sessions]
 - [certbot let's encrypt](https://medium.com/@samson_sham/setup-lets-encrypt-https-server-fa54abff688)
@@ -543,7 +487,3 @@ github copilot prompts
 proper direnv setup
 proper gh-cli setup
 better use of git-crypt and git-lfs
-add `npx dotenv-vault@latest pull` to `post_create.sh` in `.devcontainer/` directory
-MOdularise base.html
-combine and collate numerous commmands into makefile to automate the setup development environment process
->>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
