@@ -434,7 +434,7 @@ FUNCTION shutdownSystem():
 - Orchestrate workflow execution.
 - Ensure fault tolerance and scalability.
 
-```pseudocode
+````pseudocode
 FUNCTION main():
     initializeSystem()
     processAutomatedTransaction()
@@ -605,7 +605,7 @@ Pipeline{% endblock %} {% block dashboard_content %}
 
 2. **Data Processing Templates**
 
-```html
+````html
 {% for transaction in enriched_transactions %}
 <tr>
   <td>{{ transaction.id }}</td>

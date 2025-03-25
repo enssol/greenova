@@ -238,19 +238,19 @@ Address any warnings or errors reported by this command.
        server_name yourdomain.com www.yourdomain.com;
 
        location = /favicon.ico { access_log off; log_not_found off; }
-       
+
        # Static files
        location /static/ {
            root /path/to/greenova;
            expires 30d;
            add_header Cache-Control "public, max-age=2592000";
        }
-       
+
        # Media files
        location /media/ {
            root /path/to/greenova;
        }
-       
+
        location / {
            proxy_set_header Host $http_host;
            proxy_set_header X-Real-IP $remote_addr;
@@ -320,7 +320,7 @@ Address any warnings or errors reported by this command.
 >>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
    - Enable "Always Use HTTPS" under SSL/TLS > Edge Certificates
    - Enable HSTS under SSL/TLS > Edge Certificates > HSTS
-   
+
 4. Set up Page Rules (optional):
 <<<<<<< HEAD
 
@@ -525,6 +525,15 @@ sudo tail -f /var/log/gunicorn/error.log
 3. **Permission issues**
    - Check file ownership and permissions
    - Ensure www-data can access all necessary files
+
+### Add a small swap file to minimise overhead
+
+```bash
+sudo dd if=/dev/zero of=/swapfile bs=1M count=512
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
 
 ## Resources
 
