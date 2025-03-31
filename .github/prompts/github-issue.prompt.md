@@ -2,6 +2,7 @@
 
 ## Issue Type
 
+<<<<<<< HEAD
 {Choose one: Bug, Feature Request, Enhancement, Documentation, Test,
 Refactoring}
 
@@ -54,11 +55,43 @@ From the bug report's "Environment" section:
 - **Device**: {Device type/model}
 
 ### Technical Context
+=======
+[Choose one: Bug, Feature Request, Enhancement, Documentation, Test,
+Refactoring]
+
+## Title
+
+[Provide a concise, descriptive title following the format `<type>: <summary>`]
+
+## Description
+
+[Detailed description of the issue or feature request. Be specific and clear.]
+
+## Current Behavior
+
+[For bugs: Describe what currently happens. For features: Describe current
+limitations.]
+
+## Expected Behavior
+
+[Describe what should happen instead or how the new feature should work.]
+
+## Steps to Reproduce (for bugs)
+
+1. [First Step]
+2. [Second Step]
+3. [Additional Steps...]
+
+## Technical Context
+
+[Provide technical details relevant to the Greenova project context:]
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 - **Django Version**: 4.1.13
 - **Python Version**: 3.9.21
 - **Frontend Technologies**: PicoCSS, django-hyperscript, django-htmx
 - **Database**: SQLite3 (development)
+<<<<<<< HEAD
 - **Affected Module/App**: {Specify the Django app affected}
 - **Template Type/File**: {Specify if Jinja2 (.jinja) or DTL (.html) and the
   affected template file}
@@ -150,6 +183,43 @@ Suggested labels (select all that apply):
 - **database**: Database-related issues
 - **accessibility**: Accessibility concerns
 - **security**: Security concerns
+=======
+- **Affected Module/App**: [Specify the Django app affected]
+
+## Proposed Implementation
+
+[For features/enhancements: Outline a potential approach following project
+principles]
+
+- HTML-first approach with semantic markup
+- Progressive enhancement using our technology stack
+- Data-oriented programming principles
+- WCAG 2.1 AA compliance
+
+## Acceptance Criteria
+
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+- [ ] [Test coverage requirements]
+- [ ] [Accessibility requirements]
+- [ ] [Documentation requirements]
+
+## Mockups/Screenshots
+
+[If applicable, include mockups, screenshots, or diagrams]
+
+## Related Issues/PRs
+
+[Link any related issues or pull requests]
+
+## Additional Context
+
+[Any other relevant information that might help resolve the issue]
+
+## Labels
+
+[Suggested labels for this issue: e.g., bug, enhancement, documentation, etc.]
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 ---
 

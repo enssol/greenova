@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import os
+=======
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 import sys
 from io import BytesIO
 from pathlib import Path
@@ -22,11 +25,17 @@ project_root = Path(__file__).resolve().parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+<<<<<<< HEAD
+=======
+# Change absolute imports to relative imports
+
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 # -------------------- FIXTURES --------------------
 
 @pytest.fixture
 def user():
     """Create and return a regular user."""
+<<<<<<< HEAD
     test_username = os.environ.get('TEST_USERNAME', 'testuser')
     test_email = os.environ.get('TEST_EMAIL', 'testuser@example.com')
     test_password = os.environ.get('TEST_PASSWORD', 'password123')
@@ -35,6 +44,12 @@ def user():
         username=test_username,
         email=test_email,
         password=test_password,
+=======
+    return get_user_model().objects.create_user(
+        username='testuser',
+        email='testuser@example.com',
+        password='password123',
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         first_name='Test',
         last_name='User'
     )
@@ -43,6 +58,7 @@ def user():
 @pytest.fixture
 def admin_user():
     """Create and return an admin user."""
+<<<<<<< HEAD
     admin_username = os.environ.get('ADMIN_USERNAME', 'admin')
     admin_email = os.environ.get('ADMIN_EMAIL', 'admin@example.com')
     admin_password = os.environ.get('ADMIN_PASSWORD', 'admin123')
@@ -51,12 +67,19 @@ def admin_user():
         username=admin_username,
         email=admin_email,
         password=admin_password
+=======
+    return get_user_model().objects.create_superuser(
+        username='admin',
+        email='admin@example.com',
+        password='admin123'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     )
 
 
 @pytest.fixture
 def staff_user():
     """Create and return a staff user."""
+<<<<<<< HEAD
     staff_username = os.environ.get('STAFF_USERNAME', 'staff')
     staff_email = os.environ.get('STAFF_EMAIL', 'staff@example.com')
     staff_password = os.environ.get('STAFF_PASSWORD', 'staff123')
@@ -65,6 +88,12 @@ def staff_user():
         username=staff_username,
         email=staff_email,
         password=staff_password,
+=======
+    return get_user_model().objects.create_user(
+        username='staff',
+        email='staff@example.com',
+        password='staff123',
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         is_staff=True
     )
 
@@ -163,6 +192,7 @@ class TestProfileModel:
 
     def test_cascade_deletion(self):
         """Test that a profile is deleted when its user is deleted."""
+<<<<<<< HEAD
         test_username = os.environ.get('TEST_USERNAME', 'temporary')
         test_email = os.environ.get('TEST_EMAIL', 'temp@example.com')
         test_password = os.environ.get('TEST_PASSWORD', 'temp123')
@@ -171,6 +201,12 @@ class TestProfileModel:
             username=test_username,
             email=test_email,
             password=test_password
+=======
+        user = get_user_model().objects.create_user(
+            username='temporary',
+            email='temp@example.com',
+            password='temp123'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         )
         profile_id = user.profile.id
         user.delete()

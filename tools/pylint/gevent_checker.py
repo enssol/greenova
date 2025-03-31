@@ -1,5 +1,9 @@
 from astroid.exceptions import InferenceError
 from pylint.checkers import BaseChecker
+<<<<<<< HEAD
+=======
+from pylint.interfaces import IAstroidChecker
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 JOINALL_ID = 'gevent-joinall'
 JOINALL_MSG = (
@@ -25,6 +29,11 @@ def register(linter):
 
 
 class GeventWaitall(BaseChecker):
+<<<<<<< HEAD
+=======
+    __implements__ = IAstroidChecker
+
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     name = 'gevent'
     priority = -1
     msgs = {'E6491': (JOINALL_MSG, JOINALL_ID, 'Waiting with joinall on a non set is an error.')}

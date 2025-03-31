@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
+<<<<<<< HEAD
 # Copyright 2025 Enveng Group.
 # SPDX-License-Identifier: 	AGPL-3.0-or-later
 
 import importlib.util
 import os
 import re
+=======
+import os
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 import subprocess  # nosec B404 # Required for running python tools in pre-commit hooks
 import sys
 import sysconfig
 from pathlib import Path
+<<<<<<< HEAD
 from types import ModuleType
 from typing import Any, Dict, List, Optional, cast
 
@@ -89,11 +94,14 @@ try:
             print('Created minimal mock settings module')
 except (ImportError, AttributeError, OSError) as e:
     print(f'Error setting up mock settings: {e}')
+=======
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 # Try to load environment variables, but don't fail if the package isn't available
 # Determine project root (2 directories up from this script)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
+<<<<<<< HEAD
 def load_environment_variables() -> None:
     """Attempt to load environment variables from .env file using dotenv_vault."""
     if dotenv_load:
@@ -106,6 +114,18 @@ def load_environment_variables() -> None:
             'Warning: dotenv_vault not available. '
             "Environment variables from .env won't be loaded."
         )
+=======
+def load_environment_variables():
+    """Attempt to load environment variables from .env file using dotenv_vault."""
+    try:
+        # Attempt to import and load dotenv_vault
+        from dotenv_vault import load_dotenv
+        load_dotenv(dotenv_path=PROJECT_ROOT / '.env')
+        print('Successfully loaded environment variables from .env file')
+    except ImportError:
+        # Fallback if dotenv_vault module is not available
+        print("Warning: dotenv_vault not available. Environment variables from .env won't be loaded.")
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 # Load environment variables at the start of the script
 load_environment_variables()
@@ -119,6 +139,7 @@ def _ensure_requirements() -> None:
     # No need to recreate Path object since REQUIREMENTS_FILE is already a Path
     # Validate that the requirements file exists and is within the project
     if not REQUIREMENTS_FILE.exists() or not REQUIREMENTS_FILE.is_file():
+<<<<<<< HEAD
         raise ValueError(
             f'Requirements file {REQUIREMENTS_FILE} not found or invalid'
         )
@@ -127,14 +148,27 @@ def _ensure_requirements() -> None:
 
     # This path is inside the pre-commit generated virtualenv and therefore will
     # automatically be invalidated if that virtualenv is re-created.
+=======
+        raise ValueError(f'Requirements file {REQUIREMENTS_FILE} not found or invalid')
+
+    print(f'Using requirements file: {REQUIREMENTS_FILE}')
+
+    # This path is inside the pre-commit generated virtualenv and therefore will automatically
+    # be invalidated if that virtualenv is re-created.
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     data_path_str = sysconfig.get_path('data')
     if data_path_str is None:
         raise RuntimeError('No sysconfig data path available.')
 
     try:
+<<<<<<< HEAD
         # We're using a list of arguments, so shell injection is not possible here
         # nosec B603 is needed to explicitly tell Bandit this is safe
         subprocess.check_output(  # nosec B603
+=======
+        # nosec B603 # Safe as we're using fixed inputs with sys.executable and a predefined requirements file
+        subprocess.check_output(
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             [
                 sys.executable,
                 '-m',
@@ -146,18 +180,33 @@ def _ensure_requirements() -> None:
             ],
             stderr=subprocess.STDOUT,
             universal_newlines=True,  # Get output as text
+<<<<<<< HEAD
             shell=False,  # Explicitly specify no shell to address B603 warning
+=======
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         )
         print(f'Successfully processed requirements from {REQUIREMENTS_FILE}')
     except subprocess.CalledProcessError as e:
         print(f'Error processing requirements: {e.output}')
         raise
 
+<<<<<<< HEAD
 def extract_installed_apps_from_settings() -> List[Dict[str, str]]:
     """Extract INSTALLED_APPS from Django settings to dynamically mock the modules."""
     try:
         # Import the settings module specified in mypy.ini
         with open(PROJECT_ROOT / 'mypy.ini', encoding='utf-8') as f:
+=======
+def extract_installed_apps_from_settings():
+    """Extract INSTALLED_APPS from Django settings to dynamically mock required modules."""
+    try:
+        # Use a generic approach to import settings without requiring Django
+        import importlib
+        import re
+
+        # Import the settings module specified in mypy.ini
+        with open(PROJECT_ROOT / 'mypy.ini') as f:
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             content = f.read()
             match = re.search(r'django_settings_module\s*=\s*([^\s]+)', content)
             if not match:
@@ -170,6 +219,7 @@ def extract_installed_apps_from_settings() -> List[Dict[str, str]]:
         settings = importlib.import_module(settings_module)
 
         # Extract app configurations that need to be mocked
+<<<<<<< HEAD
         apps_to_mock: List[Dict[str, str]] = []
         for app_entry in getattr(settings, 'INSTALLED_APPS', []):
             # Skip Django's built-in apps and third-party libraries
@@ -179,6 +229,12 @@ def extract_installed_apps_from_settings() -> List[Dict[str, str]]:
                 'corsheaders.',
                 'debug_toolbar.'
             )):
+=======
+        apps_to_mock = []
+        for app_entry in getattr(settings, 'INSTALLED_APPS', []):
+            # Skip Django's built-in apps and third-party libraries
+            if app_entry.startswith(('django.', 'allauth.', 'corsheaders.', 'debug_toolbar.')):
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
                 continue
 
             # For entries that are full paths to app configs
@@ -199,7 +255,11 @@ def extract_installed_apps_from_settings() -> List[Dict[str, str]]:
                 })
 
         return apps_to_mock
+<<<<<<< HEAD
     except (ImportError, ModuleNotFoundError, FileNotFoundError, re.error) as e:
+=======
+    except Exception as e:
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         print(f'Error extracting INSTALLED_APPS: {e}')
         # Return default modules if we can't extract from settings
         return [
@@ -215,6 +275,7 @@ def extract_installed_apps_from_settings() -> List[Dict[str, str]]:
             }
         ]
 
+<<<<<<< HEAD
 # Custom type for module with 'apps' and 'models' attributes
 class ModuleWithApps(ModuleType):
     """A module type that has 'apps' and 'models' attributes."""
@@ -229,6 +290,20 @@ def create_mock_modules() -> None:
         if AppConfigClass is None:
             # If Django is not available, create a base class for type checking
             AppConfigClass = type('AppConfig', (), {
+=======
+def create_mock_modules():
+    """Create mock modules for modules that might be missing but referenced in settings."""
+    try:
+        import sys
+        from types import ModuleType
+
+        # Import Django's AppConfig class for proper inheritance
+        try:
+            from django.apps import AppConfig
+        except ImportError:
+            # If Django is not available, create a base class that will satisfy type checking
+            AppConfig = type('AppConfig', (), {
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
                 'name': '',
                 'verbose_name': '',
                 'path': '',
@@ -251,14 +326,21 @@ def create_mock_modules() -> None:
             if module_name not in sys.modules:
                 # Create the base module
                 mock_module = ModuleType(module_name)
+<<<<<<< HEAD
                 # Cast to our custom type to satisfy type checking
                 typed_mock_module = cast(ModuleWithApps, mock_module)
+=======
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
                 # Create apps submodule
                 apps_module = ModuleType(f'{module_name}.apps')
 
                 # Create AppConfig class
+<<<<<<< HEAD
                 ConfigClass = type(config_class_name, (AppConfigClass,), {
+=======
+                ConfigClass = type(config_class_name, (AppConfig,), {
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
                     'name': module_name,
                     'verbose_name': verbose_name,
                     'path': str(PROJECT_ROOT / module_name),
@@ -269,6 +351,7 @@ def create_mock_modules() -> None:
                 # Add the config class to the apps module
                 setattr(apps_module, config_class_name, ConfigClass)
 
+<<<<<<< HEAD
                 # Add apps module to the base module using our typed module
                 typed_mock_module.apps = apps_module
 
@@ -280,17 +363,34 @@ def create_mock_modules() -> None:
                 # Register modules in sys.modules
                 sys.modules[f'{module_name}.models'] = models_module
                 sys.modules[module_name] = typed_mock_module
+=======
+                # Add apps module to the base module
+                mock_module.apps = apps_module
+
+                # Create models module commonly used in Django apps
+                models_module = ModuleType(f'{module_name}.models')
+                mock_module.models = models_module
+                sys.modules[f'{module_name}.models'] = models_module
+
+                # Register modules in sys.modules
+                sys.modules[module_name] = mock_module
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
                 sys.modules[f'{module_name}.apps'] = apps_module
 
                 print(f"Created mock '{module_name}' module with {config_class_name}")
 
         print('All required mock modules created for type checking')
 
+<<<<<<< HEAD
     except (ImportError, AttributeError, TypeError) as e:
+=======
+    except Exception as e:
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         print(f'Warning: Failed to create mock modules: {e}')
         # In case of failure, fall back to creating just the core modules
         try:
             _create_minimal_mocks()
+<<<<<<< HEAD
         except (ImportError, AttributeError, TypeError) as e2:
             print(f'Critical error: Could not create even minimal mock modules: {e2}')
 
@@ -303,6 +403,20 @@ def _create_minimal_mocks() -> None:
             mock_module = ModuleType(module_name)
             typed_mock_module = cast(ModuleWithApps, mock_module)
 
+=======
+        except Exception as e2:
+            print(f'Critical error: Could not create even minimal mock modules: {e2}')
+
+def _create_minimal_mocks():
+    """Create minimal mocks for critical modules when the main mocking fails."""
+    import sys
+    from types import ModuleType
+
+    # Create minimal core and company modules
+    for module_name in ['core', 'company']:
+        if module_name not in sys.modules:
+            mock_module = ModuleType(module_name)
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             apps_module = ModuleType(f'{module_name}.apps')
 
             # Create minimal AppConfig class
@@ -314,10 +428,16 @@ def _create_minimal_mocks() -> None:
             })
 
             setattr(apps_module, config_class_name, ConfigClass)
+<<<<<<< HEAD
             # Use our typed module
             typed_mock_module.apps = apps_module
 
             sys.modules[module_name] = typed_mock_module
+=======
+            mock_module.apps = apps_module
+
+            sys.modules[module_name] = mock_module
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             sys.modules[f'{module_name}.apps'] = apps_module
 
             print(f"Created minimal mock for '{module_name}' module")
@@ -331,6 +451,7 @@ def main() -> None:
 
     tool = sys.argv.pop(1)
     if tool == 'pylint':
+<<<<<<< HEAD
         # Create mock modules before running pylint to handle missing modules
         create_mock_modules()
 
@@ -340,16 +461,25 @@ def main() -> None:
             print('pylint module not available. Please install it with: '
                   'pip install pylint')
             sys.exit(1)
+=======
+        from pylint import run_pylint
+        run_pylint()
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     elif tool == 'mypy':
         # Create mock modules before running mypy to handle missing modules
         create_mock_modules()
 
+<<<<<<< HEAD
         if mypy_console_entry:
             mypy_console_entry()
         else:
             print('mypy module not available. Please install it with: '
                   'pip install mypy')
             sys.exit(1)
+=======
+        from mypy.__main__ import console_entry
+        console_entry()
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     else:
         raise RuntimeError(f'Unsupported tool: {tool}')
 

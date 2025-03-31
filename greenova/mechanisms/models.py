@@ -5,23 +5,36 @@ from typing import List
 from core.types import StatusData
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.db import models
+<<<<<<< HEAD
 from django.db.models.query import QuerySet
 from django_matplotlib.fields import MatplotlibFigureField  # type: ignore
+=======
+from django_matplotlib.fields import MatplotlibFigureField
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 from obligations.constants import (STATUS_CHOICES, STATUS_COMPLETED, STATUS_IN_PROGRESS,
                                    STATUS_NOT_STARTED)
 from obligations.utils import is_obligation_overdue
 
+<<<<<<< HEAD
 logger = logging.getLogger(__name__)
 
+=======
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 class EnvironmentalMechanism(models.Model):
     """Represents an environmental mechanism that governs obligations."""
 
+<<<<<<< HEAD
     name: models.CharField = models.CharField(max_length=255)
     project: models.ForeignKey = models.ForeignKey(
         'projects.Project',
         on_delete=models.CASCADE,
         related_name='mechanisms'
+=======
+    name = models.CharField(max_length=255)
+    project = models.ForeignKey(
+        'projects.Project', on_delete=models.CASCADE, related_name='mechanisms'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     )
     description: models.TextField = models.TextField(blank=True, null=True)
     category: models.CharField = models.CharField(
@@ -37,10 +50,15 @@ class EnvironmentalMechanism(models.Model):
     effective_date: models.DateField = models.DateField(null=True, blank=True)
 
     # Add status field
+<<<<<<< HEAD
     status: models.CharField = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default=STATUS_NOT_STARTED
+=======
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_NOT_STARTED
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     )
 
     # Add count fields
@@ -50,10 +68,15 @@ class EnvironmentalMechanism(models.Model):
     # Field to track overdue obligations
     overdue_count: models.IntegerField = models.IntegerField(default=0)
 
+<<<<<<< HEAD
     primary_environmental_mechanism: models.CharField = models.CharField(
         max_length=255,
         blank=True,
         null=True
+=======
+    primary_environmental_mechanism = models.CharField(
+        max_length=255, blank=True, null=True
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     )
 
     created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
@@ -122,23 +145,39 @@ class EnvironmentalMechanism(models.Model):
             'Not Started': max(0, self.not_started_count - self.overdue_count),
             'In Progress': self.in_progress_count,
             'Completed': self.completed_count,
+<<<<<<< HEAD
         })
 
 
 def update_all_mechanism_counts() -> int:
+=======
+        }
+
+
+# Add this function at the bottom of the file
+
+
+def update_all_mechanism_counts():
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     """
     Update obligation counts for all mechanisms.
     Called after importing obligations to ensure counts are accurate.
     """
+<<<<<<< HEAD
     mechanisms: QuerySet = (EnvironmentalMechanism.objects
                             .all()
                             .select_related('project'))
     updated_count: int = 0
+=======
+    mechanisms = EnvironmentalMechanism.objects.all().select_related('project')
+    updated_count = 0
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
     for mechanism in mechanisms:
         try:
             mechanism.update_obligation_counts()
             updated_count += 1
+<<<<<<< HEAD
         except (
                 ObjectDoesNotExist,  # Using imported exceptions
                 FieldError,
@@ -148,6 +187,11 @@ def update_all_mechanism_counts() -> int:
             logger.error(
                 'Error updating counts for mechanism %s: %s',
                 mechanism.name, str(e)
+=======
+        except Exception as e:
+            logger.error(
+                f'Error updating counts for mechanism {mechanism.name}: {str(e)}'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             )
 
     return updated_count

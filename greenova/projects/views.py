@@ -1,16 +1,30 @@
 import logging
+<<<<<<< HEAD
 from typing import Any, Dict, List, Tuple, TypeVar, cast
+=======
+from typing import Any, Dict, List, Sequence, TypeVar, cast
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import AbstractUser
+<<<<<<< HEAD
 from django.http import HttpRequest, HttpResponse, JsonResponse
+=======
+from django.core.paginator import Paginator
+from django.http import HttpRequest, HttpResponse
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_headers
 from django.views.generic import TemplateView
+<<<<<<< HEAD
 from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
+=======
+from django_htmx.http import (HttpResponseClientRedirect, HttpResponseClientRefresh,
+                              push_url, trigger_client_event)
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 from obligations.models import Obligation
 
 from .models import Project
@@ -65,15 +79,24 @@ class ProjectSelectionView(LoginRequiredMixin, TemplateView):
             # Implement your permission logic here
             return False  # Return True if special access is required
         except Project.DoesNotExist:
+<<<<<<< HEAD
             logger.warning('Project %s not found during permission check', project_id)
             return False
 
 def project_obligations(_request: HttpRequest, project_id: str) -> JsonResponse:
     """Retrieve obligations associated with a specific project."""
+=======
+            logger.warning(f'Project {project_id} not found during permission check')
+            return False
+
+def project_obligations(request, project_id):
+    """ Retrieve obligations associated with a specific project. """
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     project = get_object_or_404(Project, id=project_id)
     obligations = Obligation.objects.filter(project=project)
 
     # Serialize obligations
+<<<<<<< HEAD
     obligations_data = [
         {'id': o.obligation_number, 'obligation_number': o.obligation_number}
         for o in obligations
@@ -241,3 +264,8 @@ def get_responsibility_display_name(responsibility: str) -> str:
 
     # Otherwise, convert to display name using the role mapping
     return get_responsibility_from_role(responsibility)
+=======
+    obligations_data = [{'id': o.id, 'obligation_number': o.obligation_number} for o in obligations]
+
+    return obligations_data
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)

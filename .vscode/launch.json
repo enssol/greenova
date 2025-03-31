@@ -16,7 +16,12 @@
       "cwd": "${workspaceFolder}/greenova",
       "django": true,
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages"
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       },
       "envFile": "${workspaceFolder}/.env",
       "justMyCode": false,
@@ -32,7 +37,12 @@
       ],
       "cwd": "${workspaceFolder}/greenova",
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages:${workspaceFolder}/greenova"
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       },
       "envFile": "${workspaceFolder}/.env",
       "justMyCode": false,
@@ -48,9 +58,17 @@
       ],
       "cwd": "${workspaceFolder}/greenova",
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
       },
       "envFile": "${workspaceFolder}/.env",
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages:${workspaceFolder}/greenova"
+      },
+      "envFile": "${workspaceFolder}/.env",
+      "justMyCode": false,
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       "name": "Pytest: Current File",
       "program": "${workspaceFolder}/.venv/bin/pytest",
       "request": "launch",
@@ -60,7 +78,12 @@
       "console": "integratedTerminal",
       "cwd": "${fileDirname}",
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages"
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       },
       "envFile": "${workspaceFolder}/.env",
       "justMyCode": false,
@@ -77,7 +100,12 @@
       "cwd": "${workspaceFolder}/greenova",
       "django": true,
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages"
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       },
       "envFile": "${workspaceFolder}/.env",
       "justMyCode": false,
@@ -93,7 +121,12 @@
       "cwd": "${workspaceFolder}/greenova",
       "django": true,
       "env": {
+<<<<<<< HEAD
         "DJANGO_SETTINGS_MODULE": "greenova.settings"
+=======
+        "DJANGO_SETTINGS_MODULE": "greenova.settings",
+        "PYTHONPATH": "${workspaceFolder}/.venv/lib/python3.9/site-packages"
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
       },
       "envFile": "${workspaceFolder}/.env",
       "justMyCode": false,

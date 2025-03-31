@@ -130,7 +130,11 @@ class TestPreCommitWrapper:
         """Test extract_installed_apps_from_settings extracts apps correctly"""
         # Setup mock settings module
         mock_open = mocker.patch('pathlib.Path.open', mocker.mock_open(
+<<<<<<< HEAD
             read_data='django_settings_module = greenova.settings'
+=======
+            read_data='django_settings_module = greenova.greenova.settings'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         ))
         mock_import_module = mocker.patch('importlib.import_module')
         mock_settings = mocker.MagicMock()
@@ -175,7 +179,11 @@ class TestPreCommitWrapper:
         """Test extract_installed_apps_from_settings handles module import errors"""
         # Setup mocks
         mock_open = mocker.patch('pathlib.Path.open', mocker.mock_open(
+<<<<<<< HEAD
             read_data='django_settings_module = greenova.settings'
+=======
+            read_data='django_settings_module = greenova.greenova.settings'
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         ))
         mock_import_module = mocker.patch('importlib.import_module', side_effect=ImportError)
 

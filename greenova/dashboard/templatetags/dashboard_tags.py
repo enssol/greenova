@@ -12,6 +12,7 @@ from django import template
 
 register = template.Library()
 
+<<<<<<< HEAD
 
 @register.filter(name='display_name')
 def display_name(user: Any) -> str:
@@ -23,6 +24,11 @@ def display_name(user: Any) -> str:
     Returns:
         The full name if available, otherwise username or string representation
     """
+=======
+@register.filter
+def display_name(user: User) -> str:
+    """Return the best display name for a user."""
+>>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
     if hasattr(user, 'get_full_name'):
         full_name = user.get_full_name()
         if full_name:
