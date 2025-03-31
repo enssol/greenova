@@ -1,11 +1,7 @@
-import base64
-import io
 import logging
 
 import matplotlib
-import matplotlib.pyplot as plt
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_headers
@@ -28,7 +24,6 @@ class MechanismChartView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         project_id = self.request.GET.get('project_id')
 
-<<<<<<< HEAD
         if not project_id:
             context['error'] = 'No project selected'
             return context
@@ -40,10 +35,6 @@ class MechanismChartView(LoginRequiredMixin, TemplateView):
                 return context
         except (TypeError, ValueError):
             context['error'] = 'Invalid project ID'
-=======
-        if not project_id or project_id < '1':
-            context['error'] = 'No project selected'
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
             return context
 
         try:
