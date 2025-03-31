@@ -1,3 +1,15 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.utils.html import escape
+
+from .models import Conversation, ChatMessage
+from .services import ChatbotService
+from .forms import ConversationForm
+
 import json
 import logging
 
@@ -13,7 +25,6 @@ from .services import ChatbotService
 
 logger = logging.getLogger(__name__)
 
-
 @login_required
 def chatbot_home(request):
     """Main chatbot interface showing conversation list and a selected conversation."""
@@ -25,11 +36,8 @@ def chatbot_home(request):
     messages = []
 
     if active_conversation_id:
-        query = {'id': active_conversation_id, 'user': user}
-        active_conversation = get_object_or_404(Conversation, **query)
-        messages = ChatMessage.objects.filter(
-            conversation=active_conversation
-        ).order_by('timestamp')
+        active_conversation = get_object_or_404(Conversation, id=active_conversation_id, user=user)
+        messages = ChatMessage.objects.filter(conversation=active_conversation).order_by('timestamp')
 
     context = {
         'conversations': conversations,
@@ -38,7 +46,6 @@ def chatbot_home(request):
     }
 
     return render(request, 'chatbot/home.html', context)
-
 
 @login_required
 def create_conversation(request):
@@ -63,28 +70,22 @@ def create_conversation(request):
 
     return render(request, 'chatbot/create_conversation.html', {'form': form})
 
-
 @login_required
 def conversation_detail(request, conversation_id):
     """View a specific conversation."""
-    query = {'id': conversation_id, 'user': request.user}
-    conversation = get_object_or_404(Conversation, **query)
-    messages = ChatMessage.objects.filter(
-        conversation=conversation
-    ).order_by('timestamp')
+    conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
+    messages = ChatMessage.objects.filter(conversation=conversation).order_by('timestamp')
 
     return render(request, 'chatbot/conversation_detail.html', {
         'conversation': conversation,
         'messages': messages,
     })
 
-
 @login_required
 @require_POST
 def send_message(request, conversation_id):
     """Process a new message in a conversation."""
-    query = {'id': conversation_id, 'user': request.user}
-    conversation = get_object_or_404(Conversation, **query)
+    conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
 
     try:
         data = json.loads(request.body)
@@ -101,10 +102,7 @@ def send_message(request, conversation_id):
         )
 
         # Process and get bot response
-        bot_response = ChatbotService.process_user_message(
-            conversation.id,
-            message_text
-        )
+        bot_response = ChatbotService.process_user_message(conversation.id, message_text)
 
         return JsonResponse({
             'user_message': {
@@ -116,23 +114,17 @@ def send_message(request, conversation_id):
                 'content': escape(bot_response),
             }
         })
-    except (json.JSONDecodeError, KeyError, AttributeError) as e:
-        logger.error("Error processing message: %s", str(e))
+    except Exception as e:
+        logger.error(f"Error processing message: {str(e)}")
         return JsonResponse({'error': 'Failed to process message'}, status=500)
-
 
 @login_required
 def delete_conversation(request, conversation_id):
     """Delete a conversation."""
-    query = {'id': conversation_id, 'user': request.user}
-    conversation = get_object_or_404(Conversation, **query)
+    conversation = get_object_or_404(Conversation, id=conversation_id, user=request.user)
 
     if request.method == 'POST':
         conversation.delete()
         return redirect('chatbot:chatbot_home')
 
-    return render(
-        request,
-        'chatbot/delete_conversation.html',
-        {'conversation': conversation}
-    )
+    return render(request, 'chatbot/delete_conversation.html', {'conversation': conversation})

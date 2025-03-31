@@ -1,7 +1,11 @@
+import base64
+import io
 import logging
 
 import matplotlib
+import matplotlib.pyplot as plt
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_headers

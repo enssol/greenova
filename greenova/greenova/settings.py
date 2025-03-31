@@ -10,16 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import mimetypes
-import os
-import sys
-import warnings
-from pathlib import Path
-from shutil import which
-from typing import Any, Dict, List, TypedDict, Union
-
 import sentry_sdk
 from dotenv_vault import load_dotenv
-
 load_dotenv()
 
 
@@ -122,50 +114,46 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     # Core Django apps (must be first)
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.humanize",
 
     # Third-party authentication (keep together)
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
-    'allauth.usersessions',
-    'allauth.mfa',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    "allauth.usersessions",
+    "allauth.mfa",
 
     # Other third-party libraries
-    'corsheaders',
-    'django_htmx',
-    'django_hyperscript',
-    'django_matplotlib',
-    'django_pdb',
-    'template_partials',
-    'tailwind',
-    'django_browser_reload',
-    'debug_toolbar',
-    'pb_model',
-    'silk',
+    "django_htmx",
+    "django_hyperscript",
+    "django_matplotlib",
+    "template_partials",
+    "tailwind",
+    "django_browser_reload",
+    "debug_toolbar",
+    "gunicorn",
+    "pb_model",
 
     # Your local apps (ordered by dependency)
-    'authentication',
-    'core.apps.CoreConfig',  # Core logic, should be initialized early
-    'company',  # Base models (used in other apps, so placed first)
-    'projects',  # Likely depends on `company`
-    'users',  # User management, might depend on `company`
-    'mechanisms',  # Business logic modules
-    'responsibility',  # Likely domain-specific
-    'obligations',  # Related to `responsibility`
-    'procedures',  # Depends on `obligations`
-    'dashboard',  # UI and analytics
-    'landing',  # Landing page or homepage
-    'theme',  # UI Styling
-    'chatbot',  # Standalone feature, placed last
-    'feedback',  # Add the feedback app here
+    "core.apps.CoreConfig",  # Core logic, should be initialized early
+    "company",  # Base models (used in other apps, so placed first)
+    "projects",  # Likely depends on `company`
+    "users",  # User management, might depend on `company`
+    "mechanisms",  # Business logic modules
+    "responsibility",  # Likely domain-specific
+    "obligations",  # Related to `responsibility`
+    "procedures",  # Depends on `obligations`
+    "dashboard",  # UI and analytics
+    "landing",  # Landing page or homepage
+    "theme",  # UI Styling
+    "chatbot",  # Standalone feature, placed last
 ]
 
 
@@ -196,8 +184,7 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug after core middleware
     'django_browser_reload.middleware.BrowserReloadMiddleware',
-    'django_pdb.middleware.PdbMiddleware',
-    'silk.middleware.SilkyMiddleware',  # Profiling middleware works best at the end
+    'allauth.account.middleware.AccountMiddleware',
     # 'allauth.usersessions.middleware.UserSessionMiddleware',
 ]
 
@@ -210,9 +197,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_REDIRECT_URL = 'dashboard:home'  # OR LOGIN_REDIRECT_URL = "dashboard:profile"
+LOGIN_REDIRECT_URL = "dashboard:home"  # OR LOGIN_REDIRECT_URL = "dashboard:profile"
 # LOGOUT_REDIRECT_URL = "landing:home"
-LOGIN_URL = 'authentication:login'
+LOGIN_URL = "authentication:login"
 # LOGIN_REDIRECT_URL = "admin:index"
 # LOGOUT_REDIRECT_URL = "admin:login"
 # LOGIN_URL = "admin:login"
@@ -237,10 +224,10 @@ ROOT_URLCONF = 'greenova.urls'
 # Update TEMPLATES configuration to remove the conflict
 TEMPLATES: List[TemplateConfig] = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'authentication',  # route to custom django-allauth template!
-            BASE_DIR / 'templates',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR / "authentication",  # route to custom django-allauth template!
+            BASE_DIR / "templates",
         ],
         'APP_DIRS': True,  # Keep this for app template discovery
         'OPTIONS': {
@@ -286,15 +273,14 @@ DATABASES: Dict[str, DatabaseConfig] = {
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME':
-     'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-     'OPTIONS': {
-         'min_length': 9,
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+     "OPTIONS": {
+         "min_length": 9,
      },
      },
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -327,23 +313,20 @@ STATICFILES_FINDERS = [
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Application version
-APP_VERSION = '0.0.5'
+APP_VERSION = "0.0.4"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Disable security features for development
-# SECURE_BROWSER_XSS_FILTER = False
-# SECURE_CONTENT_TYPE_NOSNIFF = False
-# X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allow frames for development tools
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
-
-# CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+SECURE_BROWSER_XSS_FILTER = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
+X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allow frames for development tools
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
 # Simplify cache to basic memory cache
 CACHES = {
@@ -447,33 +430,8 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Sentry.io configuration
 sentry_sdk.init(
-    dsn=(
-        'https://c6f88e890b90e554dcf731d6c4358341@'
-        'o4508301862371328.ingest.us.sentry.io/4509008399761408'
-    ),
+    dsn="https://c6f88e890b90e554dcf731d6c4358341@o4508301862371328.ingest.us.sentry.io/4509008399761408",
     # Add data like request headers and IP for users,
-    # info at https://docs.sentry.io/platforms/python/data-management/data-collected/
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
 )
-
-# Silk configuration
-
-# Create profiles directory for Silk profiler results if it doesn't exist
-PROFILES_DIR = os.path.join(BASE_DIR, 'greenova', 'profiles')
-if not os.path.exists(PROFILES_DIR):
-    os.makedirs(PROFILES_DIR)
-
-# Silk configuration
-SILKY_PYTHON_PROFILER = True
-SILKY_PYTHON_PROFILER_BINARY = False
-SILKY_PYTHON_PROFILER_RESULT_PATH = PROFILES_DIR
-SILKY_AUTHENTICATION = True
-SILKY_AUTHORISATION = True
-SILKY_META = True
-
-# Garbage collection settings for small server environment
-SILKY_MAX_RECORDED_REQUESTS = 500  # Store maximum of 500 requests
-SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 50  # Run GC check on 50% of requests
-SILKY_MAX_REQUEST_BODY_SIZE = 1024  # Limit request body size to 1KB
-SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # Limit response body size to 1KB
-SILKY_INTERCEPT_PERCENT = 25  # Only profile 25% of requests

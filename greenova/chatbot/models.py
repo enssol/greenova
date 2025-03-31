@@ -1,13 +1,11 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.utils import timezone
-
-# Import proto utility functions at the top level
-from .proto_utils import deserialize_chat_message, serialize_chat_message
+from pb_model.models import ProtoBufMixin
 
 # Import generated protobuf modules with improved error handling
 try:
-    from .proto import chatbot_pb2
+    from . import chatbot_pb2
 except ImportError:
     import logging
     import os
@@ -15,18 +13,15 @@ except ImportError:
 
     # Check if the proto file exists
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    proto_file = os.path.join(current_dir, 'proto', 'chatbot.proto')
+    proto_file = os.path.join(current_dir, 'data', 'chatbot.proto')
 
     if os.path.exists(proto_file):
-        logger.error(
-            "chatbot.proto exists but chatbot_pb2.py not found. "
-            "Run 'python manage.py compile_protos --app=chatbot' to generate it."
-        )
+        logger.error("Protocol buffer file exists but Python module not generated.")
+        logger.error("Please run 'python manage.py shell' and then run:")
+        logger.error("from chatbot.compile_proto import compile_proto; compile_proto()")
     else:
-        logger.error(
-            "Failed to import chatbot_pb2. Protocol buffer definition missing."
-        )
-        logger.error("Please ensure chatbot.proto exists in the proto directory.")
+        logger.error("Failed to import chatbot_pb2. Protocol buffer definition missing.")
+        logger.error("Please ensure chatbot.proto exists in the data directory.")
 
     # Create a minimal stub for the module to allow Django to continue loading
     import sys
@@ -44,63 +39,74 @@ except ImportError:
 
 User = get_user_model()
 
-class Conversation(models.Model):
+class Conversation(ProtoBufMixin, models.Model):
     """Model representing a chat conversation."""
+    pb_model = chatbot_pb2.Conversation
+
     title = models.CharField(max_length=255, default="New Conversation")
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='conversations'
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # Mapping between protobuf and django fields
+    pb_2_dj_field_map = {
+        "user_id": "user",
+    }
 
     def __str__(self):
         return f"{self.title} - {self.user.username}"
 
-    def to_proto(self):
-        """Convert to protobuf representation."""
-        # Placeholder for protobuf conversion
-        # Will be implemented when full proto support is needed
-        return None
+    # Convert foreign key to int for protobuf
+    def _field_to_pb(self, pb_obj, field_name, dj_field_value):
+        if field_name == 'user':
+            setattr(pb_obj, 'user_id', dj_field_value.id)
+        else:
+            super()._field_to_pb(pb_obj, field_name, dj_field_value)
 
-    @classmethod
-    def from_proto(cls, proto_data):
-        """Create from protobuf data."""
-        # Placeholder for protobuf conversion
-        # Will be implemented when full proto support is needed
+    # Convert int back to foreign key from protobuf
+    def _field_from_pb(self, field_name, pb_field, pb_value):
+        if field_name == 'user':
+            return User.objects.get(id=pb_value)
+        return super()._field_from_pb(field_name, pb_field, pb_value)
 
-class ChatMessage(models.Model):
+class ChatMessage(ProtoBufMixin, models.Model):
     """Model representing an individual chat message."""
-    conversation = models.ForeignKey(
-        Conversation,
-        on_delete=models.CASCADE,
-        related_name='messages'
-    )
+    pb_model = chatbot_pb2.ChatMessage
+
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
     content = models.TextField()
     is_bot = models.BooleanField(default=False)
     timestamp = models.DateTimeField(default=timezone.now)
     attachments = models.JSONField(default=list, blank=True)
 
+    # Mapping between protobuf and django fields
+    pb_2_dj_field_map = {
+        "conversation_id": "conversation",
+    }
+
     def __str__(self):
         prefix = "Bot" if self.is_bot else "User"
-        content_preview = str(self.content)[:50] if self.content else ""
-        return f"{prefix}: {content_preview}"
+        return f"{prefix}: {self.content[:50]}"
 
-    def to_proto(self):
-        """Convert to protobuf representation."""
-        return serialize_chat_message(self)
+    # Convert foreign key to int for protobuf
+    def _field_to_pb(self, pb_obj, field_name, dj_field_value):
+        if field_name == 'conversation':
+            setattr(pb_obj, 'conversation_id', dj_field_value.id)
+        elif field_name == 'attachments':
+            pb_obj.attachments.extend(dj_field_value)
+        else:
+            super()._field_to_pb(pb_obj, field_name, dj_field_value)
 
-    @classmethod
-    def from_proto(cls, proto_data, conversation=None):
-        """Create from protobuf data."""
-        message_data = deserialize_chat_message(proto_data)
-        if message_data and conversation:
-            return cls.objects.create(conversation=conversation, **message_data)
-        return None
+    # Convert int back to foreign key from protobuf
+    def _field_from_pb(self, field_name, pb_field, pb_value):
+        if field_name == 'conversation':
+            return Conversation.objects.get(id=pb_value)
+        return super()._field_from_pb(field_name, pb_field, pb_value)
 
-class PredefinedResponse(models.Model):
+class PredefinedResponse(ProtoBufMixin, models.Model):
     """Model for storing predefined chat responses."""
+    pb_model = chatbot_pb2.PredefinedResponse
+
     trigger_phrase = models.CharField(max_length=255)
     response_text = models.TextField()
     priority = models.IntegerField(default=0)
@@ -108,13 +114,14 @@ class PredefinedResponse(models.Model):
     def __str__(self):
         return f"{self.trigger_phrase}"
 
-class TrainingData(models.Model):
+class TrainingData(ProtoBufMixin, models.Model):
     """Model for storing chatbot training data."""
+    pb_model = chatbot_pb2.TrainingData
+
     question = models.TextField()
     answer = models.TextField()
     category = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        question_str = str(self.question)
-        return f"{question_str[:50]}"
+        return f"{self.question[:50]}"
