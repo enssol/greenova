@@ -395,7 +395,7 @@ FUNCTION shutdownSystem():
 - Orchestrate workflow execution.
 - Ensure fault tolerance and scalability.
 
-````pseudocode
+```pseudocode
 FUNCTION main():
     initializeSystem()
     processAutomatedTransaction()
