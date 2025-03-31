@@ -259,7 +259,6 @@ class Command(BaseCommand):
             'created_at': now,
             'updated_at': now,
         }
-        return result
 
         return obligation_data
 
