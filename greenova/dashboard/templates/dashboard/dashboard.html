@@ -1,40 +1,70 @@
-{% extends "base.html" %}
-
-{% load static %}
-{% load user_tags %}
-{% load core_tags %}
-{% load dashboard_tags %}
-
-{% block title %}
-
-  dashboard | greenova
-{% endblock title %}
-
-{% block content %}
-
-  <article class="dashboard-container"
-           data-hx-ext="class-tools path-deps"
-           data-classes="add fade-in">
-    {% include "dashboard/partials/dashboard_content.html" %}
-
+{% extends base_template|default:"base.html" %}
+{% load static dashboard_tags partials hyperscript project_tags %}
+<!-- Define the partial content first -->
+{% partialdef dashboard_header %}
+<header hx-ext="class-tools" classes="add slide-in-from-top:0.3s">
+  <hgroup>
+    <nav aria-label="Breadcrumb" class="breadcrumbs">
+      <ol>
+        <li>
+          <a href="{% url 'procedures:procedure_charts_query' %}">Procedures</a>
+        </li>
+        <li>
+          <a href="{% url 'mechanisms:mechanism_charts' %}">Mechanisms</a>
+        </li>
+        <li>{{ mechanism.name }}</li>
+      </ol>
+    </nav>
+    <h1>Hi {{ request.user|display_name }}</h1>
+    <h2>
+      Welcome to Enveng Groups ECMS where we make managing and tracking complex environmental commitments and obligations a whole lot easier for you.
+    </h2>
+  </hgroup>
+</header>
+{% endpartialdef dashboard_header %}
+<!-- Project Selection -->
+{% partialdef project_selection %}
+{% include "projects/projects_selector.html" %}
+{% endpartialdef project_selection %}
+{% if projects %}
+  {% with project_list=projects|map:"to_dict"|to_list %}
+    {% hs_dump project_list 'availableProjects' scope='element' %}
+  {% endwith %}
+  {% hs_dump user_roles 'userRoles' scope='element' %}
+{% endif %}
+<!-- Data Container Partial-->
+{% partialdef data_container %}
+<div id="data-containers" hx-ext="class-tools">
+  <div id="mechanism-data-container"
+       hx-get="{% url 'mechanisms:mechanism_charts' %}"
+       hx-target="#mechanism-data-container"
+       hx-swap="innerHTML"
+       hx-trigger="load, change"
+       hx-include="#project-selector">
+    <!-- Charts will be loaded here -->
+  </div>
+</div>
+{% endpartialdef %}
+<!-- Now use the defined partials -->
+{% block body %}
+  <article hx-ext="class-tools path-deps" classes="add fade-in">
+    {% partial dashboard_header %}
+    {% partial project_selection %}
+    {% partial data_container %}
   </article>
-{% endblock content %}
-
+  <!-- Add script to initialize project selection and data loading -->
+{% endblock body %}
 {% block footer %}
-
-  <footer role="contentinfo"
-          data-hx-ext="class-tools"
-          data-classes="add fade-in:1s">
+  <footer role="contentinfo" hx-ext="class-tools" classes="add fade-in:1s">
     <p>
       System Status:
       <mark>{{ system_status }}</mark> |
       Version: {{ app_version }} |
-      Last Updated: {{ last_updated|format_date }}
+      Last Updated: {{ last_updated|date:"j M Y" }}
     </p>
     <p>
       Need help? Contact
       <a href="mailto:support@enveng-group.com.au">support@enveng-group.com.au</a>
-      | <a href="{% url 'feedback:index' %}">Click here to submit feedback</a>
     </p>
   </footer>
   {{ block.super }}

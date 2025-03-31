@@ -6,22 +6,19 @@ root = true
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
+trim_trailing_whitespace = true
 indent_style = space
 
 # Python files
 [*.py]
 indent_size = 4
 max_line_length = 88
-<<<<<<< HEAD
 single_quoted_strings = true
-=======
->>>>>>> b3f8326 (release(v0.0.4): comprehensive platform enhancements and new features (#6))
 
 # Django HTML templates
 [*.{html,htm,djhtml}]
 indent_size = 2
 max_line_length = 88
-
 
 # JavaScript files
 [*.{js,jsx,ts,tsx}]
@@ -117,25 +114,3 @@ indent_style = tab
 [Makefile]
 indent_style = tab
 max_line_length = 88
-
-# Pseudocode files
-[*.pseudo]
-indent_size = 4
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
-
-# Fish shell scripts
-[*.fish]
-indent_size = 4
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
-
-# Jinja2 files
-[*.jinja]
-indent_size = 2
-max_line_length = 88
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true

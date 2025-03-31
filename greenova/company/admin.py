@@ -52,14 +52,14 @@ class BaseModelAdmin(admin.ModelAdmin):
         return obj
 =======
 from django.contrib import admin
-from .models import Company, CompanyMembership, CompanyDocument
+
+from .models import Company, CompanyDocument, CompanyMembership
 
 
 class CompanyMembershipInline(admin.TabularInline):
     model = CompanyMembership
     extra = 1
     raw_id_fields = ('user',)
-
 
 class CompanyDocumentInline(admin.TabularInline):
     model = CompanyDocument

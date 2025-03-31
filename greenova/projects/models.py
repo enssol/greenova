@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 from core.utils.roles import ProjectRole, get_role_choices
 from django.contrib.auth import get_user_model
@@ -101,13 +102,6 @@ class Project(models.Model):
             project_memberships__project=self,
             project_memberships__role=role
         )
-
-    @property
-    def obligations(self):
-        """Get related obligations."""
-        # Move import inside method to avoid circular import
-        from obligations.models import Obligation
-        return Obligation.objects.filter(project=self)
 
 
 class ProjectMembership(models.Model):

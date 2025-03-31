@@ -1,12 +1,8 @@
 {% extends "base.html" %}
-
 {% load static %}
-{% load procedure_tags %}
-
 {% block title %}
-  procedure analysis for {{ mechanism.name }}
+  Procedure Analysis for {{ mechanism.name }}
 {% endblock title %}
-
 {% block body %}
   <article>
     <header>
@@ -17,7 +13,7 @@
               <a href="{% url 'dashboard:home' %}?project_id={{ mechanism.project.id }}">Dashboard</a>
             </li>
             <li>
-              <a href="#" hx-get="javascript:history.back()">Mechanisms</a>
+              <a href="javascript:history.back()">Mechanisms</a>
             </li>
             <li>{{ mechanism.name }}</li>
           </ol>
@@ -27,11 +23,29 @@
       </hgroup>
     </header>
     {% if error %}
-
       <div class="notice error" role="alert">
         <p>{{ error }}</p>
       </div>
-    {% else %}
+    {% elif procedure_charts %}
+      <!-- Statistics Summary Section -->
+      <section aria-labelledby="statistics-heading" class="summary-section">
+        <h2 id="statistics-heading">Obligation Statistics</h2>
+        <div class="summary-cards">
+          <article>
+            <h3>Total Obligations</h3>
+            <p class="count">{{ total_obligations }}</p>
+          </article>
+          <article class="completed">
+            <h3>Completed</h3>
+            <p class="count">{{ completed_obligations }}</p>
+            <p>{{ completion_percentage }}% of total</p>
+          </article>
+          <article class="remaining">
+            <h3>Remaining</h3>
+            <p class="count">{{ remaining_obligations }}</p>
+          </article>
+        </div>
+      </section>
       <!-- Filter Section -->
       <section aria-labelledby="filter-heading" class="filter-section">
         <h2 id="filter-heading">Filter Options</h2>
@@ -42,18 +56,16 @@
           <input type="hidden"
                  id="mechanism_id"
                  name="mechanism_id"
-                 value="{{ mechanism.id }}" />
+                 value="{{ mechanism.id }}">
           <div class="filter-group">
             <label for="phase">Project Phase</label>
             <select name="phase" id="phase">
               <option value="">All Phases</option>
               {% for phase in available_phases %}
-                <option value="{{ phase }}" {% if filter_phase == phase %}selected{% endif %}>
-                  {{ phase }}
-
-                </option>
+                {% if phase %}
+                  <option value="{{ phase }}" {% if filter_phase == phase %}selected{% endif %}>{{ phase }}</option>
+                {% endif %}
               {% endfor %}
-
             </select>
           </div>
           <div class="filter-group">
@@ -61,13 +73,11 @@
             <select name="responsibility" id="responsibility">
               <option value="">All Responsibilities</option>
               {% for resp in available_responsibilities %}
-                <option value="{{ resp }}"
-                        {% if filter_responsibility == resp %}selected{% endif %}>
-                  {{ resp }}
-
-                </option>
+                {% if resp %}
+                  <option value="{{ resp }}"
+                          {% if filter_responsibility == resp %}selected{% endif %}>{{ resp }}</option>
+                {% endif %}
               {% endfor %}
-
             </select>
           </div>
           <div class="filter-group">
@@ -76,12 +86,8 @@
               <option value="">All Statuses</option>
               {% for status_value, status_label in status_options %}
                 <option value="{{ status_value }}"
-                        {% if filter_status == status_value %}selected{% endif %}>
-                  {{ status_label }}
-
-                </option>
+                        {% if filter_status == status_value %}selected{% endif %}>{{ status_label }}</option>
               {% endfor %}
-
             </select>
           </div>
           <div class="filter-buttons">
@@ -89,14 +95,14 @@
               <input type="checkbox"
                      name="lookahead"
                      value="14days"
-                     {% if filter_lookahead %}checked{% endif %} />
+                     {% if filter_lookahead %}checked{% endif %}>
               14-Day Lookahead
             </label>
             <label>
               <input type="checkbox"
                      name="overdue"
                      value="true"
-                     {% if filter_overdue %}checked{% endif %} />
+                     {% if filter_overdue %}checked{% endif %}>
               Overdue Only
             </label>
           </div>
@@ -115,7 +121,6 @@
           <figure>
             <figcaption>Obligations by Responsibility</figcaption>
             {{ responsibility_chart|safe }}
-
           </figure>
         </article>
       </section>
@@ -125,98 +130,123 @@
         <nav role="navigation"
              aria-label="Procedure charts navigation"
              class="chart-nav">
+          <button type="button" onclick="scrollCharts('left')" aria-label="Scroll left">←</button>
           <button type="button"
-                  onclick="scrollCharts('chartScroll', 'left')"
-                  aria-label="Scroll left">←</button>
-          <button type="button"
-                  onclick="scrollCharts('chartScroll', 'right')"
+                  onclick="scrollCharts('right')"
                   aria-label="Scroll right">→</button>
         </nav>
-        <div id="chartScroll" class="chart-scroll-container">
+        <!-- Charts Container -->
+        <div class="chart-scroll-container"
+             id="chartScroll"
+             role="region"
+             aria-label="Chart gallery"
+             tabindex="0">
           {% for proc in procedure_charts %}
-            {% procedure_chart_card proc %}
+            <article class="mechanism-chart">
+              <header>
+                <h3>{{ proc.name }}</h3>
+              </header>
+              <figure>
+                <figcaption>
+                  <dl class="chart-stats">
+                    <div class="stat-row">
+                      <dt>Total:</dt>
+                      <dd>
+                        {{ proc.stats.total }}
+                      </dd>
+                    </div>
+                    <div class="stat-row">
+                      <dt>Not Started:</dt>
+                      <dd>
+                        {{ proc.stats.not_started }}
+                      </dd>
+                    </div>
+                    <div class="stat-row">
+                      <dt>In Progress:</dt>
+                      <dd>
+                        {{ proc.stats.in_progress }}
+                      </dd>
+                    </div>
+                    <div class="stat-row">
+                      <dt>Completed:</dt>
+                      <dd>
+                        {{ proc.stats.completed }}
+                      </dd>
+                    </div>
+                    <div class="stat-row">
+                      <dt>Overdue:</dt>
+                      <dd>
+                        {{ proc.stats.overdue }}
+                      </dd>
+                    </div>
+                  </dl>
+                </figcaption>
+                {{ proc.chart|safe }}
+              </figure>
+            </article>
           {% endfor %}
-
         </div>
-      </section>
-      <!-- Data Table -->
-      <article class="data-table">
-        <header>
-          <h3>Detailed Statistics</h3>
-          <button onclick="foldElement(this.parentElement.nextElementSibling, 'block')"
-                  class="btn-fold">-</button>
-        </header>
-        <div class="table-container">
-          <table role="grid">
-            <thead>
-              <tr>
-                <th scope="col">Procedure</th>
-                <th scope="col">Not Started</th>
-                <th scope="col">In Progress</th>
-                <th scope="col">Completed</th>
-                <th scope="col">Overdue</th>
-                <th scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in table_data %}
-
+        <!-- Data Table -->
+        <article class="data-table">
+          <header>
+            <h3>Detailed Statistics</h3>
+          </header>
+          <div class="table-container">
+            <table role="grid">
+              <thead>
                 <tr>
-                  <td>
-                    <h2>{{ item.name|format_procedure_name }}</h2>
-                    <span class="status">{{ item.status|format_procedure_status }}</span>
-                  </td>
-                  <td>{{ item.not_started }}</td>
-                  <td>{{ item.in_progress }}</td>
-                  <td>{{ item.completed }}</td>
-                  <td>{{ item.overdue }}</td>
-                  <td>{{ item.total }}</td>
+                  <th scope="col">Procedure</th>
+                  <th scope="col">Not Started</th>
+                  <th scope="col">In Progress</th>
+                  <th scope="col">Completed</th>
+                  <th scope="col">Overdue</th>
+                  <th scope="col">Total</th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <div id="data-containers" data-hx-ext="class-tools">
-          <!-- Obligations Container -->
-          <div id="obligations-container"
-               hx-get="{% url 'obligations:summary' %}"
-               hx-target="#obligations-container"
-               hx-swap="innerHTML"
-               hx-trigger="load"
-               hx-include="#mechanism_id">
-            <!-- Obligations will be loaded here -->
+              </thead>
+              <tbody>
+                {% for item in table_data %}
+                  <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.not_started }}</td>
+                    <td>{{ item.in_progress }}</td>
+                    <td>{{ item.completed }}</td>
+                    <td>{{ item.overdue }}</td>
+                    <td>{{ item.total }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-        </div>
-      </article>
+          <div id="data-containers" hx-ext="class-tools">
+            <!-- Obligations Container -->
+            <div id="obligations-container"
+                 hx-get="{% url 'obligations:summary' %}"
+                 hx-target="#obligations-container"
+                 hx-swap="innerHTML"
+                 hx-trigger="load"
+                 hx-include="#mechanism_id">
+              <!-- Obligations will be loaded here -->
+            </div>
+          </div>
+        </article>
+      </section>
+    {% else %}
+      <div class="notice" role="status">
+        <p>No procedure data available for this mechanism.</p>
+      </div>
     {% endif %}
   </article>
   <script>
   // Add the chart scrolling function
-  function scrollCharts(containerId, direction) {
-    const container = document.getElementById(containerId);
+  function scrollCharts(direction) {
+    const container = document.getElementById('chartScroll');
     const scrollAmount = 350; // Adjust as needed
 
     if (direction === 'left') {
       container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    }
-
- else {
+    } else {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
-
-  // Add folding function
-  function foldElement(el, display) {
-    if (el.style.display === 'none') {
-      el.style.display = display;
-      el.previousElementSibling.querySelector('.btn-fold').textContent = '-';
-    }
-
- else {
-      el.style.display = 'none';
-      el.previousElementSibling.querySelector('.btn-fold').textContent = '+';
-    }
-  }
-
   </script>
 {% endblock body %}
