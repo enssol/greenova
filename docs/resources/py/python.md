@@ -20,7 +20,6 @@ programming.
 ### Installing Python
 
 Official installation guides for various platforms are available at:
-
 - [Python Installation Guide](https://docs.python.org/release/3.9.21/installing/index.html)
 
 #### Quick Installation Commands
@@ -453,12 +452,6 @@ tasks:
 - [Distributing Python Modules](https://docs.python.org/release/3.9.21/distributing/index.html)
 - [Extending Python](https://docs.python.org/release/3.9.21/extending/index.html)
 - [Python/C API Reference](https://docs.python.org/release/3.9.21/c-api/index.html)
-
-### Testing Resources
-
-- [pytest Documentation](https://docs.pytest.org/)
-- [pytest-django Documentation](https://pytest-django.readthedocs.io/)
-- [Selenium with Python](https://selenium-python.readthedocs.io/)
 
 ### Interactive Learning
 

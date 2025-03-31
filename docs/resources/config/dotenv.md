@@ -155,7 +155,6 @@ For production, you can encrypt your environment variables:
    ```
 
 4. This creates:
-
    - `.env.vault`: Contains encrypted variables
    - `.env.keys`: Contains encryption keys
 

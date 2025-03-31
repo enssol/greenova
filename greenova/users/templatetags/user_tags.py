@@ -1,7 +1,7 @@
-from allauth.account.models import EmailAddress
-from allauth.account.utils import user_display
 from django import template
+from django.contrib.auth.models import User
 from django.utils.html import format_html
+from allauth.account.utils import user_display
 
 register = template.Library()
 
@@ -27,9 +27,10 @@ def user_role(user):
     """Return human-readable role for user."""
     if user.is_superuser:
         return "Admin"
-    if user.is_staff:
+    elif user.is_staff:
         return "Staff"
-    return "User"
+    else:
+        return "User"
 
 
 @register.filter
@@ -49,9 +50,10 @@ def auth_status_badge(user):
 
     if user.is_superuser:
         return format_html('<span class="auth-badge auth-badge-admin">Admin</span>')
-    if user.is_staff:
+    elif user.is_staff:
         return format_html('<span class="auth-badge auth-badge-staff">Staff</span>')
-    return format_html('<span class="auth-badge auth-badge-user">User</span>')
+    else:
+        return format_html('<span class="auth-badge auth-badge-user">User</span>')
 
 
 @register.filter
@@ -59,6 +61,8 @@ def has_verified_email(user):
     """Check if the user has at least one verified email address."""
     if not user.is_authenticated:
         return False
+
+    from allauth.account.models import EmailAddress
     return EmailAddress.objects.filter(user=user, verified=True).exists()
 
 

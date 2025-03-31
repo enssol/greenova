@@ -1,13 +1,7 @@
-from typing import Any, Dict, List, Optional, Tuple, TypeVar
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.base import ContextMixin
+from typing import Dict, Any, List, Tuple, Optional
 
-# Define a type variable for views with context data
-ContextView = TypeVar('ContextView', bound=ContextMixin)
-
-
-class BreadcrumbMixin(ContextMixin):
+class BreadcrumbMixin:
     """
     Add breadcrumb data to template context.
 
@@ -30,8 +24,7 @@ class BreadcrumbMixin(ContextMixin):
         context['breadcrumbs'] = self.get_breadcrumbs()
         return context
 
-
-class PageTitleMixin(ContextMixin):
+class PageTitleMixin:
     """
     Add page title to template context.
 
@@ -50,8 +43,7 @@ class PageTitleMixin(ContextMixin):
         context['page_title'] = self.get_page_title()
         return context
 
-
-class SectionMixin(ContextMixin):
+class SectionMixin:
     """
     Add current section to template context for highlighting navigation.
 
@@ -70,7 +62,6 @@ class SectionMixin(ContextMixin):
         context['active_section'] = self.get_active_section()
         return context
 
-
 class ViewMixin(BreadcrumbMixin, PageTitleMixin, SectionMixin):
     """
     Combined mixin for standard view context data.
@@ -81,7 +72,7 @@ class ViewMixin(BreadcrumbMixin, PageTitleMixin, SectionMixin):
             active_section = "dashboard"
             breadcrumbs = [('Home', 'home'), ('Dashboard', None)]
     """
-
+    pass
 
 class AuthViewMixin(LoginRequiredMixin, ViewMixin):
     """
@@ -93,3 +84,4 @@ class AuthViewMixin(LoginRequiredMixin, ViewMixin):
             active_section = "dashboard"
             breadcrumbs = [('Home', 'home'), ('Dashboard', None)]
     """
+    pass
