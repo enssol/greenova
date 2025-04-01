@@ -1,8 +1,7 @@
 from logging import getLogger
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, Sequence, TypeVar
 
 from django.contrib import admin
-from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 
 from .models import Project, ProjectMembership
@@ -14,7 +13,7 @@ T = TypeVar('T')
 class BaseModelAdmin(admin.ModelAdmin, Generic[T]):
     """Base admin class with type safety."""
 
-    def dispatch(self, request: HttpRequest, object_id: str, from_field: Optional[str] = None) -> Optional[T]:
+    def get_object(self, request: HttpRequest, object_id: str, from_field: None = None) -> Optional[T]:
         return super().get_object(request, object_id, from_field)
 
 class ProjectMembershipInline(admin.TabularInline):
@@ -83,7 +82,6 @@ class ProjectMembershipAdmin(BaseModelAdmin[ProjectMembership]):
         """Log changes when saving model."""
         action = 'updated' if change else 'created'
         logger.info(
-            'ProjectMembership %s %s by %s',
-            obj.id, action, request.user.get_username()
+            f'ProjectMembership {obj.id} {action} by {request.user.get_username()}'
         )
         super().save_model(request, obj, form, change)

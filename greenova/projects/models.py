@@ -1,8 +1,4 @@
 import logging
-<<<<<<< HEAD
-=======
-from typing import List
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 from core.utils.roles import ProjectRole, get_role_choices
 from django.contrib.auth import get_user_model
@@ -25,17 +21,6 @@ class Project(models.Model):
         through='ProjectMembership',
         related_name='projects'
     )
-    # Add company relationship
-    company = models.ForeignKey(
-        'company.Company',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='projects'
-    )
-    is_active = models.BooleanField(default=True)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -105,6 +90,13 @@ class Project(models.Model):
             project_memberships__project=self,
             project_memberships__role=role
         )
+
+    @property
+    def obligations(self):
+        """Get related obligations."""
+        # Move import inside method to avoid circular import
+        from obligations.models import Obligation
+        return Obligation.objects.filter(project=self)
 
 
 class ProjectMembership(models.Model):
