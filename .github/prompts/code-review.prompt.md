@@ -74,10 +74,7 @@ Generate a comprehensive review with these sections:
 - Test coverage and quality
 - Security implications
 - Maintainability and scalability
-<<<<<<< HEAD
 - Python line length adherence to 88 character limit
-=======
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 
 ### Documentation Review Focus
 
