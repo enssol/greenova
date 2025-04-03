@@ -10,107 +10,146 @@ information.
 
 ### 1. Summary
 
-- **Title:** Obligation form issues: mandatory recurring field and inability to
-  customize obligation numbers
+- **Title:** A brief, descriptive title of the issue.
 
   - _Example: "Dashboard fails to load environmental metrics when filtering by
     project"_
   - _Tip: Include the specific feature and the problem in your title_
 
-- **Description:** Users are experiencing two issues with the Obligation
-  registration form: (1) the "recurring obligation" checkbox is required even
-  for non-recurring obligations, and (2) users cannot customize obligation
-  numbers to use specific formats like "W6875 Condition 1.6a" instead of the
-  auto-generated "PCEMP-237" format.
+- **Description:** A concise summary of the problem.
   - _Example: "When applying the project filter on the dashboard, environmental
     metrics don't update and the page shows a loading spinner indefinitely."_
   - _Tip: Focus on what happened, when it happened, and the context_
 
 ### 2. Environment
 
-- **Application Version:** Latest production deployment of Greenova
-  environmental management system
+- **Application Version:** The version of the application where the bug was
+  encountered.
 
   - _How to find it: Check the footer of any Greenova page or look at the
     "About" section in settings_
 
-- **Operating System:** Various (issue is application-specific, not
-  OS-dependent)
+- **Operating System:** The OS and version (e.g., Windows 10, macOS 11.2).
 
   - _Windows: Click Start > Settings > System > About_
+  - _macOS: Click Apple menu > About This Mac_
   - _Linux: Open Terminal and type `lsb_release -a` or `cat /etc/os-release`_
 
-- **Browser:** Various (issue is server-side, not browser-specific)
+- **Browser (if applicable):** Browser name and version (e.g., Chrome 89.0).
 
-- **Device:** Desktop/Laptop
+  - _Chrome: Click the three dots (⋮) > Help > About Google Chrome_
+  - _Firefox: Click the three lines (☰) > Help > About Firefox_
+  - _Safari: Click Safari in the menu bar > About Safari_
+  - _Edge: Click the three dots (…) > Help & feedback > About Microsoft Edge_
+
+- **Device:** Type of device (e.g., desktop, laptop, smartphone).
+  - _Please include device model if on mobile (e.g., iPhone 13, Samsung Galaxy
+    S22)_
 
 ### 3. Steps to Reproduce
 
-1. Log into the Greenova application
-2. Navigate to the Obligation registration form
-3. Attempt to create a new obligation
-4. Try to leave the "recurring obligation" checkbox unchecked
-5. Notice that the form cannot be submitted without checking this box
-6. Also observe that the obligation number field cannot be edited to use custom
-   formats like "W6875 Condition 1.6a"
+- **Step-by-Step Instructions:** Detailed steps to reproduce the issue.
 
-### 4. Expected vs Actual Behavior
+  - _Tip: Start from a known state (e.g., "After logging in to the
+    application")_
+  - _Number each step clearly_
+  - _Be specific about what you clicked, typed, or selected_
+  - _Example:_ _1. Log in to Greenova using a standard user account_ _2.
+    Navigate to "Dashboard" from the main menu_ _3. Click the "Filter" button
+    in the top right corner_ _4. Select "Project A" from the dropdown list_ _5.
+    Click "Apply Filter"_
 
-- **Expected:**
+- **Expected Result:** What the user expected to happen.
 
-  1. The "recurring obligation" checkbox should be optional, allowing users to
-     submit the form without checking it
-  2. Users should be able to customize obligation numbers to match specific
-     formats like "W6875 Condition 1.6a"
+  - _Example: "The dashboard should refresh and show metrics specific to
+    Project A"_
 
-- **Actual:**
-  1. The "recurring obligation" checkbox is mandatory, forcing users to
-     incorrectly mark non-recurring obligations as recurring
-  2. Obligation numbers are auto-generated in the "PCEMP-XXX" format and cannot
-     be customized
+- **Actual Result:** What actually happened.
+  - _Example: "The loading spinner appears and never stops, metrics don't
+    update"_
 
-### 5. Impact
+### 4. Screenshots/Video
 
-- **Severity:** Medium
-- **Scope:** All users creating or editing obligations
-- **Business Impact:**
-  - Data integrity issues as non-recurring obligations are incorrectly marked
-    as recurring
-  - Difficulty in navigating and identifying specific obligations due to
-    inability to use custom obligation numbers
-  - Reduced usability of the environmental obligations register for projects
-    where specific numbering formats are required by regulatory documents
+- **Attachments:** Include any relevant screenshots or video recordings that
+  illustrate the issue.
+  - _How to take screenshots:_
+    - _Windows: Press Windows+Shift+S to open the snipping tool or use PrtScn
+      key_
+    - _macOS: Press Command+Shift+4 to select an area, or Command+Shift+5 for
+      screen recording_
+    - _Mobile: Usually Power button + Volume Down button, or check your
+      device's instructions_
+  - _Tip: Highlight the problem area in your screenshot if possible_
+  - _For videos, keep them under 30 seconds and focus on the issue_
 
-### 6. Relevant Information
+### 5. Logs and Trace Report
 
-- **Error Messages:** None (form validation prevents submission)
-- **Screenshots/Videos:** [Not provided]
-- **Code References:**
-  - Issue likely exists in the `ObligationForm` class in
-    `/workspaces/greenova/greenova/obligations/forms.py`
-  - The recurring_obligation field is set as `required=True`
-  - Obligation numbers are validated and auto-generated in the `Obligation`
-    model in `/workspaces/greenova/greenova/obligations/models.py`
+- **Error Messages:** Any error messages displayed.
 
-### 7. Possible Solutions
+  - _Tip: Copy and paste the exact error text rather than paraphrasing_
+  - _Include any error codes or numbers_
 
-1. Modify the `ObligationForm` to set `recurring_obligation` field's `required`
-   attribute to `False`
-2. Update the `Obligation` model and form to allow custom obligation numbers
-   that don't follow the PCEMP-XXX pattern
-3. Add a configuration option to toggle between auto-generated and custom
-   obligation numbering
+- **Log Files:** Attach log files if available.
 
-### 8. Additional Context
+  - _For advanced users: Application logs can be found in your account settings
+    under "Troubleshooting"_
+  - _If you can't access logs, please note this and we'll help you locate them_
 
-- This issue affects users working with the primary environmental mechanism
-  'W6875/2023/1' who need to reference specific conditions like "Condition
-  1.2", "Condition 1.2a", etc.
-- User is currently adding obligations under this mechanism with incorrect
-  numbering (PCEMP-237 instead of the desired W6875 Condition 1.6a)
+- **Trace Report:** Copy and paste the trace report information here.
+  - **Instructions to Obtain Trace Report:**
+    1. When the error occurs, you will see a detailed error page generated by
+       Django.
+    2. Look for the section labeled **"Traceback"**.
+    3. Click on **"Switch to copy-and-paste view"** to display the trace report
+       in a format that can be easily copied.
+    4. Copy the entire trace report by clicking the "Copy" button or selecting
+       all text (Ctrl+A/Command+A) and copying (Ctrl+C/Command+C).
+    5. Paste the copied trace report into this section.
+    6. If you don't see an error page but experience a bug, check browser
+       console logs:
+       - _Chrome/Edge: Right-click > Inspect > Console tab_
+       - _Firefox: Right-click > Inspect Element > Console tab_
+       - _Safari: Enable Developer Menu in Safari > Preferences > Advanced,
+         then Safari > Develop > Show JavaScript Console_
 
-### 9. Reporter Information
+### 6. Frequency
 
-- **Name:** [User reporting via conversation]
-- **Role:** Environmental compliance user
-- **Date Reported:** [Current date]
+- **Occurrence:** How often the issue occurs (e.g., always, sometimes, rarely).
+  - _Examples:_
+    - _"Always (100% of attempts)"_
+    - _"Frequently (about 7 out of 10 attempts)"_
+    - _"Occasionally (about 3 out of 10 attempts)"_
+    - _"Rarely (happened once or twice)"_
+  - _Include any patterns you've noticed (e.g., "Only occurs when I have more
+    than 50 items in the list")_
+
+### 7. Impact
+
+- **Severity:** How severe the issue is (e.g., minor, major, critical).
+
+  - _Minor: Causes inconvenience but doesn't prevent completing tasks_
+  - _Major: Prevents completing specific tasks but system is still usable
+    overall_
+  - _Critical: Prevents core functionality, causes data loss, or creates
+    security risks_
+
+- **User Impact:** How the issue affects the user's experience.
+  - _Example: "Unable to track project compliance status, which delays
+    reporting to regulatory agencies"_
+  - _Tip: Mention any deadlines or business processes affected_
+
+### 8. Additional Information
+
+- **Workarounds:** Any temporary solutions or workarounds the user has found.
+
+  - _Example: "Refreshing the page and trying again sometimes works"_
+
+- **Related Issues:** Any other issues that might be related.
+
+  - _Example: "This started happening after the recent update that added the
+    new dashboard filters"_
+
+- **Comments:** Any additional comments or information that might be helpful.
+  - _Include any details that don't fit elsewhere_
+  - _Mention if this is a regression (something that used to work but stopped
+    working)_
