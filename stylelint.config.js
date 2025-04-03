@@ -83,7 +83,5 @@ export default {
     'greenova/static/css/vendor/**',
     'greenova/theme/static/css/dist/**',
     'node_modules/**',
-    '**/*.html',
-    '**/*.jinja',
   ],
 };
