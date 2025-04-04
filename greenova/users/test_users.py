@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import os
 =======
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+import os
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
 import sys
 from io import BytesIO
 from pathlib import Path
@@ -26,20 +30,27 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 # Change absolute imports to relative imports
 
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
 # -------------------- FIXTURES --------------------
 
 @pytest.fixture
 def user():
     """Create and return a regular user."""
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
     test_username = os.environ.get('TEST_USERNAME', 'testuser')
     test_email = os.environ.get('TEST_EMAIL', 'testuser@example.com')
     test_password = os.environ.get('TEST_PASSWORD', 'password123')
 
+<<<<<<< HEAD
     return get_user_model().objects.create_user(
         username=test_username,
         email=test_email,
@@ -50,6 +61,12 @@ def user():
         email='testuser@example.com',
         password='password123',
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+    return get_user_model().objects.create_user(
+        username=test_username,
+        email=test_email,
+        password=test_password,
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
         first_name='Test',
         last_name='User'
     )
@@ -59,10 +76,14 @@ def user():
 def admin_user():
     """Create and return an admin user."""
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
     admin_username = os.environ.get('ADMIN_USERNAME', 'admin')
     admin_email = os.environ.get('ADMIN_EMAIL', 'admin@example.com')
     admin_password = os.environ.get('ADMIN_PASSWORD', 'admin123')
 
+<<<<<<< HEAD
     return get_user_model().objects.create_superuser(
         username=admin_username,
         email=admin_email,
@@ -73,6 +94,12 @@ def admin_user():
         email='admin@example.com',
         password='admin123'
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+    return get_user_model().objects.create_superuser(
+        username=admin_username,
+        email=admin_email,
+        password=admin_password
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
     )
 
 
@@ -80,10 +107,14 @@ def admin_user():
 def staff_user():
     """Create and return a staff user."""
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
     staff_username = os.environ.get('STAFF_USERNAME', 'staff')
     staff_email = os.environ.get('STAFF_EMAIL', 'staff@example.com')
     staff_password = os.environ.get('STAFF_PASSWORD', 'staff123')
 
+<<<<<<< HEAD
     return get_user_model().objects.create_user(
         username=staff_username,
         email=staff_email,
@@ -94,6 +125,12 @@ def staff_user():
         email='staff@example.com',
         password='staff123',
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+    return get_user_model().objects.create_user(
+        username=staff_username,
+        email=staff_email,
+        password=staff_password,
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
         is_staff=True
     )
 
@@ -193,10 +230,14 @@ class TestProfileModel:
     def test_cascade_deletion(self):
         """Test that a profile is deleted when its user is deleted."""
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
         test_username = os.environ.get('TEST_USERNAME', 'temporary')
         test_email = os.environ.get('TEST_EMAIL', 'temp@example.com')
         test_password = os.environ.get('TEST_PASSWORD', 'temp123')
 
+<<<<<<< HEAD
         user = get_user_model().objects.create_user(
             username=test_username,
             email=test_email,
@@ -207,6 +248,12 @@ class TestProfileModel:
             email='temp@example.com',
             password='temp123'
 >>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
+=======
+        user = get_user_model().objects.create_user(
+            username=test_username,
+            email=test_email,
+            password=test_password
+>>>>>>> 48479c7 (feat(feedback): add user feedback system and improve project infrastructure)
         )
         profile_id = user.profile.id
         user.delete()
