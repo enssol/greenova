@@ -256,38 +256,40 @@ Convert the existing CSS directory structure to accommodate SASS:
 #### 3. Configuration Files
 
 **PostCSS Configuration**:
+
 ```js
 // postcss.config.js
 module.exports = {
   plugins: [
     // Process @import statements
     require('postcss-import'),
-    
+
     // Enable custom mixins and nesting (similar to SASS)
     require('postcss-mixins'),
     require('postcss-nested'),
-    
+
     // Process CSS variables
     require('postcss-custom-properties'),
-    
+
     // Use modern CSS features with browser compatibility
     require('postcss-preset-env')({
       stage: 1,
-      browsers: ['> 1%', 'last 2 versions', 'not dead']
+      browsers: ['> 1%', 'last 2 versions', 'not dead'],
     }),
-    
+
     // Add vendor prefixes
     require('autoprefixer'),
-    
+
     // Minify CSS for production only
-    process.env.NODE_ENV === 'production' 
-      ? require('cssnano')({ preset: 'default' }) 
-      : null
-  ].filter(Boolean) // Remove null plugins
+    process.env.NODE_ENV === 'production'
+      ? require('cssnano')({ preset: 'default' })
+      : null,
+  ].filter(Boolean), // Remove null plugins
 };
 ```
 
 **NPM Scripts**:
+
 ```json
 "scripts": {
   "sass": "sass --no-source-map static/scss/main.scss:static/css/.temp/main.css",
@@ -343,6 +345,7 @@ Create a main.scss file that imports all partials:
 #### 5. Django Integration
 
 **Django Settings Configuration**:
+
 ```python
 # settings.py
 STATICFILES_DIRS = [
@@ -354,6 +357,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 ```
 
 **Custom Django Management Command**:
+
 ```python
 # yourapp/management/commands/build_sass.py
 from django.core.management.base import BaseCommand
@@ -372,11 +376,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write('Building frontend assets...')
-        
+
         env = os.environ.copy()
         if options['production']:
             env['NODE_ENV'] = 'production'
-        
+
         subprocess.run(['npm', 'run', 'build'], env=env, check=True)
         self.stdout.write(self.style.SUCCESS('CSS build complete!'))
 ```
@@ -403,14 +407,22 @@ $spacing-large: $spacing-base * 1.5;
 ```scss
 // abstracts/_mixins.scss
 @mixin respond-to($breakpoint) {
-  @if $breakpoint == "small" {
-    @media (max-width: 576px) { @content; }
-  } @else if $breakpoint == "medium" {
-    @media (max-width: 768px) { @content; }
-  } @else if $breakpoint == "large" {
-    @media (max-width: 992px) { @content; }
-  } @else if $breakpoint == "xlarge" {
-    @media (max-width: 1200px) { @content; }
+  @if $breakpoint == 'small' {
+    @media (max-width: 576px) {
+      @content;
+    }
+  } @else if $breakpoint == 'medium' {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == 'large' {
+    @media (max-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == 'xlarge' {
+    @media (max-width: 1200px) {
+      @content;
+    }
   }
 }
 
@@ -418,11 +430,11 @@ $spacing-large: $spacing-base * 1.5;
 .card-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  
+
   @include respond-to(medium) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @include respond-to(small) {
     grid-template-columns: 1fr;
   }
@@ -441,7 +453,7 @@ $spacing-large: $spacing-base * 1.5;
   padding: var(--greenova-padding);
   cursor: pointer;
   transition: background-color 0.2s;
-  
+
   &:hover {
     background-color: var(--greenova-green-tertiary);
     border-color: var(--greenova-green-tertiary);
@@ -467,11 +479,11 @@ button,
 /* For components that don't need SASS complexity */
 .data-card {
   padding: var(--spacing-medium);
-  
+
   /* Nesting via PostCSS */
   & .card-header {
     border-bottom: 1px solid var(--border-color);
-    
+
     & h3 {
       margin-bottom: 0;
     }
@@ -498,16 +510,19 @@ button,
 ### Migration Strategy
 
 1. **Incremental Approach**:
+
    - Start by converting one component category (e.g., buttons)
    - Test thoroughly before moving to the next component
    - Maintain backward compatibility during transition
 
 2. **Create a Base Foundation**:
+
    - Set up variables and mixins first
    - Convert global styles next
    - Then move to specific components
 
 3. **Documentation**:
+
    - Document conversion decisions
    - Create style guides for new components
    - Update team documentation
