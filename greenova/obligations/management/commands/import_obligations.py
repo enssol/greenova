@@ -7,18 +7,6 @@ from django.core.management.base import BaseCommand, CommandParser
 from django.db import IntegrityError, transaction
 from django.db.models.signals import post_save
 from django.utils import timezone
-<<<<<<< HEAD
-import csv
-import logging
-import os
-from typing import Any, Dict, List, Optional, Tuple, TypedDict, Union
-
-from django.core.management.base import BaseCommand, CommandParser
-from django.db import IntegrityError, transaction
-from django.db.models.signals import post_save
-from django.utils import timezone
-=======
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
 from django.utils.dateparse import parse_date
 from mechanisms.models import EnvironmentalMechanism
 from obligations.models import Obligation
@@ -104,34 +92,6 @@ class Command(BaseCommand):
             '--continue-on-error',
             action='store_true',
             help='Continue processing rows even if some fail',
-<<<<<<< HEAD
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-=======
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
         )
         parser.add_argument(
             '--no-transaction',

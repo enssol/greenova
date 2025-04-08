@@ -12,10 +12,6 @@ from django import template
 
 register = template.Library()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3f26cd1 (Refactor and enhance Greenova project structure and functionality)
 
 @register.filter(name='display_name')
 def display_name(user: Any) -> str:
@@ -27,14 +23,6 @@ def display_name(user: Any) -> str:
     Returns:
         The full name if available, otherwise username or string representation
     """
-<<<<<<< HEAD
-=======
-@register.filter
-def display_name(user: User) -> str:
-    """Return the best display name for a user."""
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
-=======
->>>>>>> 3f26cd1 (Refactor and enhance Greenova project structure and functionality)
     if hasattr(user, 'get_full_name'):
         full_name = user.get_full_name()
         if full_name:

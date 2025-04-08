@@ -13,13 +13,9 @@
     "**/node_modules",
     "**/.vscode-server"
   ],
-<<<<<<< HEAD
-  "extraPaths": ["${workspaceRoot}/greenova"],
-=======
   "extraPaths": [
     "${workspaceRoot}/greenova"
   ],
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
   "ignore": [
     "**/__pycache__",
     "**/.pytest_cache",
@@ -28,13 +24,9 @@
     "**/node_modules",
     "**/.vscode-server"
   ],
-<<<<<<< HEAD
-  "include": ["greenova"],
-=======
   "include": [
     "greenova"
   ],
->>>>>>> 0294b58 (refactor(project): implement comprehensive project enhancements)
   "pythonPlatform": "Linux",
   "pythonVersion": "3.9",
   "reportGeneralTypeIssues": "error",
