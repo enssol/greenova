@@ -22,14 +22,17 @@ def is_admin(user: User) -> bool:
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
     """View for displaying user's profile."""
-    profile: Profile = request.user.profile
-    context: Dict[str, Any] = {
-        'profile': profile,
-    }
+    try:
+        profile: Profile = request.user.profile
+        context: Dict[str, Any] = {
+            'profile': profile,
+        }
 
-    if request.htmx:
-        return render(request, 'users/partials/profile_detail.html', context)
-    return render(request, 'users/profile_detail.html', context)
+        if request.htmx:
+            return render(request, 'users/partials/profile_detail.html', context)
+        return render(request, 'users/profile_detail.html', context)
+    except BaseException:
+        return render(request, 'users/profile_notfound.html', {})
 
 
 @login_required
