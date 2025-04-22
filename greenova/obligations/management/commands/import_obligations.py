@@ -98,21 +98,6 @@ class Command(BaseCommand):
             action='store_true',
             help='Process each row without wrapping in a transaction (use for database issues)'
         )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
-        parser.add_argument(
-            '--no-transaction',
-            action='store_true',
-            help='Process each row without wrapping in a transaction (use for database issues)'
-        )
 
     def clean_boolean(self, value: Any) -> bool:
         """Convert various boolean representations to Python booleans."""
@@ -234,7 +219,7 @@ class Command(BaseCommand):
             'created_at': now,
             'updated_at': now,
         }
-        return result
+        # return result
 
         return obligation_data
 
