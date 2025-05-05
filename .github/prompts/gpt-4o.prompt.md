@@ -1,6 +1,14 @@
 # Prompt for GPT-4o
 
-Analyze commit and file diffs between the `integration/v0.0.6` branch and the pull request from [PR #90](https://github.com/enveng-group/dev_greenova/pull/90). Analysis using `scripts/pre-merge.fish` script and review log file in `analysis_logs/pre_merge_analysis.log` whether the changes, improve on the current `Makefile`. Provide recommendations of any changes to keep or dismiss or improve on in the `Makefile` . Ensure that the only files being changed are specific to the PR, particularly `Makefile`, and verify that no other files refactored in `origin/staging:integration/v0.0.6` are being updated.
+Analyze commit and file diffs between the `integration/v0.0.6` branch and the
+pull request from
+[PR #90](https://github.com/enveng-group/dev_greenova/pull/90). Analysis using
+`scripts/pre-merge.fish` script and review log file in
+`logs/pre_merge_analysis.log` whether the changes, improve on the current
+`Makefile`. Provide recommendations of any changes to keep or dismiss or
+improve on in the `Makefile` . Ensure that the only files being changed are
+specific to the PR, particularly `Makefile`, and verify that no other files
+refactored in `origin/staging:integration/v0.0.6` are being updated.
 
 **Objectives**:
 
@@ -15,7 +23,7 @@ https://github.com/enveng-group/dev_greenova/pull/90
 **Sources**:
 
 - `Makefile`
-- `analysis_logs/pre_merge_analysis.log`
+- `logs/pre_merge_analysis.log`
 
 **Expectations**: GitHub Copilot can delete and consolidate files where
 multiple implementations are found and can be merged into a single file

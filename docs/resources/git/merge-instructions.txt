@@ -58,30 +58,30 @@
 
 ```bash
 # Create a detailed comparison report
-mkdir -p analysis_logs
+mkdir -p logs
 git fetch --all
 
 # Repository status and commit history comparison
-git status > analysis_logs/repo_status.log
-git log --graph --oneline --decorate upstream/main...origin/staging > analysis_logs/commit_history.log
+git status > logs/repo_status.log
+git log --graph --oneline --decorate upstream/main...origin/staging > logs/commit_history.log
 
 # File differences between branches
-git diff --name-status upstream/main origin/staging > analysis_logs/changed_files.log
-git diff --stat upstream/main origin/staging > analysis_logs/diff_stats.log
+git diff --name-status upstream/main origin/staging > logs/changed_files.log
+git diff --stat upstream/main origin/staging > logs/diff_stats.log
 
 # Conflict detection check
 git checkout -b temp_analysis_branch upstream/main
-git merge --no-commit --no-ff origin/staging &> analysis_logs/potential_conflicts.log || echo "Conflicts detected, see log"
+git merge --no-commit --no-ff origin/staging &> logs/potential_conflicts.log || echo "Conflicts detected, see log"
 git merge --abort
 git checkout staging
 git branch -D temp_analysis_branch
 
 # Check common conflict areas
 git diff upstream/main origin/staging -- greenova/company/models.py greenova/greenova/settings.py \
-  greenova/authentication/urls.py greenova/greenova/urls.py > analysis_logs/critical_files_diff.log
+  greenova/authentication/urls.py greenova/greenova/urls.py > logs/critical_files_diff.log
 
 # Review analysis logs before proceeding
-cat analysis_logs/*.log > upstream_merge_analysis.log
+cat logs/*.log > upstream_merge_analysis.log
 ```
 
 ### Repository Optimization

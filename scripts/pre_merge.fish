@@ -38,7 +38,7 @@ if not string match -qr '^[0-9]+$' $PR_NUMBER
 end
 
 # Define log file paths
-set LOG_DIR "logs/pre_merge"
+set LOG_DIR logs/pre_merge
 set BRANCH_DIR (string replace '/' '_' $BRANCH)
 set LOG_FILE "$LOG_DIR/$BRANCH_DIR.log"
 
@@ -71,7 +71,7 @@ if test $status -ne 0
 end
 
 # Create analysis directory if it doesn't exist
-set ANALYSIS_DIR "analysis_logs"
+set ANALYSIS_DIR logs
 if not test -d "$ANALYSIS_DIR"
     mkdir -p "$ANALYSIS_DIR"
 end
@@ -80,12 +80,12 @@ end
 printf "Analyzing repository state...\n" | tee -a "$LOG_FILE"
 
 # Repository status and commit history comparison
-git status > "$ANALYSIS_DIR/repo_status.log" 2>>"$LOG_FILE"
-git log --graph --oneline --decorate origin/staging..$BRANCH > "$ANALYSIS_DIR/commit_history.log" 2>>"$LOG_FILE"
+git status >"$ANALYSIS_DIR/repo_status.log" 2>>"$LOG_FILE"
+git log --graph --oneline --decorate origin/staging..$BRANCH >"$ANALYSIS_DIR/commit_history.log" 2>>"$LOG_FILE"
 
 # File differences between branches
-git diff --name-status origin/staging $BRANCH > "$ANALYSIS_DIR/changed_files.log" 2>>"$LOG_FILE"
-git diff --stat origin/staging $BRANCH > "$ANALYSIS_DIR/diff_stats.log" 2>>"$LOG_FILE"
+git diff --name-status origin/staging $BRANCH >"$ANALYSIS_DIR/changed_files.log" 2>>"$LOG_FILE"
+git diff --stat origin/staging $BRANCH >"$ANALYSIS_DIR/diff_stats.log" 2>>"$LOG_FILE"
 
 # Check for potential conflicts
 printf "Checking for potential conflicts...\n" | tee -a "$LOG_FILE"
@@ -94,14 +94,14 @@ if git merge --no-commit --no-ff $BRANCH >/dev/null 2>&1
     echo "No direct conflicts detected." | tee -a "$LOG_FILE"
 else
     echo "Potential conflicts detected. See conflict analysis logs." | tee -a "$LOG_FILE"
-    git diff --check > "$ANALYSIS_DIR/conflict_analysis.log" 2>&1
+    git diff --check >"$ANALYSIS_DIR/conflict_analysis.log" 2>&1
 end
 git merge --abort
 git checkout $BRANCH
 git branch -D temp_analysis_branch
 
 # Combine analysis logs
-cat $ANALYSIS_DIR/*.log > "$ANALYSIS_DIR/pre_merge_analysis.log"
+cat $ANALYSIS_DIR/*.log >"$ANALYSIS_DIR/pre_merge_analysis.log"
 
 # Print success message
 printf "Pre-merge analysis completed. Check %s for detailed report.\n" "$ANALYSIS_DIR/pre_merge_analysis.log" | tee -a "$LOG_FILE"
