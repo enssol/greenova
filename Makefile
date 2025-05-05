@@ -6,11 +6,11 @@ CD_CMD = cd greenova &&
 # Define the virtual environment path
 VENV = .venv
 
-# Define the pthon and pip path
+# Define the python and pip path
 PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
 
-#Variables
+# Variables
 REQUIREMENTS=requirements/dev.txt
 CONSTRAINTS=requirements/constraints.txt
 SETUP_SCRIPT=setup.py
@@ -29,23 +29,23 @@ install:
 	$(PIP) install -r $(REQUIREMENTS) -c $(CONSTRAINTS)
 	@echo "Dependencies installed."
 
-#Freeze installed dependencies to requirements.txt
+# Freeze installed dependencies to requirements.txt
 freeze:
 	@echo "Freezing dependencies..."
 	$(VENV)/bin/pip freeze > $(REQUIREMENTS)
 	@echo "Dependencies frozen."
 
-#Create a Django new app
+# Create a Django new app
 app:
 	@if [ -z "$(name)" ]; then echo "Error: Please provide app name with 'make app name=yourappname'"; exit 1; fi
 	$(CD_CMD) python3 manage.py startapp $(name)
 
-#pull .env file from dotenv-vault
+# Pull .env file from dotenv-vault
 dotenv-pull:
 	@echo "Pulling .env file from dotenv-vault"
 	@npx dotenv-vault@latest pull
 
-#push .env file to dotenv-vault
+# Push .env file to dotenv-vault
 dotenv-push:
 	@echo "Pushing .env file to dotenv-vault"
 	@npx dotenv-vault@latest push
@@ -67,11 +67,11 @@ run:
 	@$(CD_CMD) python3 manage.py runserver 0.0.0.0:8000
 
 # Alternative approach with separate commands
-#start only Django server
+# Start only Django server
 run-django:
 	$(CD_CMD) gunicorn greenova.wsgi -c ../gunicorn.conf.py
 
-#Start only Tailwind CSS
+# Start only Tailwind CSS
 run-tailwind:
 	$(CD_CMD) python3 manage.py tailwind start
 
@@ -80,27 +80,27 @@ check-tailwind:
 	$(CD_CMD) python3 manage.py tailwind check-updates
 
 # Tailwind commands
-#Build tailwind CSS
+# Build Tailwind CSS
 tailwind-build:
 	$(CD_CMD) python3 manage.py tailwind build
 
-# Add a tailwind install command
+# Add a Tailwind install command
 tailwind-install:
 	$(CD_CMD) python3 manage.py tailwind install
 
-#Update data from CSV file
+# Update data from CSV file
 update:
 	$(CD_CMD) python3 manage.py import_obligations dummy_data.csv --force-update
 
-#Update recurring inspection dates
+# Update recurring inspection dates
 update-recurring-dates:
 	$(CD_CMD) python3 manage.py update_recurring_inspection_dates
 
-#Normalize existing frequencies
+# Normalize existing frequencies
 normalize-frequencies:
 	$(CD_CMD) python3 manage.py normalize_existing_frequencies
 
-#Clean CSV file
+# Clean CSV file
 clean-csv:
 	$(CD_CMD) python3 manage.py clean_csv_to_import dirty.csv
 
@@ -108,30 +108,29 @@ clean-csv:
 compile-proto:
 	$(CD_CMD) python3 manage.py compile_proto
 
-#Run production server
+# Run production server
 prod:
 	$(CD_CMD) /bin/sh scripts/prod_urls.sh
 
-# Used to pre-compile tailwind CSS before running the application (we should maybe use this in run later)
+# Used to pre-compile Tailwind CSS before running the application (we should maybe use this in run later)
 tailwind:
 	$(CD_CMD) python3 manage.py tailwind start
 
 # Template linting commands
-#Lint Django template files
+# Lint Django template files
 lint-templates:
 	djlint greenova/**/templates --lint
 
-#Format Django template files
+# Format Django template files
 format-templates:
 	djlint greenova/**/templates --reformat
 
-#Check template formatting without changes
+# Check template formatting without changes
 check-templates:
 	djlint greenova/**/templates --check
 
 # Combined command for formatting and linting
 format-lint: format-templates lint-templates
-
 
 # Remove virtual environment and temporary files
 clean:
@@ -141,17 +140,17 @@ clean:
 	@find . -name "__pycache__" -delete
 	@echo "Clean completed."
 
-#install the package with setup.py
+# Install the package with setup.py
 setup:
 	@echo "Running setup.py..."
 	$(PYTHON) $(SETUP_SCRIPT) install
 
-#run python start up script
+# Run Python startup script
 pythonstartup:
 	@echo "Setting up Python startup..."
 	$(PYTHON) -M pythonstartup
 
-#install setuptools
+# Install setuptools
 setuptools:
 	@echo "Installing setuptools..."
 	$(PYTHON) -m pip install setuptools
@@ -177,5 +176,5 @@ help:
 	@echo "  make dotenv-pull	 - Pull .env file from dotenv-vault"
 	@echo "  make dotenv-push	 - Push .env file to dotenv-vault"
 	@echo "  make setup			 - Install the package with setup.py"
-	@echo "  make pythonstartup	 - Run python start up script"
+	@echo "  make pythonstartup	 - Run Python startup script"
 	@echo "  make setuptools	 - Install setuptools"
