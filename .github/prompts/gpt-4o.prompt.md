@@ -1,86 +1,20 @@
 # Prompt for GPT-4o
 
-Analyze commit and file diffs between the `integration/v0.0.6` branch and the `dotenv-vault` branch from [PR #146](https://github.com/enveng-group/dev_greenova/pull/146). Ensure that the only files being changed are specific to the PR, particularly `.env-vault`, and verify that no other files refactored in `origin/staging:integration/v0.0.6` are being updated. Resolve any conflicts if present and squash merge the commit into `integration/v0.0.6`.
+Analyze commit and file diffs between the `integration/v0.0.6` branch and the pull request from [PR #90](https://github.com/enveng-group/dev_greenova/pull/90). Analysis using `scripts/pre-merge.fish` script and review log file in `analysis_logs/pre_merge_analysis.log` whether the changes, improve on the current `Makefile`. Provide recommendations of any changes to keep or dismiss or improve on in the `Makefile` . Ensure that the only files being changed are specific to the PR, particularly `Makefile`, and verify that no other files refactored in `origin/staging:integration/v0.0.6` are being updated.
 
 **Objectives**:
 
-1. Compare the commit and file diffs between the `integration/v0.0.6` branch and the `dotenv-vault` branch from [PR #146](https://github.com/enveng-group/dev_greenova/pull/146).
-2. Verify that the only file changes are specific to the PR, particularly `.env-vault`, and ensure no unrelated files from `origin/staging:integration/v0.0.6` are being updated.
-3. Identify and resolve any merge conflicts between the branches.
-4. Ensure the resolved changes are properly squashed and merged into the `integration/v0.0.6` branch.
-5. Confirm that the `.env-vault` file adheres to the expected format and content standards.
-6. Document any issues or deviations found during the analysis for review.
-
 **Context**:
 
-```html
-<div class="flex-1">
-  <h3 class="Box-sc-g0xbh4-0 isSOdJ prc-Heading-Heading-6CmGO" id=":r1v:">
-    This branch has conflicts that must be resolved
-  </h3>
-  <p class="fgColor-muted mb-0 ">
-    <span>Use the command line to resolve conflicts before continuing.</span>
-  </p>
-  <div class="ml-n3">
-    <ul
-      class="prc-ActionList-ActionList-X4RiC py-0 overflow-hidden"
-      data-dividers="false"
-      data-variant="inset"
-    >
-      <li class="prc-ActionList-ActionListItem-uq6I7">
-        <button
-          type="button"
-          tabindex="0"
-          aria-labelledby=":r21:--label  "
-          id=":r21:"
-          class="prc-ActionList-ActionListContent-sg9-x"
-        >
-          <span class="prc-ActionList-Spacer-dydlX"></span
-          ><span
-            class="fgColor-muted prc-ActionList-LeadingVisual-dxXxW prc-ActionList-VisualWrap-rfjV-"
-            ><svg
-              aria-hidden="true"
-              focusable="false"
-              class="octicon octicon-file"
-              viewBox="0 0 16 16"
-              width="16"
-              height="16"
-              fill="currentColor"
-              display="inline-block"
-              overflow="visible"
-              style="vertical-align: text-bottom;"
-            >
-              <path
-                d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"
-              ></path></svg></span
-          ><span class="prc-ActionList-ActionListSubContent-lP9xj"
-            ><span id=":r21:--label" class="prc-ActionList-ItemLabel-TmBhn"
-              ><span class="input-monospace f6">.env.vault</span></span
-            ><span class="prc-ActionList-InactiveWarning-YRMKV"></span
-          ></span>
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
+```txt
+https://github.com/enveng-group/dev_greenova/pull/90
 ```
 
 **Tasks**:
 
-1. Fetch the latest changes from both `integration/v0.0.6` and `dotenv-vault` branches to ensure you are working with the most up-to-date code.
-2. Analyze the commit history and file diffs between the `integration/v0.0.6` and `dotenv-vault` branches.
-3. Verify that the only file changes in the `dotenv-vault` branch are specific to the PR, particularly `.env-vault`, and ensure no unrelated files from `origin/staging:integration/v0.0.6` are being updated.
-4. Identify any merge conflicts between the branches and resolve them using the command line or a merge tool.
-5. Validate the `.env-vault` file to ensure it adheres to the expected format and content standards.
-6. Squash all commits from the `dotenv-vault` branch into a single commit.
-7. Merge the squashed commit into the `integration/v0.0.6` branch.
-8. Document any issues, deviations, or resolutions encountered during the process for review.
-9. Push the updated `integration/v0.0.6` branch to the remote repository.
-10. Confirm that the changes are reflected correctly in the repository and notify the team of the successful merge.
-
 **Sources**:
 
-- `.env-vault`
+- `Makefile`
 - `analysis_logs/pre_merge_analysis.log`
 
 **Expectations**: GitHub Copilot can delete and consolidate files where

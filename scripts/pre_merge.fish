@@ -3,6 +3,13 @@
 # This script performs a pre-merge check for a GitHub pull request.
 # It fetches the PR, checks out the branch, and analyzes merge conflicts and diverging commits.
 
+# Check if the required arguments are provided
+if test (count $argv) -lt 2
+    echo "Usage: ./pre_merge.fish <branch> <pr_number>"
+    echo "Example: ./pre_merge.fish integration/v0.0.6 90"
+    exit 1
+end
+
 # Check if gh CLI is installed
 if not type -q gh
     echo "Error: GitHub CLI (gh) is not installed. Please install it first."
@@ -16,13 +23,17 @@ if test $status -ne 0
     exit 1
 end
 
-# Set environment variables for the branch and PR number
-set -lx BRANCH "integration/v0.0.6"
-set -lx PR_NUMBER 146
+# Set environment variables for the branch and PR number from arguments
+set -lx BRANCH $argv[1]
+set -lx PR_NUMBER $argv[2]
 
-# Ensure both variables are set
+# Ensure both variables are set and PR_NUMBER is numeric
 if test -z "$BRANCH" -o -z "$PR_NUMBER"
     echo "Error: BRANCH and PR_NUMBER must be set."
+    exit 1
+end
+if not string match -qr '^[0-9]+$' $PR_NUMBER
+    echo "Error: PR_NUMBER must be a number."
     exit 1
 end
 
@@ -34,6 +45,13 @@ set LOG_FILE "$LOG_DIR/$BRANCH_DIR.log"
 # Ensure the log directory exists
 if not test -d "$LOG_DIR"
     mkdir -p "$LOG_DIR"
+end
+
+# Verify the PR exists and is accessible
+printf "Verifying pull request #%s exists...\n" "$PR_NUMBER"
+if not gh pr view $PR_NUMBER --json number >/dev/null 2>&1
+    echo "Error: Pull request #$PR_NUMBER does not exist or is not accessible."
+    exit 1
 end
 
 # Fetch PR information using GitHub CLI
