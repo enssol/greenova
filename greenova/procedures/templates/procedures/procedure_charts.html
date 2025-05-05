@@ -62,7 +62,10 @@ Project Phase
 All Phases
               </option>
               {% for phase in available_phases %}
-                <option value="{{ phase }}" {% if filter_phase == phase %}selected{% endif %}>
+                <option value="{{ phase }}"
+                        {% if filter_phase == phase %}
+                          selected
+                        {% endif %}>
                   {{ phase }}
 
                 </option>
@@ -80,7 +83,9 @@ All Responsibilities
               </option>
               {% for resp in available_responsibilities %}
                 <option value="{{ resp }}"
-                        {% if filter_responsibility == resp %}selected{% endif %}>
+                        {% if filter_responsibility == resp %}
+                          selected
+                        {% endif %}>
                   {{ resp }}
 
                 </option>
@@ -98,7 +103,9 @@ All Statuses
               </option>
               {% for status_value, status_label in status_options %}
                 <option value="{{ status_value }}"
-                        {% if filter_status == status_value %}selected{% endif %}>
+                        {% if filter_status == status_value %}
+                          selected
+                        {% endif %}>
                   {{ status_label }}
 
                 </option>
@@ -111,14 +118,18 @@ All Statuses
               <input type="checkbox"
                      name="lookahead"
                      value="14days"
-                     {% if filter_lookahead %}checked{% endif %} />
+                     {% if filter_lookahead %}
+                       checked
+                     {% endif %} />
               14-Day Lookahead
             </label>
             <label>
               <input type="checkbox"
                      name="overdue"
                      value="true"
-                     {% if filter_overdue %}checked{% endif %} />
+                     {% if filter_overdue %}
+                       checked
+                     {% endif %} />
               Overdue Only
             </label>
           </div>
@@ -226,7 +237,7 @@ Total
                        hx-swap="innerHTML"
                        hx-trigger="click"
                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Not Started obligations for {{ item.name }}'">
-                      {{ item.not_started }}
+                        {{ item.not_started }}
                     </a>
                   </td>
                   <td>
@@ -237,7 +248,7 @@ Total
                        hx-swap="innerHTML"
                        hx-trigger="click"
                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'In Progress obligations for {{ item.name }}'">
-                      {{ item.in_progress }}
+                        {{ item.in_progress }}
                     </a>
                   </td>
                   <td>
@@ -248,7 +259,7 @@ Total
                        hx-swap="innerHTML"
                        hx-trigger="click"
                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Completed obligations for {{ item.name }}'">
-                      {{ item.completed }}
+                        {{ item.completed }}
                     </a>
                   </td>
                   <td>
@@ -259,7 +270,7 @@ Total
                        hx-swap="innerHTML"
                        hx-trigger="click"
                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Overdue obligations for {{ item.name }}'">
-                      {{ item.overdue }}
+                        {{ item.overdue }}
                     </a>
                   </td>
                   <td>
@@ -281,13 +292,16 @@ Total
             <!-- Obligations will be loaded here -->
           </div>
         </div>
+        <div id="current-filter" class="filter-label">
+          <!-- Will be set dynamically -->
+        </div>
+
+        <div id="obligation-list-container"
+             aria-live="polite"
+             class="obligations-container">
+          <!-- Filtered obligations will be loaded here via HTMX -->
+        </div>
       </article>
-      <!-- Add container for filtered obligations -->
-      <div id="obligation-list-container"
-           aria-live="polite"
-           class="obligations-container">
-        <!-- Filtered obligations will be loaded here via HTMX -->
-      </div>
     {% endif %}
   </article>
   <script>

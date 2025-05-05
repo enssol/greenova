@@ -249,20 +249,43 @@ td:nth-child(22) {
 .status-count-link {
   cursor: pointer;
   text-decoration: underline;
-  color: var(--primary-color);
+  color: var(--greenova-primary-dark);
+  transition: color 0.2s ease-in-out;
 }
 
 .status-count-link:hover {
-  color: var(--hover-color);
+  color: var(--greenova-secondary-dark);
 }
 
 .status-count-link.selected {
   font-weight: bold;
+  color: var(--greenova-secondary-dark);
 }
 
 .obligations-container {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   padding: 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--greenova-border-color);
   border-radius: 0.5rem;
+  background-color: var(--greenova-background-primary);
+}
+
+.filter-label {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  font-weight: bold;
+  background-color: var(--greenova-background-secondary);
+  border-radius: 0.25rem;
+  display: block;
+}
+
+.obligation-item {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--greenova-primary-dark);
+  background-color: var(--greenova-background-secondary);
+}
+
+.obligation-item:last-child {
+  margin-bottom: 0;
 }
