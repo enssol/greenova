@@ -11,20 +11,32 @@
 :root[data-theme="dark"] {
   /**
    * Notification colors
-   */Highestprioritynotificationmarker--greenova-notif-primary-high
+   */
 
-  --greenova-warning-background: var(--greenova-notif-primary-high);
+Highestprioritynotificationmarker--greenova-notif-primary-high
+
+  --greenova-warning-background: var(--greenova-notif-primary-high);--greenova-warning-background
+
   --greenova-warning-text: #000;
   --greenova-error-background: var(--greenova-notif-primary-high);
-  --greenova-error-text: #000;Middleprioritynotificationmarker--greenova-notif-primary-mid
+  --greenova-error-text: #000;
 
-  --greenova-info-background: var(--greenova-notif-primary-mid);
-  --greenova-info-text: #000;Lowestprioritynotificationmarker--greenova-notif-primary-low
+Middleprioritynotificationmarker--greenova-notif-primary-mid
 
-  --greenova-success-background: var(--greenova-notif-primary-low);
-  --greenova-success-text: #000;Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
+  --greenova-info-background: var(--greenova-notif-primary-mid);--greenova-info-background
 
-  --pico-mark-background-color: var(--greenova-notif-secondary-low);
+  --greenova-info-text: #000;
+
+Lowestprioritynotificationmarker--greenova-notif-primary-low
+
+  --greenova-success-background: var(--greenova-notif-primary-low);--greenova-success-background
+
+  --greenova-success-text: #000;
+
+Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
+
+  --pico-mark-background-color: var(--greenova-notif-secondary-low);--pico-mark-background-color
+
   --pico-mark-color: #000;
 
   /**
@@ -39,7 +51,7 @@
    * Data colors
    */
   // Color for when data points are out of focus of the chart
-  --greenova-data-null: #9c9f93;Colorforwhendatapointsareoutoffocusofthechart--greenova-data-null
+  --greenova-data-null: #9c9f93;Colorforwhendatapointsareoutoffocusofthechart--greenova-data-nullColorforwhendatapointsareoutoffocusofthechart--greenova-data-null
 }
 
 @use '../abstracts/functions' as *;

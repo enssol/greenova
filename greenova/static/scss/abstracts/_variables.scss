@@ -1,11 +1,8 @@
 /**
  * Variables
  * All design tokens and variables used throughout the application
- */
-
-// Typography
-$font-family-base: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", arial, sans-serif;Typography$font-family-base
-$font-family-monospace: ui-monospace, sfmono-regular, "SF Mono", menlo, monaco, consolas, monospace;
+ */Typography$font-family-baseTypography$font-family-base
+$font-family-monospace: ui-monospace, sfmono-regular, "SF Mono", menlo, monaco, consolas, monospace;$font-family-monospace
 $font-size-base: 1rem;
 $font-size-sm: 0.875rem;
 $font-size-xs: 0.75rem;
@@ -13,37 +10,29 @@ $font-weight-normal: 400;
 $font-weight-bold: 600;
 $line-height-base: 1.5;
 
-// Input sizes
-$input-font-size: 0.875rem;Inputsizes$input-font-size
-$input-label-size: 0.75rem;
+Inputsizes$input-font-sizeInputsizes$input-font-size
+$input-label-size: 0.75rem;$input-label-size
 $button-font-size: 0.875rem;
 $table-font-size: 0.875rem;
 
-// Spacing
-$spacing-xs: 0.25rem;Spacing$spacing-xs
-$spacing-sm: 0.5rem;
+Spacing$spacing-xsSpacing$spacing-xs
+$spacing-sm: 0.5rem;$spacing-sm
 $spacing-base: 1rem;
 $spacing-lg: 1.5rem;
 $spacing-xl: 2rem;
 
-// Padding
-$padding-xs: 0.25rem;Padding$padding-xs
-$padding-sm: 0.5rem;
+Padding$padding-xsPadding$padding-xs
+$padding-sm: 0.5rem;$padding-sm
 $padding-base: 1rem;
 $padding-lg: 1.5rem;
 
-// Border Radius
-$border-radius-sm: 0.25rem;BorderRadius$border-radius-sm
-$border-radius-base: 0.5rem;
+BorderRadius$border-radius-smBorderRadius$border-radius-sm
+$border-radius-base: 0.5rem;$border-radius-base
 $border-radius-lg: 0.75rem;
 
-// Shadows
-$shadow-sm: 0 2px 4px rgb(0 0 0 / 10%);Shadows$shadow-sm
-$shadow-lg: 0 4px 6px rgb(0 0 0 / 10%);
-
-// Z-index layers
-$z-background: -1;Z-indexlayers$z-background
-$z-default: 1;
+Shadows$shadow-smShadows$shadow-sm
+$shadow-lg: 0 4px 6px rgb(0 0 0 / 10%);Z-indexlayers$z-backgroundZ-indexlayers$z-background
+$z-default: 1;$z-default
 $z-dropdown: 10;
 $z-sticky: 20;
 $z-fixed: 30;
@@ -51,56 +40,49 @@ $z-modal: 40;
 $z-popover: 50;
 $z-tooltip: 60;
 
-// Grid breakpoints
-$breakpoint-sm: 576px;Gridbreakpoints$breakpoint-sm
-$breakpoint-md: 768px;
+Gridbreakpoints$breakpoint-smGridbreakpoints$breakpoint-sm
+$breakpoint-md: 768px;$breakpoint-md
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
-// Container max-widths
-$container-sm: 540px;Containermax-widths$container-sm
-$container-md: 720px;
+Containermax-widths$container-smContainermax-widths$container-sm
+$container-md: 720px;$container-md
 $container-lg: 960px;
 $container-xl: 1140px;
 
-// Theme colors (light mode defaults)
-$green-primary: #6a784e;Themecolors$green-primary
-$green-secondary: #a5b485;
+Themecolors$green-primaryThemecolors$green-primary
+$green-secondary: #a5b485;$green-secondary
 $green-tertiary: #505a3d;
 $beige-primary: #d8ccba;
 $beige-secondary: #b8a694;
 $background-primary: #f5f7f2;
 $background-secondary: #e8ede3;
 
-// Text colors
-$text-primary-dark: #000;Textcolors$text-primary-dark
-$text-secondary-dark: #222;
+Textcolors$text-primary-darkTextcolors$text-primary-dark
+$text-secondary-dark: #222;$text-secondary-dark
 $text-tertiary-dark: #767676;
 $text-primary-light: #fff;
 
-// Notification colors
-$notif-high: #ff1f1f;Notificationcolors$notif-high
-$notif-mid: #fae100;
+Notificationcolors$notif-highNotificationcolors$notif-high
+$notif-mid: #fae100;$notif-mid
 $notif-low: #2fc709;
 $notif-high-light: #ffb6b6;
 $notif-mid-light: #ffef9c;
 $notif-low-light: #b1e5a4;
 
-// Status colors
-$status-warning: $notif-high;Statuscolors$status-warning
-$status-info: $notif-mid;
+Statuscolors$status-warningStatuscolors$status-warning
+$status-info: $notif-mid;$status-info
 $status-success: $notif-low;
 
-// Chat colors
-$chat-user-bg: #dedeff;Chatcolors$chat-user-bg
-$chat-user-text: #000;
+Chatcolors$chat-user-bgChatcolors$chat-user-bg
+$chat-user-text: #000;$chat-user-text
 $chat-bot-bg: #99f;
 $chat-bot-text: #000;
 
 // Data visualization
-$data-null: #9c9f93;Datavisualization$data-null
+$data-null: #9c9f93;Datavisualization$data-nullDatavisualization$data-null
 // Transitions
-$transition-base: 0.2s ease-in-out;Transitions$transition-base
+$transition-base: 0.2s ease-in-out;Transitions$transition-baseTransitions$transition-base
 
 // Export variables as CSS variables
 :root {

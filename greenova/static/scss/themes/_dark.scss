@@ -10,32 +10,34 @@
 :root[data-theme="dark"] {
   /**
    * Primary colors
-   */BackgroundSecondaryContainerbackgroundcolour--greenova-background-secondary
+   */
+
+BackgroundSecondaryContainerbackgroundcolour--greenova-background-secondary
 
   /**
    * Text colors
    */TextTertiaryDarkMutableText,fortextboxhints--greenova-text-tertiary-dark
 
   // Text Primary Light - All text on coloured backgrounds
-  --greenova-text-primary-light: #000;TextPrimaryLightAlltextoncolouredbackgrounds--greenova-text-primary-light
+  --greenova-text-primary-light: #000;TextTertiaryDarkMutableText,fortextboxhints--greenova-text-tertiary-darkTextPrimaryLightAlltextoncolouredbackgrounds--greenova-text-primary-lightTextPrimaryLightAlltextoncolouredbackgrounds--greenova-text-primary-light
 
   /**
    * Pico CSS integration
    */
-  --pico-primary: var(--greenova-green-primary);
+  --pico-primary: var(--greenova-green-primary);--pico-primary
+
   --pico-primary-hover: var(--greenova-green-tertiary);
   --pico-primary-focus: rgb(181 194 154 / 25%);
   --pico-primary-inverse: var(--greenova-text-primary-dark);
 
-  // Button & header backgrounds
-  --pico-primary-background: var(--greenova-green-primary);Buttonheaderbackgrounds--pico-primary-background
+Buttonheaderbackgrounds--pico-primary-backgroundButtonheaderbackgrounds--pico-primary-background
 
-  --pico-secondary-background: var(--greenova-green-secondary);
-
+  --pico-secondary-background: var(--greenova-green-secondary);--pico-secondary-background
   // Containers & backgrounds
-  --pico-background-color: var(--greenova-background-primary);Containersbackgrounds--pico-background-color
+  --pico-background-color: var(--greenova-background-primary);Containersbackgrounds--pico-background-colorContainersbackgrounds--pico-background-color
 
-  --pico-card-background-color: var(--greenova-background-secondary);
+  --pico-card-background-color: var(--greenova-background-secondary);--pico-card-background-color
+
   --pico-card-border-color: var(--greenova-green-secondary);
   --pico-card-sectioning-background-color: var(--greenova-green-secondary);
 }
@@ -43,84 +45,77 @@
 // Dark theme variables
 :root[data-theme="dark"] {BrandcolorsAdjustedfordarkmode--greenova-green-primary
 
-  --greenova-green-secondary: #b5c299;
+  --greenova-green-secondary: #b5c299;--greenova-green-secondary
+
   --greenova-green-tertiary: #677355;
   --greenova-beige-primary: #c4b8a6;
-  --greenova-beige-secondary: #a69480;Backgroundcolors--greenova-background-primary
+  --greenova-beige-secondary: #a69480;
 
-  --greenova-background-secondary: #2a2c28;
+Backgroundcolors--greenova-background-primary
+
+  --greenova-background-secondary: #2a2c28;--greenova-background-secondary
+
   --greenova-background-elevated: #3a3c38;
 
-  // Text colors
-  --greenova-text-primary-dark: #e6e6e6;Textcolors--greenova-text-primary-dark
+Textcolors--greenova-text-primary-darkTextcolors--greenova-text-primary-dark
 
-  --greenova-text-secondary-dark: #ccc;
+  --greenova-text-secondary-dark: #ccc;--greenova-text-secondary-dark
+
   --greenova-text-tertiary-dark: #999;
   --greenova-text-primary-light: #fff;
 
-  // Border colors
-  --greenova-border-color: rgb(165 180 133 / 20%);Bordercolors--greenova-border-color
+Bordercolors--greenova-border-colorBordercolors--greenova-border-color
 
-  --greenova-border-color-light: rgb(165 180 133 / 10%);
+  --greenova-border-color-light: rgb(165 180 133 / 10%);Shadowcolors--greenova-shadow-colorShadowcolors--greenova-shadow-color
 
-  // Shadow colors
-  --greenova-shadow-color: rgb(0 0 0 / 30%);Shadowcolors--greenova-shadow-color
+  --greenova-shadow-color-strong: rgb(0 0 0 / 40%);Formcolors--greenova-input-backgroundFormcolors--greenova-input-background
 
-  --greenova-shadow-color-strong: rgb(0 0 0 / 40%);
+  --greenova-input-border: var(--greenova-beige-secondary);--greenova-input-border
 
-  // Form colors
-  --greenova-input-background: var(--greenova-background-elevated);Formcolors--greenova-input-background
-
-  --greenova-input-border: var(--greenova-beige-secondary);
   --greenova-input-focus-border: var(--greenova-green-primary);
   --greenova-input-placeholder: var(--greenova-text-tertiary-dark);
 
-  // Button colors
-  --greenova-button-primary-background: var(--greenova-green-primary);Buttoncolors--greenova-button-primary-background
+Buttoncolors--greenova-button-primary-backgroundButtoncolors--greenova-button-primary-background
 
-  --greenova-button-primary-text: var(--greenova-text-primary-dark);
+  --greenova-button-primary-text: var(--greenova-text-primary-dark);--greenova-button-primary-text
+
   --greenova-button-secondary-background: var(--greenova-beige-primary);
   --greenova-button-secondary-text: var(--greenova-background-primary);
 
-  // Card colors
-  --greenova-card-background: var(--greenova-background-secondary);Cardcolors--greenova-card-background
+Cardcolors--greenova-card-backgroundCardcolors--greenova-card-background
 
-  --greenova-card-border: var(--greenova-border-color);
+  --greenova-card-border: var(--greenova-border-color);Navigationcolors--greenova-nav-backgroundNavigationcolors--greenova-nav-background
 
-  // Navigation colors
-  --greenova-nav-background: var(--greenova-background-secondary);Navigationcolors--greenova-nav-background
+  --greenova-nav-text: var(--greenova-text-secondary-dark);--greenova-nav-text
 
-  --greenova-nav-text: var(--greenova-text-secondary-dark);
   --greenova-nav-text-active: var(--greenova-green-primary);
   --greenova-nav-border: var(--greenova-border-color);
 
-  // Table colors
-  --greenova-table-header-background: var(--greenova-background-elevated);Tablecolors--greenova-table-header-background
+Tablecolors--greenova-table-header-backgroundTablecolors--greenova-table-header-background
 
-  --greenova-table-border: var(--greenova-border-color);
+  --greenova-table-border: var(--greenova-border-color);--greenova-table-border
+
   --greenova-table-row-hover: var(--greenova-background-elevated);
 
-  // Code colors
-  --greenova-code-background: var(--greenova-background-elevated);Codecolors--greenova-code-background
+Codecolors--greenova-code-backgroundCodecolors--greenova-code-background
 
-  --greenova-code-text: var(--greenova-text-secondary-dark);
+  --greenova-code-text: var(--greenova-text-secondary-dark);--greenova-code-text
+
   --greenova-code-border: var(--greenova-border-color);
 
-  // Selection colors
-  --greenova-selection-background: var(--greenova-green-primary);Selectioncolors--greenova-selection-background
+Selectioncolors--greenova-selection-backgroundSelectioncolors--greenova-selection-background
 
-  --greenova-selection-text: var(--greenova-text-primary-dark);
+  --greenova-selection-text: var(--greenova-text-primary-dark);Scrollbarcolors--greenova-scrollbar-trackScrollbarcolors--greenova-scrollbar-track
 
-  // Scrollbar colors
-  --greenova-scrollbar-track: var(--greenova-background-secondary);Scrollbarcolors--greenova-scrollbar-track
+  --greenova-scrollbar-thumb: var(--greenova-green-tertiary);--greenova-scrollbar-thumb
 
-  --greenova-scrollbar-thumb: var(--greenova-green-tertiary);
   --greenova-scrollbar-thumb-hover: var(--greenova-green-primary);
 
   // Pico CSS integration for dark mode
-  --pico-primary: var(--greenova-green-primary);PicoCSSintegrationfordarkmode--pico-primary
+  --pico-primary: var(--greenova-green-primary);PicoCSSintegrationfordarkmode--pico-primaryPicoCSSintegrationfordarkmode--pico-primary
 
-  --pico-primary-hover: var(--greenova-green-tertiary);
+  --pico-primary-hover: var(--greenova-green-tertiary);--pico-primary-hover
+
   --pico-primary-focus: rgb(138 152 102 / 25%);
   --pico-primary-inverse: var(--greenova-text-primary-dark);
   --pico-background-color: var(--greenova-background-primary);

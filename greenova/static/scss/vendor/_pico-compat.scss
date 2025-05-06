@@ -11,28 +11,39 @@
 // Root variables for Pico CSS compatibility
 :root {Typography--pico-font-family
 
-  --pico-font-size: var(--greenova-text-size);
+  --pico-font-size: var(--greenova-text-size);--pico-font-size
+
   --pico-font-weight: var(--greenova-font-weight);
   --pico-line-height: var(--greenova-line-height);
-  --pico-font-size-small: var(--greenova-text-size-sm);Spacing--pico-spacing
+  --pico-font-size-small: var(--greenova-text-size-sm);
 
-  --pico-form-element-spacing-vertical: var(--greenova-spacing-sm);
-  --pico-form-element-spacing-horizontal: var(--greenova-spacing-base);Borderradius--pico-border-radius
+Spacing--pico-spacing
 
-  --pico-border-width: 1px;ColorsSetinthemefiles--pico-background-color
+  --pico-form-element-spacing-vertical: var(--greenova-spacing-sm);--pico-form-element-spacing-vertical
 
-  --pico-card-background-color: var(--greenova-background-secondary);
+  --pico-form-element-spacing-horizontal: var(--greenova-spacing-base);
+
+Borderradius--pico-border-radius
+
+  --pico-border-width: 1px;--pico-border-widthColorsSetinthemefiles--pico-background-color
+
+  --pico-card-background-color: var(--greenova-background-secondary);--pico-card-background-color
+
   --pico-card-border-color: var(--greenova-green-secondary);
-  --pico-card-sectioning-background-color: var(--greenova-green-secondary);Forms--pico-form-element-background-color
+  --pico-card-sectioning-background-color: var(--greenova-green-secondary);
 
-  --pico-form-element-border-color: var(--greenova-input-border);
+Forms--pico-form-element-background-color
+
+  --pico-form-element-border-color: var(--greenova-input-border);--pico-form-element-border-color
+
   --pico-form-element-placeholder-color: var(--greenova-input-placeholder);
   --pico-form-element-active-border-color: var(--greenova-input-focus-border);
 
   // Buttons
-  --pico-button-font-size: var(--greenova-button-size);Buttons--pico-button-font-size
+  --pico-button-font-size: var(--greenova-button-size);Buttons--pico-button-font-sizeButtons--pico-button-font-size
 
-  --pico-button-font-weight: var(--greenova-font-weight-bold);
+  --pico-button-font-weight: var(--greenova-font-weight-bold);--pico-button-font-weight
+
   --pico-button-padding: var(--greenova-padding-sm) var(--greenova-padding-base);
 }
 
