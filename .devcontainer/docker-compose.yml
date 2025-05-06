@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   greenova:
     build:
@@ -17,6 +15,7 @@ services:
       PYTHONSTARTUP: /workspaces/greenova/pythonstartup
       VIRTUAL_ENV: /workspaces/greenova/.venv
       PATH: /workspaces/greenova/.venv/bin:/usr/local/share/nvm/current/bin/npm:${PATH}
+      COMPOSE_BAKE: true
     ports:
       - '8000:8000'
     user: vscode

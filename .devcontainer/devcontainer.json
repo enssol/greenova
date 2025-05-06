@@ -30,22 +30,6 @@
           "/workspaces/greenova",
           "/workspaces/greenova/greenova"
         ],
-        "files.associations": {
-          "*.html": "django-html",
-          "*.css": "css",
-          "*.js": "javascript",
-          "*.md": "markdown",
-          "*.py": "python",
-          ".env*": "dotenv",
-          "dev.txt": "pip-requirements",
-          "base.txt": "pip-requirements",
-          "prod.txt": "pip-requirements",
-          "constraints.txt": "pip-requirements",
-          "base.in": "pip-requirements",
-          "dev.in": "pip-requirements",
-          "prod.in": "pip-requirements",
-          "combined.in": "pip-requirements"
-        },
         "editor.formatOnSave": true,
         "[python]": {
           "editor.defaultFormatter": "ms-python.autopep8",
@@ -103,8 +87,7 @@
         "dbcode.dbcode",
         "ms-vscode.copilot-mermaid-diagram",
         "ms-toolsai.datawrangler",
-        "charliermarsh.ruff",
-        "ms-python.flake8"
+        "charliermarsh.ruff"
       ]
     }
   },
@@ -115,5 +98,5 @@
   ],
 
   "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode && mkdir -p /home/vscode/.local/share/fish && chmod -R 755 /home/vscode && chmod +x /workspaces/greenova/.devcontainer/post_start.sh",
-  "postStartCommand": "cd /workspaces/greenova && /bin/bash ./.devcontainer/post_start.sh || echo 'Warning: post_start.sh had errors but container setup will continue'"
+  "postStartCommand": "cd /workspaces/greenova && /bin/bash ./.devcontainer/post_start.sh"
 }

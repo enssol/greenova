@@ -63,6 +63,44 @@ single file globally.
    and ensure that all tests pass before finalizing the changes.
 9. Iterate until resolved.
 
+### Pre-commit Fixes for Common Issues
+
+#### Fixing Double Quotes (Q000)
+
+- Use `black` or `autopep8` to automatically fix string quotes.
+- Example command:
+
+  ```bash
+  autopep8 --in-place --aggressive --aggressive <file>
+  ```
+
+#### Adding Missing Docstrings (D100, D104, D200, D205)
+
+- Use `pydocstyle` to identify missing or improper docstrings.
+- Example command:
+
+  ```bash
+  pydocstyle <file>
+  ```
+
+#### Resolving Line Too Long (E501)
+
+- Use `black` to reformat code to adhere to line length limits.
+- Example command:
+
+  ```bash
+  black --line-length 88 <file>
+  ```
+
+#### Removing Unused Variables or Imports (F401, F841)
+
+- Use `autoflake` to automatically remove unused imports and variables.
+- Example command:
+
+  ```bash
+  autoflake --in-place --remove-unused-variables <file>
+  ```
+
 ## Context7 Documentation Lookup
 
 Always use `use context7` to lookup documentation from the context7 MCP server.

@@ -1,3 +1,11 @@
+"""Views for managing user profiles and admin user actions.
+
+This module includes:
+- Profile view and edit functionality
+- Password change functionality
+- Admin user management views
+"""
+
 from typing import Any
 
 from company.models import CompanyMembership
@@ -27,7 +35,17 @@ def is_admin(user: User) -> bool:
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
-    """View for displaying user's profile."""
+    """View for displaying user's profile.
+
+    Displays user profile information and counts overdue obligations
+    based on the user's roles and project memberships.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        Rendered HTML response with profile context.
+    """
     profile: Profile = request.user.profile
 
     company_memberships = CompanyMembership.objects.filter(user_id=request.user.id)
@@ -68,12 +86,12 @@ def profile_view(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def profile_edit(request):
+def profile_edit(request: HttpRequest) -> HttpResponse:
     """View for editing user's profile."""
-    profile = request.user.profile
+    profile: Profile = request.user.profile
 
     if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully.")

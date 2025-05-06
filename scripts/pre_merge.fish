@@ -5,8 +5,8 @@
 
 # Check if the required arguments are provided
 if test (count $argv) -lt 2
-    echo "Usage: ./pre_merge.fish <branch> <pr_number>"
-    echo "Example: ./pre_merge.fish integration/v0.0.6 90"
+    echo "Usage: ./pre_merge.fish <branch> <pr_number> [file1 file2 ...]"
+    echo "Example: ./pre_merge.fish integration/v0.0.6 90 greenova/obligations/views.py greenova/obligations/urls.py"
     exit 1
 end
 
@@ -26,6 +26,9 @@ end
 # Set environment variables for the branch and PR number from arguments
 set -lx BRANCH $argv[1]
 set -lx PR_NUMBER $argv[2]
+
+# Get file paths from remaining arguments
+set -lx FILES $argv[3..-1]
 
 # Ensure both variables are set and PR_NUMBER is numeric
 if test -z "$BRANCH" -o -z "$PR_NUMBER"
@@ -102,17 +105,45 @@ git status >"$ANALYSIS_DIR/repo_status.log" 2>>"$LOG_FILE"
 git log --graph --oneline --decorate $TARGET_BRANCH..$PR_HEAD_BRANCH >"$ANALYSIS_DIR/commit_history.log" 2>>"$LOG_FILE"
 
 # File differences between branches
-git diff --name-status $TARGET_BRANCH $PR_HEAD_BRANCH >"$ANALYSIS_DIR/changed_files.log" 2>>"$LOG_FILE"
-git diff --stat $TARGET_BRANCH $PR_HEAD_BRANCH >"$ANALYSIS_DIR/diff_stats.log" 2>>"$LOG_FILE"
+if test (count $FILES) -gt 0
+    printf "Analyzing changes for specific files...\n" | tee "$LOG_FILE"
+    for file in $FILES
+        printf "Checking file: %s\n" "$file" | tee -a "$LOG_FILE"
+        git diff --name-status $TARGET_BRANCH $PR_HEAD_BRANCH -- $file >>"$ANALYSIS_DIR/changed_files.log" 2>>"$LOG_FILE"
+        git diff --stat $TARGET_BRANCH $PR_HEAD_BRANCH -- $file >>"$ANALYSIS_DIR/diff_stats.log" 2>>"$LOG_FILE"
+        git diff $TARGET_BRANCH $PR_HEAD_BRANCH -- $file >>"$ANALYSIS_DIR/diff.log" 2>>"$LOG_FILE"
+    end
+else
+    printf "Analyzing all changed files...\n" | tee "$LOG_FILE"
+    git diff --name-status $TARGET_BRANCH $PR_HEAD_BRANCH >"$ANALYSIS_DIR/changed_files.log" 2>>"$LOG_FILE"
+    git diff --stat $TARGET_BRANCH $PR_HEAD_BRANCH >"$ANALYSIS_DIR/diff_stats.log" 2>>"$LOG_FILE"
+end
 
 # Check for potential conflicts
 printf "Checking for potential conflicts...\n" | tee "$LOG_FILE"
 git checkout -b temp_analysis_branch $TARGET_BRANCH
 if git merge --no-commit --no-ff $PR_HEAD_BRANCH >/dev/null 2>&1
-    echo "No direct conflicts detected." | tee "$LOG_FILE"
+    if test (count $FILES) -gt 0
+        echo "Checking conflicts in specified files..." | tee "$LOG_FILE"
+        for file in $FILES
+            if test -f $file
+                git diff --check -- $file >>"$ANALYSIS_DIR/conflict_analysis.log" 2>&1
+            end
+        end
+    else
+        echo "No direct conflicts detected." | tee "$LOG_FILE"
+    end
 else
     echo "Potential conflicts detected. See conflict analysis logs." | tee "$LOG_FILE"
-    git diff --check >"$ANALYSIS_DIR/conflict_analysis.log" 2>&1
+    if test (count $FILES) -gt 0
+        for file in $FILES
+            if test -f $file
+                git diff --check -- $file >>"$ANALYSIS_DIR/conflict_analysis.log" 2>&1
+            end
+        end
+    else
+        git diff --check >>"$ANALYSIS_DIR/conflict_analysis.log" 2>&1
+    end
 end
 git merge --abort
 git checkout $PR_HEAD_BRANCH

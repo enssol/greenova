@@ -23,6 +23,7 @@ repos:
       - id: no-commit-to-branch
         args: ['--branch', 'main', '--branch', 'master']
       - id: debug-statements
+        exclude: '^greenova/chatbot/proto/.*_pb2\.py$'
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.25.1
@@ -40,11 +41,16 @@ repos:
             '--remove-all-unused-imports',
             '--remove-unused-variables',
           ]
-  - repo: https://github.com/asottile/dead
-    rev: v2.1.0
+        exclude: 'greenova/.*templatetags/.*\.py$'
+
+  # Customized dead code detection using script
+  - repo: local
     hooks:
-      - id: dead
-        additional_dependencies: ['pytest']
+      - id: find-real-dead-code
+        name: find real dead code
+        entry: python scripts/find_real_dead_code.py --staged-only
+        language: system
+        pass_filenames: false
 
   # 3. Import sorting (isort, or use Ruff's import sorting if preferred)
   - repo: https://github.com/pycqa/isort
@@ -79,12 +85,7 @@ repos:
         entry: env PYTHONPATH=/workspaces/greenova:/workspaces/greenova/greenova DJANGO_SETTINGS_MODULE=greenova.greenova.settings pylint
         language: system
         types: [python]
-        args:
-          [
-            '--rcfile=.pylintrc-django',
-            '--load-plugins=pylint_django',
-            '--django-settings-module=greenova.greenova.settings',
-          ]
+        args: ['--rcfile=.pylintrc-django', '--load-plugins=pylint_django']
         files: "greenova/.*\\.py$"
 
   # 6. Type checking

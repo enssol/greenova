@@ -1,0 +1,9 @@
+# Core dependencies
+-r base.txt
+
+# Production server
+gunicorn>=23.0.0,<24.0.0
+
+# Performance monitoring
+autopep8==2.0.4  # Required by django-silk,
+gprof2dot>=2025.4.0,<2026.0.0

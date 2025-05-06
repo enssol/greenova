@@ -1,5 +1,8 @@
-# Stub file for obligations.models
-from django.db import models
+# Type stub file for obligations.models
+# This stub supports both "obligations.models" and "greenova.obligations.models" imports
 
-class Obligation(models.Model): ...
-class ObligationEvidence(models.Model): ...
+from django.db.models import Model
+
+class Obligation(Model):
+    # Keep minimal definition for mypy to work
+    pass

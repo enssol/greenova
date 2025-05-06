@@ -1,877 +1,1243 @@
 # Prompt for GPT-4o
 
-**Goal:** Interactively cherry-pick all changes in code in `greenova/procedures/templates/procedures/procedure_charts.html`, `greenova/obligations/templates/obligations/partials/obligation_list.html`, `greenova/obligations/urls.py`, `greenova/obligations/views.py`, and `greenova/static/css/components/obligations.css` from <https://github.com/enveng-group/dev_greenova/pull/99> that resolves <https://github.com/enveng-group/dev_greenova/issues/37>.
+**Goal:** Interactively cherry-pick all changes in code in `.vscode/tasks.json` `greenova/users/templates/users/partials/profile_detail.html` and `greenova/users/views.py` from [PR97](https://github.com/enveng-group/dev_greenova/pull/97) that resolves [Issue88](https://github.com/enveng-group/dev_greenova/issues/88).
 
-**Context:**
+**Context:** The Greenova project aims to enhance the user profile functionality by establishing a relationship between the user profile's role and the responsibility table, and by adding an overdue actions display. This involves backend, profile view, and frontend enhancements, as well as real-time updates and thorough testing to ensure compliance with project standards and accessibility guidelines.
+
+**Output:**
 
 ```diff
-diff --git a/greenova/obligations/templates/obligations/partials/obligation_list.html b/greenova/obligations/templates/obligations/partials/obligation_list.html
+diff --git a/.vscode/tasks.json b/.vscode/tasks.json
 old mode 100755
 new mode 100644
-index 5e71ad7..4602dad
---- a/greenova/obligations/templates/obligations/partials/obligation_list.html
-+++ b/greenova/obligations/templates/obligations/partials/obligation_list.html
-@@ -1,26 +1,9 @@
--{% if error %}
--  <div class="notice error" role="alert">
--    <p>
--{{ error }}
--    </p>
-+{% for obligation in obligations %}
-+  <div class="obligation-item">
-+    <strong>{{ obligation.name }}</strong> - {{ obligation.due_date }}
-   </div>
--{% else %}
--  {% for obligation in obligations %}
--    <div class="obligation-item">
--      <strong>{{ obligation.obligation_number }}</strong>
--      <div>
--{{ obligation.obligation|truncatechars:50 }}
--      </div>
--      <div>
--Due: {{ obligation.action_due_date|date:"M d, Y" }}
--      </div>
--      <div>
--Status: {{ obligation.status }}
--      </div>
--    </div>
--  {% empty %}
--    <p>
-+{% empty %}
-+  <p>
- No obligations match this filter.
--    </p>
--  {% endfor %}
--{% endif %}
-+  </p>
-+{% endfor %}
-diff --git a/greenova/obligations/urls.py b/greenova/obligations/urls.py
+index c41da99..5948945
+--- a/.vscode/tasks.json
++++ b/.vscode/tasks.json
+@@ -1,4 +1,818 @@
+ {
+-  "tasks": [],
++  "tasks": [
++    {
++      "args": [
++        "-c",
++        "autopep8 --in-place --aggressive --aggressive \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Format with autopep8",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "isort \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Sort imports with isort",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "pylint \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Lint with pylint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^(.+):(\\d+):(\\d+):\\s+(warning|error|fatal):\\s+(.*)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "mypy \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Type check with mypy",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "file": 1,
++          "line": 2,
++          "message": 4,
++          "regexp": "^(.+):(\\d+):\\s+(error|note):\\s+(.*)$",
++          "severity": 3
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "mypy --ignore-missing-imports --disallow-untyped-defs --no-implicit-optional \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Type check with mypy (standard)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "file": 1,
++          "line": 2,
++          "message": 4,
++          "regexp": "^(.+):(\\d+):\\s+(error|note):\\s+(.*)$",
++          "severity": 3
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "mypy --config-file \"${workspaceFolder}/mypy.ini\" \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Type check with mypy (Django)",
++      "options": {
++        "env": {
++          "PYTHONPATH": "/workspaces/greenova"
++        }
++      },
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "file": 1,
++          "line": 2,
++          "message": 4,
++          "regexp": "^(.+):(\\d+):\\s+(error|note):\\s+(.*)$",
++          "severity": 3
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "bandit -r \"${file}\" --skip B101"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Security check with bandit",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "dependsOn": [
++        "Python: Sort imports with isort",
++        "Python: Format with autopep8",
++        "Python: Lint with pylint",
++        "Python: Type check with mypy (standard)",
++        "Python: Security check with bandit"
++      ],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "Python: Fix all",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "args": [
++        "-c",
++        "pylint --rcfile=\"${workspaceFolder}/.pylintrc\" \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Lint with pylint (standard)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^(.+):(\\d+):(\\d+):\\s+(warning|error|fatal):\\s+(.*)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "pylint --rcfile=\"${workspaceFolder}/.pylintrc-django\" --load-plugins=pylint_django \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Lint with pylint (Django)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^(.+):(\\d+):(\\d+):\\s+(warning|error|fatal):\\s+(.*)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "dependsOn": [
++        "Python: Sort imports with isort",
++        "Python: Format with autopep8",
++        "Python: Lint with pylint (standard)",
++        "Python: Type check with mypy (standard)"
++      ],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "Python: Fix all (standard)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "dependsOn": [
++        "Python: Sort imports with isort",
++        "Python: Format with autopep8",
++        "Python: Lint with pylint (Django)",
++        "Python: Type check with mypy (Django)",
++        "Python: Security check with bandit"
++      ],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "Python: Fix all (Django)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "args": [
++        "-c",
++        "mypy --no-config --ignore-missing-imports --disallow-untyped-defs --no-implicit-optional \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Type check with mypy (config files)",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "python",
++        "pattern": {
++          "file": 1,
++          "line": 2,
++          "message": 4,
++          "regexp": "^(.+):(\\d+):\\s+(error|note):\\s+(.*)$",
++          "severity": 3
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "djlint \"${file}\" --reformat"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "HTML: Format with djlint",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "djlint \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "HTML: Lint with djlint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "djlint",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^(.+):(\\d+):(\\d+):\\s+(\\w+)\\s+(.+)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "npx prettier --write \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "JavaScript: Format with prettier",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "npx eslint \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "JavaScript: Lint with eslint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": ["$eslint-stylish"],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "npx eslint --fix \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "JavaScript: Fix eslint issues",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": ["$eslint-stylish"],
++      "type": "shell"
++    },
++    {
++      "dependsOn": [
++        "JavaScript: Format with prettier",
++        "JavaScript: Fix eslint issues"
++      ],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "JavaScript: Fix all",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "args": ["-c", "npx prettier --write \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "CSS: Format with prettier",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "npx stylelint \"${file}\" --config \"${workspaceFolder}/stylelint.config.js\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "CSS: Lint with stylelint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "stylelint",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^([^:]+):(\\d+):(\\d+):\\s+(.+)\\s+(.+)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "npx stylelint \"${file}\" --config \"${workspaceFolder}/stylelint.config.js\" --fix"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "CSS: Fix stylelint issues",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "dependsOn": ["CSS: Format with prettier", "CSS: Fix stylelint issues"],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "CSS: Fix all",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "args": ["-c", "npx prettier --write \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "JSON: Format with prettier",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "npx prettier --config \"${workspaceFolder}/.prettierrc\" --write \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "YAML: Format with prettier",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "npx prettier --write \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Markdown: Format with prettier",
++      "presentation": {
++        "clear": true,
++        "panel": "shared",
++        "reveal": "silent"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "/usr/local/share/nvm/current/bin/markdownlint-cli2 --fix \"${file}\""
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Markdown: Lint with markdownlint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "markdownlint",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 4,
++          "regexp": "^(.+?):(\\d+)(?::(\\d+))? (.+)$"
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "dependsOn": [
++        "Markdown: Format with prettier",
++        "Markdown: Lint with markdownlint"
++      ],
++      "dependsOrder": "sequence",
++      "group": "none",
++      "label": "Markdown: Fix all",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    },
++    {
++      "args": ["-c", "shellcheck \"${file}\""],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Shell: Check with shellcheck",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": {
++        "fileLocation": ["relative", "${workspaceFolder}"],
++        "owner": "shellcheck",
++        "pattern": {
++          "column": 3,
++          "file": 1,
++          "line": 2,
++          "message": 5,
++          "regexp": "^(.+):(\\d+):(\\d+):\\s+(note|warning|error|style):\\s+(.*)$",
++          "severity": 4
++        }
++      },
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "${command:workbench.action.terminal.clear}"],
++      "command": "/bin/sh",
++      "group": {
++        "isDefault": true,
++        "kind": "build"
++      },
++      "label": "Format current file",
++      "linux": {
++        "args": ["-c", "clear"],
++        "command": "/bin/sh"
++      },
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell",
++      "windows": {
++        "args": ["/c", "cls"],
++        "command": "cmd.exe"
++      }
++    },
++    {
++      "args": [
++        "-c",
++        "if [ -n \"$(echo \"${file}\" | grep '\\\\.py$')\" ]; then autopep8 --in-place \"${file}\" && isort \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\\\.html$')\" ]; then djlint \"${file}\" --reformat; elif [ -n \"$(echo \"${file}\" | grep '\\\\.(js\\\\|css\\\\|json\\\\|md\\\\|yaml\\\\|yml\\\\|toml)$')\" ]; then npx prettier --write \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\\\.sh$')\" ]; then echo \"Shell files can't be formatted automatically, running shellcheck...\"; shellcheck \"${file}\"; fi"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Auto-detect and format file",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "if [ -n \"$(echo \"${file}\" | grep '/greenova/.*\\.py$')\" ]; then pylint --rcfile=${workspaceFolder}/.pylintrc-django --load-plugins=tools.pylint.fix_good_names,pylint_django,tools.pylint.gevent_checker \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.py$')\" ]; then pylint --rcfile=${workspaceFolder}/.pylintrc \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.html$')\" ]; then djlint \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.js$')\" ]; then npx eslint \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.md$')\" ]; then /usr/local/share/nvm/current/bin/markdownlint-cli2 \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.sh$')\" ]; then shellcheck \"${file}\"; fi"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Auto-detect and lint file",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "if [ -n \"$(echo \"${file}\" | grep '/greenova/.*\\.py$')\" ]; then isort \"${file}\" && autopep8 --in-place \"${file}\" && pylint --rcfile=${workspaceFolder}/.pylintrc-django --load-plugins=pylint_django \"${file}\" && mypy --config-file ${workspaceFolder}/mypy.ini \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\(setup\\.py\\|pyproject\\.toml\\|\\.pylintrc\\)')\" ]; then isort \"${file}\" && autopep8 --in-place \"${file}\" && pylint --rcfile=${workspaceFolder}/.pylintrc \"${file}\" && mypy --no-config --ignore-missing-imports \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.py$')\" ]; then isort \"${file}\" && autopep8 --in-place \"${file}\" && pylint --rcfile=${workspaceFolder}/.pylintrc \"${file}\" && mypy --ignore-missing-imports --disallow-untyped-defs \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.html$')\" ]; then djlint \"${file}\" --reformat; elif [ -n \"$(echo \"${file}\" | grep '\\.js$')\" ]; then npx prettier --write \"${file}\" && npx eslint --fix \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.md$')\" ]; then npx prettier --write \"${file}\" && /usr/local/share/nvm/current/bin/markdownlint-cli2 \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.(css\\|json\\|yaml\\|yml\\|toml)$')\" ]; then npx prettier --write \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.css$')\" ]; then npx stylelint --config \"${workspaceFolder}/stylelint.config.js\" --fix \"${file}\"; elif [ -n \"$(echo \"${file}\" | grep '\\.sh$')\" ]; then shellcheck \"${file}\"; fi"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Auto-detect and fix all issues",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "find . -type d -name \"__pycache__\" -exec rm -rf {} \\; 2>/dev/null || true && find . -name \"*.pyc\" -delete"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Python: Clean cache files",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++
++    {
++      "args": [
++        "-c",
++        "cd greenova && python3 manage.py collectstatic --clear --noinput"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Collect static files",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++
++    {
++      "args": [
++        "-c",
++        "cd greenova && python3 manage.py import_obligations dummy_data.csv"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Import obligations",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py sync_mechanisms"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Sync mechanisms",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py createsuperuser"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Create superuser",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "dependsOn": ["Django: Run Tailwind", "Django: Run server"],
++      "dependsOrder": "parallel",
++      "group": "none",
++      "label": "Django: Development environment",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "cd greenova/theme/static_src/src && npm install && cd ../../.. && python3 manage.py tailwind check-updates && python3 manage.py tailwind update && python3 manage.py tailwind install && python3 manage.py tailwind build"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Build and install Tailwind",
++      "presentation": {
++        "panel": "dedicated",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py runserver"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Run server",
++      "presentation": {
++        "panel": "dedicated",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "cd greenova && python manage.py create_missing_profiles"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Create Missing Profiles",
++      "presentation": {
++        "panel": "dedicated",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py check"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Check",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py compile_protos"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Compile Proto",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "npx protolint lint --fix ."],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Protolint: Lint with protolint",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    }
++    {
++      "args": [
++        "-c",
++        "cd greenova && python3 manage.py makemigrations chatbot company users mechanisms obligations projects responsibility procedures feedback"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Create migrations",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": ["-c", "cd greenova && python3 manage.py migrate"],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Apply migrations",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "args": [
++        "-c",
++        "find . -path \"*/migrations/*.py\" -not -name \"__init__.py\" -delete"
++      ],
++      "command": "/bin/sh",
++      "group": "none",
++      "label": "Django: Delete Migrations",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": [],
++      "type": "shell"
++    },
++    {
++      "label": "Django: Refresh migrations",
++      "dependsOn": [
++        "Django: Delete Migrations",
++        "Django: Create migrations",
++        "Django: Apply migrations"
++      ],
++      "dependsOrder": "sequence",
++      "type": "shell",
++      "group": "none",
++      "presentation": {
++        "panel": "shared",
++        "reveal": "always"
++      },
++      "problemMatcher": []
++    }
++  ],
+   "version": "2.0.0"
+ }
+diff --git a/greenova/users/templates/users/partials/profile_detail.html b/greenova/users/templates/users/partials/profile_detail.html
 old mode 100755
 new mode 100644
-index 34ff405..d7bd549
---- a/greenova/obligations/urls.py
-+++ b/greenova/obligations/urls.py
-@@ -2,7 +2,7 @@
- from django.urls import path
-
- from . import views
--from .views import ToggleCustomAspectView
-+from .views import ObligationSummaryView, ToggleCustomAspectView
-
- app_name = 'obligations'
-
-@@ -15,7 +15,7 @@ def root_redirect(request):
-
- urlpatterns = [
-     # Summary view that shows obligations list
--    path('summary/', views.ObligationSummaryView.as_view(), name='summary'),
-+    path('summary/', ObligationSummaryView.as_view(), name='summary'),
-     path('count-overdue/', views.TotalOverdueObligationsView.as_view(), name='overdue'),
-     # Make the root URL properly handle project_id parameter by redirecting
-     path('', root_redirect, name='index'),
-diff --git a/greenova/obligations/views.py b/greenova/obligations/views.py
+index c698aef..3f73b67
+--- a/greenova/users/templates/users/partials/profile_detail.html
++++ b/greenova/users/templates/users/partials/profile_detail.html
+@@ -8,9 +8,7 @@
+         {% if profile.profile_image %}
+           <img src="{{ profile.profile_image.url }}"
+                alt="Profile picture"
+-               class="profile-image"
+-               height="150"
+-               width="150" />
++               class="profile-image" />
+         {% else %}
+           <div class="profile-initial">
+ {{ profile.user.username|first|upper }}
+diff --git a/greenova/users/views.py b/greenova/users/views.py
 old mode 100755
 new mode 100644
-index 6f28462..e5b64e5
---- a/greenova/obligations/views.py
-+++ b/greenova/obligations/views.py
-@@ -1,403 +1,394 @@
- import logging
--import os
+index 7b2a72c..b467fb5
+--- a/greenova/users/views.py
++++ b/greenova/users/views.py
+@@ -1,23 +1,22 @@
 -from typing import Any
 +from datetime import timedelta
-+from typing import Any, Dict, Optional, Union
++from typing import Any, Dict
 
-+from core.types import HttpRequest  # Use the enhanced HttpRequest with htmx property
+ from company.models import CompanyMembership
  from django.contrib import messages
- from django.contrib.auth.mixins import LoginRequiredMixin
--from django.core.exceptions import ValidationError
- from django.core.paginator import Paginator
- from django.db.models import Q, QuerySet
--from django.http import JsonResponse
-+from django.forms import inlineformset_factory
-+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+-from django.contrib.auth import get_user_model, update_session_auth_hash
++from django.contrib.auth import get_user_model  # Updated import for User model
++from django.contrib.auth import update_session_auth_hash
+ from django.contrib.auth.decorators import login_required, user_passes_test
+ from django.contrib.auth.forms import PasswordChangeForm
+ from django.http import HttpRequest, HttpResponse, JsonResponse
  from django.shortcuts import get_object_or_404, redirect, render
+-from django.template.loader import render_to_string
 -from django.urls import reverse
-+from django.urls import reverse, reverse_lazy
+-from django.views.decorators.http import require_http_methods
+-from django_htmx.http import trigger_client_event
 +from django.utils import timezone
- from django.utils.decorators import method_decorator
- from django.views import View
- from django.views.decorators.cache import cache_control
- from django.views.decorators.vary import vary_on_headers
--from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
--from django.views.generic.edit import DeleteView
--from mechanisms.models import EnvironmentalMechanism
-+from django.views.generic import (CreateView, DeleteView, DetailView, TemplateView,
-+                                  UpdateView)
-+from django_htmx.http import trigger_client_event
-+from mechanisms.models import EnvironmentalMechanism  # Added missing import
+ from obligations.models import Obligation
  from projects.models import Project
 
- from .forms import EvidenceUploadForm, ObligationForm
- from .models import Obligation, ObligationEvidence
--from .utils import is_obligation_overdue
--
--# Ensure the Django settings module is correctly configured.
--os.environ.setdefault("DJANGO_SETTINGS_MODULE", "greenova.settings")
--
-+from .utils import \
-+    is_obligation_overdue  # Add explicit import for is_obligation_overdue
+ from .forms import AdminUserForm, ProfileImageForm, UserProfileForm
+ from .models import Profile
 
-+# Create a logger for this module
- logger = logging.getLogger(__name__)
+-User = get_user_model()
++User = get_user_model()  # Use the recommended method to get the User model
 
--# Add type hints or mock objects for Obligation and EnvironmentalMechanism to resolve the missing `objects` and `DoesNotExist` members.
--Obligation.objects = Obligation.objects if hasattr(Obligation, "objects") else None
--Obligation.DoesNotExist = (
--    Obligation.DoesNotExist if hasattr(Obligation, "DoesNotExist") else None
--)
--EnvironmentalMechanism.objects = (
--    EnvironmentalMechanism.objects
--    if hasattr(EnvironmentalMechanism, "objects")
--    else None
--)
--EnvironmentalMechanism.DoesNotExist = (
--    EnvironmentalMechanism.DoesNotExist
--    if hasattr(EnvironmentalMechanism, "DoesNotExist")
--    else None
--)
+
+ def is_admin(user: User) -> bool:
+@@ -31,221 +30,190 @@ def profile_view(request: HttpRequest) -> HttpResponse:
+     profile: Profile = request.user.profile
+
+     company_memberships = CompanyMembership.objects.filter(user_id=request.user.id)
 -
--
--@method_decorator(cache_control(max_age=300), name="dispatch")
--@method_decorator(vary_on_headers("HX-Request"), name="dispatch")
--class ObligationSummaryView(LoginRequiredMixin, TemplateView):
--    template_name = "obligations/components/_obligations_summary.html"
-+@method_decorator(cache_control(max_age=300), name='dispatch')
-+@method_decorator(vary_on_headers('HX-Request'), name='dispatch')
-+class ObligationSummaryView(View):
-+    def get(self, request, *args, **kwargs):
-+        status = request.GET.get('status')
-+        procedure = request.GET.get('procedure')
-+        project_id = request.GET.get('project_id')
 +
-+        obligations = Obligation.objects.filter(
-+            status=status,
-+            procedure__name=procedure,
-+            project__id=project_id
-+        )
-
--    def get_template_names(self):
--        if self.request.htmx:
--            return ["obligations/components/_obligations_summary.html"]
--        return [self.template_name]
-+        return render(request, 'obligations/obligation_list.html', {
-+            'obligations': obligations
-+        })
-
--    def _filter_by_status(self, queryset: QuerySet, status_values: list) -> QuerySet:
--        """Filter queryset by status values including overdue check."""
--        if "overdue" not in status_values:
--            return queryset.filter(status__in=status_values)
+     if not company_memberships:
+-        context: dict[str, Any] = {"profile": profile, "overdue_count": 0}
++        # No company memberships found for user
++
++        context: Dict[str, Any] = {
++        'profile': profile,
++        'overdue_count': 0
++    }
+     else:
+         # Get all the roles this user has across companies
+-        user_roles = company_memberships.values_list("role", flat=True).distinct()
 -
--        filtered_ids = [
--            obligation.obligation_number
--            for obligation in queryset
--            if is_obligation_overdue(obligation)
++        user_roles = company_memberships.values_list('role', flat=True).distinct()
++
+         # Find obligations that match any of the user's roles
+-        project_ids = Project.objects.filter(members=request.user.id).values_list(
+-            "id", flat=True
+-        )
+-
++        project_ids = Project.objects.filter(members=request.user.id).values_list('id', flat=True)
++
+         # Find obligations that match any of the user's roles and are in their projects
+-        obligations = (
+-            Obligation.objects.filter(
+-                responsibility__in=user_roles, project_id__in=project_ids
+-            )
+-            .select_related("project")
+-            .distinct()
+-        )
+-
+-        # Get obligations that are overdue
+-        overdue_obligations = [
+-            obligation for obligation in obligations if obligation.is_overdue
 -        ]
--        status_filter = Q(status__in=status_values)
--        id_filter = Q(obligation_number__in=filtered_ids)
--        return queryset.filter(status_filter | id_filter)
 -
--    def apply_filters(self, queryset: QuerySet, filters: dict[str, Any]) -> QuerySet:
--        if filters["status"]:
--            queryset = self._filter_by_status(queryset, filters["status"])
--
--        if filters["mechanism"]:
-+    def apply_filters(self, queryset: QuerySet, filters: Dict[str, Any]) -> QuerySet:
-+        """Apply filters to the queryset."""
-+        # Handle the date filter first (14-day lookahead)
-+        if filters['date_filter'] == '14days':
-+            today = timezone.now().date()
-+            two_weeks = today + timedelta(days=14)
-             queryset = queryset.filter(
--                primary_environmental_mechanism__id__in=filters["mechanism"]
-+                action_due_date__gte=today,
-+                action_due_date__lte=two_weeks
-             )
-
--        if filters["phase"]:
--            queryset = queryset.filter(project_phase__in=filters["phase"])
--
--        # Fixing search filter to avoid Q object binary operation issues
--        if filters["search"]:
--            search_query = Q()
--            searchable_fields = [
--                "obligation_number",
--                "obligation",
--                "supporting_information",
--            ]
--            for field in searchable_fields:
--                search_query |= Q(**{f"{field}__icontains": filters["search"]})
--            queryset = queryset.filter(search_query)
-+        # Apply status filter
-+        if filters['status']:
-+            # Handle the special case of 'overdue' status which isn't in the database
-+            if 'overdue' in filters['status'] and len(filters['status']) == 1:
-+                from obligations.utils import is_obligation_overdue
+-        context: dict[str, Any] = {
+-            "profile": profile,
+-            "overdue_count": len(overdue_obligations),
++        obligations = Obligation.objects.filter(
++            responsibility__in=user_roles,
++            project_id__in=project_ids
++        ).select_related('project').distinct()
 +
-+                # Filter for items that are overdue
-+                filtered_ids = []
-+                for obligation in queryset:
-+                    if is_obligation_overdue(obligation):
-+                        filtered_ids.append(obligation.obligation_number)
-+                queryset = queryset.filter(obligation_number__in=filtered_ids)
-+            elif 'overdue' in filters['status'] and len(filters['status']) > 1:
-+                # Handle mix of 'overdue' and other statuses
-+                other_statuses = [s for s in filters['status'] if s != 'overdue']
-+                filtered_ids = []
-+                for obligation in queryset.filter(status__in=other_statuses):
-+                    if is_obligation_overdue(obligation):
-+                        filtered_ids.append(obligation.obligation_number)
-+                queryset = queryset.filter(
-+                    Q(status__in=other_statuses) | Q(obligation_number__in=filtered_ids)
-+                )
-+            else:
-+                # Normal status filtering
-+                queryset = queryset.filter(status__in=filters['status'])
++        # Get obligations that are overdue (due_date is in the past)
++        overdue_obligations = [obligation for obligation in obligations if obligation.is_overdue]
 +
-+        # Apply mechanism filter if provided
-+        if filters['mechanism']:
-+            queryset = queryset.filter(
-+                primary_environmental_mechanism__id__in=filters['mechanism']
-+            )
-+
-+        # Apply phase filter if provided
-+        if filters['phase']:
-+            queryset = queryset.filter(project_phase__in=filters['phase'])
-+
-+        # Apply search if provided
-+        if filters['search']:
-+            queryset = queryset.filter(
-+                Q(obligation_number__icontains=filters['search']) |
-+                Q(obligation__icontains=filters['search']) |
-+                Q(supporting_information__icontains=filters['search'])
-+            )
-
-         return queryset
-
--    def get_filters(self) -> dict[str, Any]:
-+    def get_filters(self) -> Dict[str, Any]:
-+        """Extract filters from request."""
-         return {
--            "status": self.request.GET.getlist("status"),
--            "mechanism": self.request.GET.getlist("mechanism"),
--            "phase": self.request.GET.getlist("phase"),
--            "search": self.request.GET.get("search", ""),
--            "sort": self.request.GET.get("sort", "action_due_date"),
--            "order": self.request.GET.get("order", "asc"),
--            "date_filter": self.request.GET.get("date_filter", ""),
-+            'status': self.request.GET.getlist('status'),
-+            'mechanism': self.request.GET.getlist('mechanism'),
-+            'phase': self.request.GET.getlist('phase'),
-+            'search': self.request.GET.get('search', ''),
-+            'sort': self.request.GET.get('sort', 'action_due_date'),
-+            'order': self.request.GET.get('order', 'asc'),
-+            'date_filter': self.request.GET.get('date_filter', ''),
++        context: Dict[str, Any] = {
++        'profile': profile,
++        'overdue_count': len(overdue_obligations),
          }
-
-     def get_context_data(self, **kwargs):
-+        """Get context data for the template."""
-         context = super().get_context_data(**kwargs)
--        mechanism_id = self.request.GET.get("mechanism_id")
-
-+        mechanism_id = self.request.GET.get('mechanism_id')
 +
-+        '''
-+        if not mechanism_id:
-+            context['error'] = "No procedure selected"
-+            return context
-+        '''
-         try:
-+            # Verify project exists
-             project = get_object_or_404(EnvironmentalMechanism, id=mechanism_id)
-+
-+            # Get filters from request
-             filters = self.get_filters()
--            base_queryset = Obligation.objects.filter(
--                primary_environmental_mechanism=mechanism_id
--            )
--            queryset = self.apply_filters(base_queryset, filters)
 
--            sort_field = filters["sort"]
--            if filters["order"] == "desc":
--                sort_field = f"-{sort_field}"
-+            # Get obligations for this project
-+            queryset = Obligation.objects.filter(primary_environmental_mechanism=mechanism_id)
-+
-+            # Apply filters
-+            queryset = self.apply_filters(queryset, filters)
-+
-+            # Sort results
-+            sort_field = filters['sort']
-+            if filters['order'] == 'desc':
-+                sort_field = f'-{sort_field}'
-             queryset = queryset.order_by(sort_field)
+     if request.htmx:
+-        return render(request, "users/partials/profile_detail.html", context)
+-    return render(request, "users/profile_detail.html", context)
++        return render(request, 'users/partials/profile_detail.html', context)
++    return render(request, 'users/profile_detail.html', context)
 
-+            # Paginate results
-             paginator = Paginator(queryset, 15)
--            page_number = self.request.GET.get("page", 1)
-+            page_number = self.request.GET.get('page', 1)
-             page_obj = paginator.get_page(page_number)
 
--            context.update(
--                {
--                    "obligations": page_obj,
--                    "page_obj": page_obj,
--                    "project": project,
--                    "mechanism_id": mechanism_id,
--                    "filters": filters,
--                    "total_count": paginator.count,
--                }
--            )
+ @login_required
+-def profile_edit(request):
++def profile_edit(request: HttpRequest) -> HttpResponse:
+     """View for editing user's profile."""
+-    profile = request.user.profile
++    profile: Profile = request.user.profile
+
+-    if request.method == "POST":
+-        form = UserProfileForm(request.POST, instance=profile)
++    if request.method == 'POST':
++        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+         if form.is_valid():
+             form.save()
+-            messages.success(request, "Profile updated successfully.")
 -
--            # Get unique project phases
--            phases_queryset = (
--                Obligation.objects.filter(primary_environmental_mechanism=mechanism_id)
--                .exclude(project_phase__isnull=True)
--                .exclude(project_phase="")
--                .values_list("project_phase", flat=True)
--                .distinct()
--            )
--            context["phases"] = list({phase.strip() for phase in phases_queryset})
--            context["user_can_edit"] = self.request.user.has_perm(
--                "obligations.change_obligation"
--            )
+-            if request.htmx:
+-                response = render(
+-                    request, "users/partials/profile_detail.html", {"profile": profile}
+-                )
+-                return trigger_client_event(response, "profileUpdated", {})
+-            return redirect("users:profile")
 -
--        except EnvironmentalMechanism.DoesNotExist as exc:
--            logger.error("EnvironmentalMechanism not found: %s", str(exc))
--            context["error"] = "Error loading obligations: Mechanism not found."
--
-+            context.update({
-+                'obligations': page_obj,
-+                'page_obj': page_obj,
-+                'project': project,
-+                # 'project_id': project_id,
-+                'mechanism_id': mechanism_id,
-+                'filters': filters,
-+                'total_count': paginator.count,
-+            })
-+            # Get only unique phases
-+            phases = Obligation.objects.filter(primary_environmental_mechanism=mechanism_id).exclude(project_phase__isnull=True).exclude(project_phase='').values_list('project_phase', flat=True).distinct()
-+            phases_cleaned = {phase.strip() for phase in phases}
-+            context['phases'] = list(phases_cleaned)
-+
-+            context['user_can_edit'] = self.request.user.has_perm('obligations.change_obligation')
-+
-+        except Exception as e:
-+            logger.error(f'Error in ObligationSummaryView: {str(e)}')
-+            context['error'] = f'Error loading obligations: {str(e)}'
-         return context
-
--
- class TotalOverdueObligationsView(LoginRequiredMixin, View):
-     def get(self, request, *args, **kwargs):
--        project_id = request.GET.get("project_id")
-+        project_id = request.GET.get('project_id')
-
-         if not project_id:
--            return JsonResponse({"error": "Project ID is required"}, status=400)
-+            return JsonResponse({'error': 'Project ID is required'}, status=400)
-
-         obligations = Obligation.objects.filter(project_id=project_id)
-
--        overdue_count = sum(
--            1 for obligation in obligations if is_obligation_overdue(obligation)
+-        messages.error(request, "Please correct the errors below.")
++            messages.success(request, 'Profile updated successfully.')
++            return redirect('users:profile')
+     else:
+-        # Initialize form with current user data
+-        form = UserProfileForm(
+-            instance=profile,
+-            initial={
+-                "first_name": request.user.first_name,
+-                "last_name": request.user.last_name,
+-                "email": request.user.email,
+-            },
 -        )
-+        overdue_count = sum(1 for obligation in obligations if is_obligation_overdue(obligation))
++        form = UserProfileForm(instance=profile)
 
-         return JsonResponse(overdue_count, safe=False)
+-    context = {
+-        "form": form,
+-        "profile": profile,
++    context: Dict[str, Any] = {
++        'form': form,
++        'profile': profile,
+     }
 
+     if request.htmx:
+-        return render(request, "users/partials/profile_edit_form.html", context)
+-    return render(request, "users/profile_edit.html", context)
++        return render(request, 'users/partials/profile_edit.html', context)
++    return render(request, 'users/profile_edit.html', context)
+
+
+ @login_required
+-def change_password(request):
+-    """View for changing password."""
+-    if request.method == "POST":
++def change_password(request: HttpRequest) -> HttpResponse:
++    """View for changing user password."""
++    if request.method == 'POST':
+         form = PasswordChangeForm(request.user, request.POST)
+         if form.is_valid():
+             user = form.save()
++            # Update session to prevent logout
+             update_session_auth_hash(request, user)
+-            messages.success(request, "Your password was successfully updated!")
 -
- class ObligationCreateView(LoginRequiredMixin, CreateView):
-     """View for creating a new obligation."""
--
-     model = Obligation
-     form_class = ObligationForm
--    template_name = "obligations/form/new_obligation.html"
-+    template_name = 'obligations/form/new_obligation.html'
+-            if request.htmx:
+-                return HttpResponse(
+-                    '<div class="alert success">Password changed successfully.</div>',
+-                    headers={"HX-Trigger": "passwordChanged"},
+-                )
+-            return redirect("users:profile")
++            messages.success(request, 'Your password was successfully updated!')
++            return redirect('users:profile')
+     else:
+         form = PasswordChangeForm(request.user)
 
-     def get_form_kwargs(self):
-         kwargs = super().get_form_kwargs()
--        project_id = self.request.GET.get("project_id")
-+        project_id = self.request.GET.get('project_id')
-         if project_id:
-             try:
-                 project = Project.objects.get(id=project_id)
--                kwargs["project"] = project
-+                kwargs['project'] = project
-             except Project.DoesNotExist:
-                 pass
-         return kwargs
+-    context = {"form": form}
++    context: Dict[str, Any] = {'form': form}
 
-     def get_context_data(self, **kwargs):
-         context = super().get_context_data(**kwargs)
--        project_id = self.request.GET.get("project_id")
-+        project_id = self.request.GET.get('project_id')
-         if project_id:
--            context["project_id"] = project_id
-+            context['project_id'] = project_id
-         return context
+     if request.htmx:
+-        return render(request, "users/partials/password_change_form.html", context)
+-    return render(request, "users/password_change.html", context)
++        return render(request, 'users/partials/change_password.html', context)
++    return render(request, 'users/change_password.html', context)
 
--    # Proper exception handling and logging in form_valid
-     def form_valid(self, form):
-         try:
-+            # Save the form
-             obligation = form.save()
--            messages.success(
--                self.request, f"Obligation {obligation.obligation_number} created."
--            )
--            return redirect("dashboard:home")
--        except ValidationError as exc:
--            logger.error("Validation error in ObligationCreateView: %s", str(exc))
--            messages.error(self.request, f"Validation failed: {exc}")
--            return self.form_invalid(form)
 
--        except OSError as exc:
--            logger.error("IO error updating obligation: %s", str(exc))
--            messages.error(self.request, "System error occurred")
-+            # Add success message
-+            messages.success(self.request, f'Obligation {obligation.obligation_number} created successfully.')
+ @login_required
+-@require_http_methods(["POST"])
+-def upload_profile_image(request):
+-    """AJAX view for uploading profile image."""
+-    form = ProfileImageForm(request.POST, request.FILES, instance=request.user.profile)
+-    if form.is_valid():
+-        form.save()
+-        return JsonResponse(
+-            {"status": "success", "image_url": request.user.profile.profile_image.url}
++def upload_profile_image(request: HttpRequest) -> HttpResponse:
++    """View for uploading a profile image."""
++    if request.method == 'POST':
++        form = ProfileImageForm(
++            request.POST, request.FILES, instance=request.user.profile
+         )
+-    return JsonResponse({"status": "error", "errors": form.errors})
++        if form.is_valid():
++            form.save()
++            messages.success(request, 'Profile image updated successfully.')
 +
-+            # Redirect to appropriate page
-+            if 'project_id' in self.request.GET:
-+                return redirect(f"{reverse('dashboard:home')}?project_id={self.request.GET['project_id']}")
-+            return redirect('dashboard:home')
++            if request.htmx:
++                return JsonResponse(
++                    {
++                        'success': True,
++                        'image_url': request.user.profile.profile_image.url,
++                    }
++                )
++            return redirect('users:profile')
++    else:
++        form = ProfileImageForm(instance=request.user.profile)
 +
-+        except Exception as e:
-+            logger.exception(f'Error in ObligationCreateView: {e}')
-+            messages.error(self.request, f'Failed to create obligation: {str(e)}')
-             return self.form_invalid(form)
-
-     def form_invalid(self, form):
--        messages.error(self.request, "Please correct the errors below.")
-+        messages.error(self.request, 'Please correct the errors below.')
-         return super().form_invalid(form)
-
-
- class ObligationDetailView(LoginRequiredMixin, DetailView):
-     """View for viewing a single obligation."""
--
-     model = Obligation
--    template_name = "obligations/form/view_obligation.html"
--    context_object_name = "obligation"
--    pk_url_kwarg = "obligation_number"
-+    template_name = 'obligations/form/view_obligation.html'
-+    context_object_name = 'obligation'
-+    pk_url_kwarg = 'obligation_number'
-
-     def get_context_data(self, **kwargs):
-         context = super().get_context_data(**kwargs)
-         # Add project_id to context for back navigation
--        context["project_id"] = self.object.project_id
-+        context['project_id'] = self.object.project_id
-         return context
-
-
- class ObligationUpdateView(LoginRequiredMixin, UpdateView):
-     """Update an existing obligation."""
--
-     model = Obligation
-     form_class = ObligationForm
--    template_name = "obligations/form/update_obligation.html"
--    slug_field = "obligation_number"
--    slug_url_kwarg = "obligation_number"
--
--    def __init__(self, **kwargs):
--        super().__init__(**kwargs)
--        self.object = None
-+    template_name = 'obligations/form/update_obligation.html'
-+    slug_field = 'obligation_number'
-+    slug_url_kwarg = 'obligation_number'
-
-     def get_template_names(self):
-         if self.request.htmx:
--            return ["obligations/form/partial_update_obligation.html"]
-+            return ['obligations/form/partial_update_obligation.html']
-         return [self.template_name]
-
-     def get_form_kwargs(self):
-         kwargs = super().get_form_kwargs()
--        kwargs["project"] = self.get_object().project
-+        kwargs['project'] = self.object.project
-         return kwargs
-
-     def get_context_data(self, **kwargs):
-         context = super().get_context_data(**kwargs)
--        context["project_id"] = self.get_object().project_id
-+        # Add project_id to context for back navigation
-+        context['project_id'] = self.object.project_id
-         return context
-
--    def _update_mechanism_counts(
--        self, old_mechanism: EnvironmentalMechanism, updated_obligation: Obligation
--    ):
--        """Update obligation counts for mechanisms."""
--        if (
--            old_mechanism
--            and old_mechanism != updated_obligation.primary_environmental_mechanism
--        ):
--            old_mechanism.update_obligation_counts()
--            if updated_obligation.primary_environmental_mechanism:
--                mech = updated_obligation.primary_environmental_mechanism
--                mech.update_obligation_counts()
--        elif updated_obligation.primary_environmental_mechanism:
--            updated_obligation.primary_environmental_mechanism.update_obligation_counts()  # pylint: disable=no-member
--
-     def form_valid(self, form):
--        try:
--            self.object = self.get_object()
--            old_mechanism = self.object.primary_environmental_mechanism
-+        """Process the form submission."""
-+        response = super().form_valid(form)
-
--            # Save the updated obligation
--            updated_obligation = form.save()
--            self._update_mechanism_counts(old_mechanism, updated_obligation)
-+        # If this is an HTMX request, return appropriate headers
-+        if self.request.htmx:
-+            # Using path-deps to refresh dependent components
-+            response = HttpResponse('Obligation updated successfully')
-
--            messages.success(
--                self.request,
--                f"Obligation {updated_obligation.obligation_number} updated.",
--            )
-+            # Explicitly trigger a refresh for path-deps components
-+            trigger_client_event(response, 'path-deps-refresh', {
-+                'path': '/obligations/'
-+            })
-
--            # Build redirect URL
--            if "project_id" in self.request.GET:
--                base_url = reverse("dashboard:home")
--                proj_id = self.request.GET["project_id"]
--                return redirect(f"{base_url}?project_id={proj_id}")
--            return redirect("dashboard:home")
-+            return response
-
--        except ValidationError as exc:
--            logger.error("Validation error updating obligation: %s", str(exc))
--            messages.error(self.request, f"Validation failed: {exc}")
--            return self.form_invalid(form)
-+        return response
++    context = {
++        'form': form,
++    }
 +
-+    def form_valid(self, form):
-+        try:
-+            old_mechanism = None
-+            if self.object.primary_environmental_mechanism:
-+                old_mechanism = self.object.primary_environmental_mechanism
-+
-+            # Save the updated obligation
-+            obligation = form.save()
-
--        except OSError as exc:
--            logger.error("IO error updating obligation: %s", str(exc))
--            messages.error(self.request, "System error occurred")
-+            # Update mechanism counts
-+            if old_mechanism and old_mechanism != obligation.primary_environmental_mechanism:
-+                if old_mechanism:
-+                    old_mechanism.update_obligation_counts()
-+                if obligation.primary_environmental_mechanism:
-+                    obligation.primary_environmental_mechanism.update_obligation_counts()
-+            elif obligation.primary_environmental_mechanism:
-+                obligation.primary_environmental_mechanism.update_obligation_counts()
-+
-+            # Add success message
-+            messages.success(self.request, f'Obligation {obligation.obligation_number} updated successfully.')
-+
-+            # Redirect back to the appropriate page
-+            if 'project_id' in self.request.GET:
-+                return redirect(f"{reverse('dashboard:home')}?project_id={self.request.GET['project_id']}")
-+            return redirect('dashboard:home')
-+
-+        except Exception as e:
-+            logger.exception(f'Error in ObligationUpdateView: {e}')
-+            messages.error(self.request, f'Failed to update obligation: {str(e)}')
-             return self.form_invalid(form)
-
-     def form_invalid(self, form):
--        messages.error(self.request, "Please correct the errors below.")
-+        messages.error(self.request, 'Please correct the errors below.')
-         return super().form_invalid(form)
++    return render(request, 'users/partials/profile_image_form.html', context)
 
 
- class ObligationDeleteView(LoginRequiredMixin, DeleteView):
-     """View for deleting an obligation."""
+ @user_passes_test(is_admin)
+-def admin_user_list(request):
+-    """Admin view for listing all users."""
+-    users = User.objects.all().order_by("-date_joined")
++def admin_user_list(request: HttpRequest) -> HttpResponse:
++    """View for displaying all users to an admin."""
++    users = User.objects.all().select_related('profile').order_by('-is_staff', 'username')
+
+-    context = {"users": users}
++    context = {
++        'users': users,
++    }
+
+-    if request.htmx:
+-        return render(request, "users/partials/admin_user_list.html", context)
+-    return render(request, "users/admin_user_list.html", context)
++    return render(request, 'users/admin_user_list.html', context)
+
+
+ @user_passes_test(is_admin)
+-def admin_user_create(request):
+-    """Admin view for creating a new user."""
+-    if request.method == "POST":
++def admin_user_create(request: HttpRequest) -> HttpResponse:
++    """Admin view for creating new users."""
++    if request.method == 'POST':
+         form = AdminUserForm(request.POST)
+         if form.is_valid():
+             user = form.save()
+-            messages.success(request, f"User {user.username} created successfully!")
 -
-     model = Obligation
--    pk_url_kwarg = "obligation_number"
--
--    def __init__(self, **kwargs):
--        super().__init__(**kwargs)
--        self.object = None
-+    pk_url_kwarg = 'obligation_number'
+-            if request.htmx:
+-                return HttpResponse(
+-                    '<div class="alert success">User created successfully.</div>',
+-                    headers={"HX-Redirect": reverse("users:admin_user_list")},
+-                )
+-            return redirect("users:admin_user_list")
++            messages.success(request, f'User {user.username} created successfully.')
++            return redirect('users:admin_user_list')
+     else:
+         form = AdminUserForm()
 
-     def post(self, request, *args, **kwargs):
-         try:
-             self.object = self.get_object()
-             project_id = self.object.project_id
-             mechanism = self.object.primary_environmental_mechanism
--            obl_number = kwargs.get("obligation_number")
+-    context = {"form": form, "action": "Create"}
++    context = {
++        'form': form,
++        'action': 'Create',
++    }
 
-             # Delete the obligation
-             self.object.delete()
--            logger.info("Obligation %s deleted successfully", obl_number)
-+            logger.info(f"Obligation {kwargs.get('obligation_number')} deleted successfully")
+-    if request.htmx:
+-        return render(request, "users/partials/admin_user_form.html", context)
+-    return render(request, "users/admin_user_form.html", context)
++    return render(request, 'users/admin_user_form.html', context)
 
-             # Update mechanism counts
-             if mechanism:
-                 mechanism.update_obligation_counts()
 
--            base_url = reverse("dashboard:home")
--            return JsonResponse(
--                {
--                    "status": "success",
--                    "message": f"Obligation {obl_number} deleted successfully",
--                    "redirect_url": f"{base_url}?project_id={project_id}",
--                }
--            )
--
--        except (Obligation.DoesNotExist, ValidationError) as exc:
--            logger.error("Error deleting obligation: %s", str(exc))
--            msg = f"Delete failed: {exc}"
--            return JsonResponse({"status": "error", "message": msg}, status=400)
--
--
--@method_decorator(vary_on_headers("HX-Request"), name="dispatch")
-+            # Return JSON response for AJAX calls
-+            return JsonResponse({
-+                'status': 'success',
-+                'message': f"Obligation {kwargs.get('obligation_number')} deleted successfully",
-+                'redirect_url': f"{reverse('dashboard:home')}?project_id={project_id}"
-+            })
-+
-+        except Exception as e:
-+            logger.error(f'Error deleting obligation: {str(e)}')
-+            return JsonResponse({
-+                'status': 'error',
-+                'message': f'Error deleting obligation: {str(e)}'
-+            }, status=400)
-+
-+@method_decorator(vary_on_headers('HX-Request'), name='dispatch')
- class ToggleCustomAspectView(View):
--    """View for toggling custom aspect field visibility."""
--
-     def get(self, request):
--        aspect = request.GET.get("environmental_aspect")
--        show_field = aspect == "Other"
--        return render(
--            request,
--            "obligations/partials/custom_aspect_field.html",
--            {"show_field": show_field},
--        )
--
-+        aspect = request.GET.get('environmental_aspect')
-+        if aspect == 'Other':
-+            return render(request, 'obligations/partials/custom_aspect_field.html', {
-+                'show_field': True
-+            })
-+        return render(request, 'obligations/partials/custom_aspect_field.html', {
-+            'show_field': False
-+        })
-
- def upload_evidence(request, obligation_id):
--    """Handle evidence file uploads for an obligation."""
-     obligation = get_object_or_404(Obligation, pk=obligation_id)
--    evidence_count = ObligationEvidence.objects.filter(obligation=obligation).count()
-
-     # Check if obligation already has 5 files
--    if evidence_count >= 5:
--        messages.error(
--            request, "This obligation already has the maximum of 5 evidence files"
--        )
--        return redirect("obligation_detail", obligation_id=obligation_id)
-+    if ObligationEvidence.objects.filter(obligation=obligation).count() >= 5:
-+        messages.error(request, 'This obligation already has the maximum of 5 evidence files')
-+        return redirect('obligation_detail', obligation_id=obligation_id)
+ @user_passes_test(is_admin)
+-def admin_user_edit(request, user_id):
+-    """Admin view for editing a user."""
++def admin_user_edit(request: HttpRequest, user_id: int) -> HttpResponse:
++    """Admin view for editing users."""
+     user_obj = get_object_or_404(User, id=user_id)
 
 -    if request.method == "POST":
 +    if request.method == 'POST':
-         form = EvidenceUploadForm(request.POST, request.FILES)
-         if form.is_valid():
-             evidence = form.save(commit=False)
-             evidence.obligation = obligation
-             evidence.save()
--            messages.success(request, "Evidence file uploaded successfully")
--            return redirect("obligation_detail", obligation_id=obligation_id)
+         form = AdminUserForm(request.POST, instance=user_obj)
+-        profile_form = UserProfileForm(
+-            request.POST, request.FILES, instance=user_obj.profile
+-        )
++        profile_form = UserProfileForm(request.POST, instance=user_obj.profile)
+
+         if form.is_valid() and profile_form.is_valid():
+             form.save()
+             profile_form.save()
+-            messages.success(request, f"User {user_obj.username} updated successfully!")
 -
--    form = EvidenceUploadForm()
--    return render(
--        request,
--        "upload_evidence.html",
--        {
--            "obligation": obligation,
--            "form": form,
--        },
--    )
-+            messages.success(request, 'Evidence file uploaded successfully')
-+            return redirect('obligation_detail', obligation_id=obligation_id)
-+    else:
-+        form = EvidenceUploadForm()
-+        return render(request, 'upload_evidence.html', {
-+            'obligation': obligation,
-+            'form': form,
-+        })
-diff --git a/greenova/procedures/templates/procedures/procedure_charts.html b/greenova/procedures/templates/procedures/procedure_charts.html
-old mode 100755
-new mode 100644
-index 1423078..102916b
---- a/greenova/procedures/templates/procedures/procedure_charts.html
-+++ b/greenova/procedures/templates/procedures/procedure_charts.html
-@@ -80,7 +80,7 @@ <h2 id="filter-heading">
-               </option>
-               {% for resp in available_responsibilities %}
-                 <option value="{{ resp }}"
--                        {% if filter_responsibility == resp %}selected{% endif %}>
-+                        {% if filter_responsibility == resp %} selected {% endif %}>
-                   {{ resp }}
+-            if request.htmx:
+-                return HttpResponse(
+-                    '<div class="alert success">User updated successfully.</div>',
+-                    headers={"HX-Redirect": reverse("users:admin_user_list")},
+-                )
+-            return redirect("users:admin_user_list")
++            messages.success(request, f'User {user_obj.username} updated successfully.')
++            return redirect('users:admin_user_list')
+     else:
+         form = AdminUserForm(instance=user_obj)
+         profile_form = UserProfileForm(instance=user_obj.profile)
 
-                 </option>
-@@ -98,7 +98,7 @@ <h2 id="filter-heading">
-               </option>
-               {% for status_value, status_label in status_options %}
-                 <option value="{{ status_value }}"
--                        {% if filter_status == status_value %}selected{% endif %}>
-+                        {% if filter_status == status_value %} selected {% endif %}>
-                   {{ status_label }}
+     context = {
+-        "form": form,
+-        "profile_form": profile_form,
+-        "user_obj": user_obj,
+-        "action": "Update",
++        'form': form,
++        'profile_form': profile_form,
++        'user_obj': user_obj,
++        'action': 'Edit',
+     }
 
-                 </option>
-@@ -111,14 +111,14 @@ <h2 id="filter-heading">
-               <input type="checkbox"
-                      name="lookahead"
-                      value="14days"
--                     {% if filter_lookahead %}checked{% endif %} />
-+                     {% if filter_lookahead %} checked {% endif %} />
-               14-Day Lookahead
-             </label>
-             <label>
-               <input type="checkbox"
-                      name="overdue"
-                      value="true"
--                     {% if filter_overdue %}checked{% endif %} />
-+                     {% if filter_overdue %} checked {% endif %} />
-               Overdue Only
-             </label>
-           </div>
-@@ -226,7 +226,7 @@ <h2>
-                        hx-swap="innerHTML"
-                        hx-trigger="click"
-                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Not Started obligations for {{ item.name }}'">
--                      {{ item.not_started }}
-+                        {{ item.not_started }}
-                     </a>
-                   </td>
-                   <td>
-@@ -237,7 +237,7 @@ <h2>
-                        hx-swap="innerHTML"
-                        hx-trigger="click"
-                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'In Progress obligations for {{ item.name }}'">
--                      {{ item.in_progress }}
-+                        {{ item.in_progress }}
-                     </a>
-                   </td>
-                   <td>
-@@ -248,7 +248,7 @@ <h2>
-                        hx-swap="innerHTML"
-                        hx-trigger="click"
-                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Completed obligations for {{ item.name }}'">
--                      {{ item.completed }}
-+                        {{ item.completed }}
-                     </a>
-                   </td>
-                   <td>
-@@ -259,7 +259,7 @@ <h2>
-                        hx-swap="innerHTML"
-                        hx-trigger="click"
-                        _="on click add .selected to me remove .selected from .status-count-link where it is not me set #current-filter.innerText to 'Overdue obligations for {{ item.name }}'">
--                      {{ item.overdue }}
-+                        {{ item.overdue }}
-                     </a>
-                   </td>
-                   <td>
-@@ -281,13 +281,16 @@ <h2>
-             <!-- Obligations will be loaded here -->
-           </div>
-         </div>
-+        <div id="current-filter" class="filter-label">
-+          <!-- Will be set dynamically -->
-+        </div>
-+
-+        <div id="obligation-list-container"
-+             aria-live="polite"
-+             class="obligations-container">
-+          <!-- Filtered obligations will be loaded here via HTMX -->
-+        </div>
-       </article>
--      <!-- Add container for filtered obligations -->
--      <div id="obligation-list-container"
--           aria-live="polite"
--           class="obligations-container">
--        <!-- Filtered obligations will be loaded here via HTMX -->
--      </div>
-     {% endif %}
-   </article>
-   <script>
-diff --git a/greenova/static/css/components/obligations.css b/greenova/static/css/components/obligations.css
-old mode 100755
-new mode 100644
-index 714cf67..bbd08fc
---- a/greenova/static/css/components/obligations.css
-+++ b/greenova/static/css/components/obligations.css
-@@ -245,7 +245,7 @@ @media print {
-   }
- }
+-    if request.htmx:
+-        return render(request, "users/partials/admin_user_form.html", context)
+-    return render(request, "users/admin_user_form.html", context)
++    return render(request, 'users/admin_user_form.html', context)
 
--/* Interactive status count styles */
-+/* Add styles for .status-count-link and .obligations-container */
- .status-count-link {
-   cursor: pointer;
-   text-decoration: underline;
+
+ @user_passes_test(is_admin)
+-def admin_user_delete(request, user_id):
+-    """Admin view for deleting a user."""
++def admin_user_delete(request: HttpRequest, user_id: int) -> HttpResponse:
++    """Admin view for deleting users."""
+     user_obj = get_object_or_404(User, id=user_id)
+
+-    # Prevent admins from deleting themselves
+-    if user_obj == request.user:
+-        messages.error(request, "You cannot delete your own account!")
+-        return redirect("users:admin_user_list")
+-
+-    if request.method == "POST":
++    if request.method == 'POST':
+         username = user_obj.username
+         user_obj.delete()
+-        messages.success(request, f"User {username} deleted successfully!")
+-
+-        if request.htmx:
+-            users = User.objects.all().order_by("-date_joined")
+-            html = render_to_string(
+-                "users/partials/admin_user_list.html", {"users": users}
+-            )
+-            return HttpResponse(html)
+-        return redirect("users:admin_user_list")
++        messages.success(request, f'User {username} deleted successfully.')
++        return redirect('users:admin_user_list')
+
+-    context = {"user_obj": user_obj}
++    context = {
++        'user_obj': user_obj,
++    }
+
+     if request.htmx:
+-        return render(request, "users/partials/admin_user_delete_confirm.html", context)
+-    return render(request, "users/admin_user_delete.html", context)
++        return render(request, 'users/partials/admin_user_delete_confirm.html', context)
++    return render(request, 'users/admin_user_delete.html', context)
+
 ```
 
-**Objective:**
-**Objective:** Add interactive filtering capabilities to the obligations dashboard by making status count displays clickable, which dynamically load filtered obligation lists using HTMX. This enhancement improves data exploration by providing direct access to filtered data, reduces navigation steps, and creates a more engaging user experience while maintaining accessibility and mobile optimization.
+**Objective:** Ensure the user profile model has a proper relationship with the responsibility table, the profile view retrieves and provides overdue records in context, the overdue_count action table is properly positioned in the profile view, the table shows relevant information about overdue items, the table UI follows project design standards and is responsive, and the implementation maintains WCAG 2.1 AA compliance. All changes must be properly tested.
 
 **Source:**
 
-- <https://github.com/enveng-group/dev_greenova/issues/37>
-- <https://github.com/enveng-group/dev_greenova/pull/99>
-
-1. **`greenova/procedures/templates/procedures/procedure_charts.html`**
-
-- Updated `<option>` elements to include spacing for better readability.
-- Added dynamic filter labels and a container for filtered obligations with HTMX integration.
-
-2. **`greenova/obligations/templates/obligations/partials/obligation_list.html`**
-
-- Simplified obligation list rendering.
-- Improved empty state messaging for better user feedback.
-
-3. **`greenova/obligations/urls.py`**
-
-- Added `ObligationSummaryView` to handle obligation summaries.
-- Updated URL patterns for consistency and clarity.
-
-4. **`greenova/obligations/views.py`**
-
-- Refactored `ObligationSummaryView` to include filtering, sorting, and pagination.
-- Enhanced error handling and logging for better maintainability.
-- Added HTMX support for dynamic obligation updates.
-
-5. **`greenova/static/css/components/obligations.css`**
-
-- Introduced styles for `.status-count-link` and `.obligations-container`.
-- Enhanced hover effects and visual feedback for interactive elements.
+- <https://github.com/enveng-group/dev_greenova/issues/88>
+- <https://github.com/enveng-group/dev_greenova/pull/97>
+- `.vscode/tasks.json`
+- `greenova/users/templates/users/partials/profile_detail.html`
+- `greenova/users/views.py`
+- `logs/changed_files.log`
+- `logs/conflict_analysis.log`
+- `logs/diff_stats.log`
+- `logs/repo_status.log`
+- `logs/commit_history.log`
+- `logs/diff.log`
+- `logs/pre_merge_analysis.log`
+- `logs/pre_merge/integration_v0.0.6.log`
+- `greenova/tests/pre_merge.py`
 
 **Expectations**: GitHub Copilot can delete and consolidate files where
 multiple implementations are found and can be merged into a single file
@@ -905,6 +1271,19 @@ been activated and are available for use by GitHub Copilot.
    functions, classes, and modules. Use docstrings and comments to clarify
    complex logic or important decisions made during development.
 8. Test the code thoroughly to ensure it works as intended and meets the
-   project's requirements. Write unit tests and integration tests as needed,
-   and ensure that all tests pass before finalizing the changes.
-9. Iterate until resolved.
+   project's requirements. Write unit tests and integration tests as needed in
+   `greenova/tests/pre_merge.py` to cover the new functionality and any
+   changes made. Run the tests using `pytest` or the appropriate testing
+   framework for the project. Use `pytest --disable-warnings` to suppress
+   warnings during testing. Ensure that the tests are comprehensive and cover
+   all edge cases. Use `pytest --cov` to check code coverage and ensure that
+   all critical paths are tested. Use `pytest --maxfail=1` to stop testing
+   after the first failure, allowing for easier debugging. Use `pytest --tb=short`
+   to get a shorter traceback output for easier reading. Use `pytest --pdb` to
+   drop into the debugger on test failures, allowing for interactive debugging.
+9. Review the code for any potential security vulnerabilities or performance
+   issues. Use tools like bandit to scan for security vulnerabilities and
+   address any findings. Optimize the code for performance where necessary,
+   ensuring that it runs efficiently and does not introduce unnecessary
+   overhead.
+10. Iterate until resolved.

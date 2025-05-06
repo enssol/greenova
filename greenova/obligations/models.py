@@ -245,8 +245,7 @@ class Obligation(models.Model):
 
         # If base date is in the past, start from today
         today = timezone.now().date()
-        if base_date < today:
-            base_date = today
+        base_date = max(base_date, today)
 
         # Normalize frequency
         normalized_frequency = normalize_frequency(self.recurring_frequency)
@@ -445,9 +444,7 @@ class ObligationEvidence(models.Model):
 
 @receiver(pre_save, sender="obligations.Obligation")
 def update_forecasted_date_on_change(sender, instance, **kwargs):
-    """
-    Signal handler to update forecasted date when relevant fields change.
-    """
+    """Signal handler to update forecasted date when relevant fields change."""
     # If this is a new instance, skip this check
     if not instance.pk:
         # For new instances, just make sure the date is calculated

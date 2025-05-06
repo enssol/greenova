@@ -1,8 +1,9 @@
 import logging
 import os
-from datetime import timedelta
+from datetime import date, timedelta
 from typing import Any
 
+from company.models import CompanyMembership
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
@@ -11,7 +12,6 @@ from django.db.models import Q, QuerySet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.cache import cache_control
@@ -20,7 +20,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from django.views.generic.edit import DeleteView
 from django_htmx.http import trigger_client_event
 from mechanisms.models import EnvironmentalMechanism
-from projects.models import Project
+from projects.models import Project, ProjectMembership
 
 from .forms import EvidenceUploadForm, ObligationForm
 from .models import Obligation, ObligationEvidence
@@ -107,7 +107,7 @@ class ObligationSummaryView(LoginRequiredMixin, View):
                     request,
                     "obligations/partials/obligation_list.html",
                     {
-                        "error": f"Error loading obligations: {str(exc)}",
+                        "error": f"Error loading obligations: {exc!s}",
                         "obligations": [],
                     },
                 )
@@ -125,86 +125,133 @@ class ObligationSummaryView(LoginRequiredMixin, View):
         )
 
     def _filter_by_status(self, queryset: QuerySet, status_values: list) -> QuerySet:
-        """Filter queryset by status values including overdue check.
+        """Filter obligations by status, handling 'overdue' as a special case.
 
         Args:
-            queryset: The base queryset to filter
-            status_values: List of status values to include
+            queryset: Base queryset
+            status_values: List of status values to filter by
 
         Returns:
             Filtered queryset
         """
-        if "overdue" not in status_values:
+        # Handle the special case of 'overdue' which isn't a database field
+        if "overdue" in status_values:
+            # Remove overdue to handle separately
+            standard_statuses = [s for s in status_values if s != "overdue"]
+
+            # Get obligations that match standard statuses
+            if standard_statuses:
+                filtered_by_status = queryset.filter(status__in=standard_statuses)
+            else:
+                filtered_by_status = queryset.none()
+
+            # Find overdue obligations
+            overdue_ids = []
+            for obligation in queryset:
+                if is_obligation_overdue(obligation):
+                    overdue_ids.append(obligation.obligation_number)
+
+            if overdue_ids:
+                # Combine with standard status filter
+                overdue_queryset = queryset.filter(obligation_number__in=overdue_ids)
+                return filtered_by_status.union(overdue_queryset)
+            return filtered_by_status
+
+        # Standard status filtering
+        if status_values:
             return queryset.filter(status__in=status_values)
-
-        # Handle overdue status specially since it's calculated not stored
-        filtered_ids = [
-            obligation.obligation_number
-            for obligation in queryset
-            if is_obligation_overdue(obligation)
-        ]
-        status_filter = Q(status__in=[s for s in status_values if s != "overdue"])
-        id_filter = Q(obligation_number__in=filtered_ids)
-
-        return queryset.filter(status_filter | id_filter)
+        return queryset
 
     def apply_filters(self, queryset: QuerySet, filters: dict[str, Any]) -> QuerySet:
-        """Apply various filters to the obligation queryset.
+        """Apply all filters to the queryset.
 
         Args:
-            queryset: Base obligation queryset
-            filters: Dictionary of filter parameters
+            queryset: Base queryset
+            filters: Dictionary of filter values
 
         Returns:
             Filtered queryset
         """
-        # Handle the date filter for 14-day lookahead
-        if filters.get("date_filter") == "14days":
-            today = timezone.now().date()
-            two_weeks = today + timedelta(days=14)
-            queryset = queryset.filter(
-                action_due_date__gte=today, action_due_date__lte=two_weeks
-            )
+        if not queryset:
+            return queryset
 
         # Apply status filter
-        if filters["status"]:
+        if filters.get("status"):
             queryset = self._filter_by_status(queryset, filters["status"])
 
-        # Apply mechanism filter
-        if filters["mechanism"]:
-            queryset = queryset.filter(
-                primary_environmental_mechanism__id__in=filters["mechanism"]
-            )
-
         # Apply phase filter
-        if filters["phase"]:
+        if filters.get("phase"):
             queryset = queryset.filter(project_phase__in=filters["phase"])
 
-        # Apply search filter with proper Q objects
-        if filters["search"]:
+        # Apply search filter
+        if filters.get("search"):
+            search_term = filters["search"]
             queryset = queryset.filter(
-                Q(obligation_number__icontains=filters["search"])
-                | Q(obligation__icontains=filters["search"])
-                | Q(supporting_information__icontains=filters["search"])
+                Q(obligation_number__icontains=search_term)
+                | Q(obligation__icontains=search_term)
             )
+
+        # Apply date filter
+        if filters.get("date_filter"):
+            date_filter = filters["date_filter"]
+            today = date.today()
+
+            if date_filter == "past_due":
+                # Past due - action_due_date is in the past and status isn't completed
+                queryset = queryset.filter(
+                    action_due_date__lt=today, status__ne="completed"
+                )
+            elif date_filter == "14days":
+                # Due in next 14 days
+                future_date = today + timedelta(days=14)
+                queryset = queryset.filter(
+                    action_due_date__gte=today, action_due_date__lte=future_date
+                )
+            elif date_filter == "30days":
+                # Due in next 30 days
+                future_date = today + timedelta(days=30)
+                queryset = queryset.filter(
+                    action_due_date__gte=today, action_due_date__lte=future_date
+                )
+            # Add more date filters as needed
 
         return queryset
 
     def get_filters(self) -> dict[str, Any]:
-        """Extract filter parameters from request.
+        """Extract and normalize filter parameters from request.
 
         Returns:
             Dictionary of filter parameters
         """
-        return {
-            "status": self.request.GET.getlist("status"),
-            "mechanism": self.request.GET.getlist("mechanism"),
-            "phase": self.request.GET.getlist("phase"),
-            "search": self.request.GET.get("search", ""),
-            "sort": self.request.GET.get("sort", "action_due_date"),
-            "order": self.request.GET.get("order", "asc"),
-            "date_filter": self.request.GET.get("date_filter", ""),
-        }
+        filters = {}
+
+        # Get query parameters
+        status = self.request.GET.getlist("status") or self.request.GET.getlist(
+            "status[]"
+        )
+        phase = self.request.GET.getlist("phase") or self.request.GET.getlist("phase[]")
+        search = self.request.GET.get("search", "")
+        date_filter = self.request.GET.get("date_filter", "")
+
+        # Add sort parameters with defaults
+        sort = self.request.GET.get("sort", "obligation_number")
+        order = self.request.GET.get("order", "asc")
+
+        # Build filters dict
+        if status:
+            filters["status"] = [s.strip().lower() for s in status]
+        if phase:
+            filters["phase"] = [p.strip() for p in phase if p.strip()]
+        if search:
+            filters["search"] = search
+        if date_filter:
+            filters["date_filter"] = date_filter
+
+        # Add sort parameters
+        filters["sort"] = sort
+        filters["order"] = order
+
+        return filters
 
     def get_context_data(self, **kwargs):
         """Get context data for the template.
@@ -216,7 +263,69 @@ class ObligationSummaryView(LoginRequiredMixin, View):
         mechanism_id = self.request.GET.get("mechanism_id")
 
         try:
-            # Verify mechanism exists
+            # Check if we're coming from user profile (without mechanism_id)
+            if not mechanism_id:
+                # Get overdue obligations for the current user
+                user = self.request.user
+                user_roles = []
+
+                # Get user's company roles using the CompanyMembership model directly
+                company_memberships = CompanyMembership.objects.filter(user=user)
+                if company_memberships:
+                    user_roles = list(
+                        company_memberships.values_list("role", flat=True).distinct()
+                    )
+
+                # Get projects where user is a member using the ProjectMembership model directly
+                project_ids = []
+                project_memberships = ProjectMembership.objects.filter(user=user)
+                if project_memberships:
+                    project_ids = list(
+                        project_memberships.values_list("project_id", flat=True)
+                    )
+
+                # Find obligations that match user's roles and are in their projects
+                if user_roles and project_ids:
+                    queryset = Obligation.objects.filter(
+                        responsibility__in=user_roles, project_id__in=project_ids
+                    )
+
+                    # Find overdue obligations
+                    overdue_obligations = []
+                    for obligation in queryset:
+                        if is_obligation_overdue(obligation):
+                            overdue_obligations.append(obligation.obligation_number)
+
+                    if overdue_obligations:
+                        queryset = queryset.filter(
+                            obligation_number__in=overdue_obligations
+                        )
+                        # Create simple context for displaying just overdue obligations
+                        context.update(
+                            {
+                                "obligations": queryset,
+                                "total_count": len(queryset),
+                                "filters": {"status": ["overdue"]},
+                                "show_overdue_only": True,
+                            }
+                        )
+
+                        # Add user permissions
+                        context["user_can_edit"] = self.request.user.has_perm(
+                            "obligations.change_obligation"
+                        )
+
+                        return context
+                    else:
+                        context["error"] = "No overdue obligations found for your role"
+                        return context
+                else:
+                    context["error"] = (
+                        "You don't have any company roles or project memberships"
+                    )
+                    return context
+
+            # Regular mechanism-based view (existing code)
             mechanism = get_object_or_404(EnvironmentalMechanism, id=mechanism_id)
 
             # Get filters and base queryset
@@ -268,7 +377,7 @@ class ObligationSummaryView(LoginRequiredMixin, View):
 
         except Exception as exc:
             logger.error("Error in ObligationSummaryView: %s", str(exc))
-            context["error"] = f"Error loading obligations: {str(exc)}"
+            context["error"] = f"Error loading obligations: {exc!s}"
 
         return context
 
@@ -355,7 +464,7 @@ class ObligationCreateView(LoginRequiredMixin, CreateView):
 
         except Exception as exc:
             logger.exception("Error creating obligation: %s", str(exc))
-            messages.error(self.request, f"Failed to create obligation: {str(exc)}")
+            messages.error(self.request, f"Failed to create obligation: {exc!s}")
             return self.form_invalid(form)
 
     def form_invalid(self, form):
@@ -468,7 +577,7 @@ class ObligationUpdateView(LoginRequiredMixin, UpdateView):
 
         except Exception as exc:
             logger.exception("Error updating obligation: %s", str(exc))
-            messages.error(self.request, f"Failed to update obligation: {str(exc)}")
+            messages.error(self.request, f"Failed to update obligation: {exc!s}")
             return self.form_invalid(form)
 
     def form_invalid(self, form):
@@ -519,7 +628,7 @@ class ObligationDeleteView(LoginRequiredMixin, DeleteView):
             return JsonResponse(
                 {
                     "status": "error",
-                    "message": f"Error deleting obligation: {str(exc)}",
+                    "message": f"Error deleting obligation: {exc!s}",
                 },
                 status=400,
             )

@@ -19,6 +19,7 @@ format_css = false
 format_js = false
 ignore = "H014,H015,T002"
 include = "**/*.html,**/*.jinja,**/*.djhtml"
+exclude = "**/node_modules/**,**/bower_components/**,**/vendor/**,**/static/**,**/media/**,**/migrations/**,**/__pycache__/**,**/.git/**,**/.venv/**,**/.env/**,**/.pytest_cache/**,**/.mypy_cache/**,**/build/**,**/dist/**,**/.eggs/**,**/docs/conf.py/**,**/requirements/**"
 extension = "django-html,html,jinja"
 preserve_blank_lines = true
 preserve_leading_space = true
@@ -36,7 +37,7 @@ packages = ["greenova"]
 ignore_missing_imports = true
 
 [tool.django-stubs]
-django_settings_module = "greenova.settings"
+django_settings_module = "greenova.greenova.settings"
 
 [tool.bandit]
 context_lines = 3
@@ -61,3 +62,56 @@ exit_zero = false
 recursive = true
 verbose = true
 exclude_dirs = ["tests", "migrations", "docs"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+fix = true
+unsafe-fixes = true
+extend-exclude = [
+    "migrations",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".venv",
+    "node_modules",
+    "docs/conf.py",
+    "old",
+    "build",
+    "dist",
+    ".eggs",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "D",   # pydocstyle
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "PLC", # pylint
+    "PLE", # pylint
+    "PLR", # pylint
+    "PLW", # pylint
+    "RUF", # Ruff-specific rules
+]
+ignore = ["E501", "D203", "D212"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 12
+max-statements = 50
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"tests/*" = ["S101", "S105", "S106", "S107"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+skip-magic-trailing-comma = false

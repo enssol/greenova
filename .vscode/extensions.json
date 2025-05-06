@@ -41,7 +41,6 @@
     "dbcode.dbcode",
     "ms-vscode.copilot-mermaid-diagram",
     "ms-toolsai.datawrangler",
-    "charliermarsh.ruff",
-    "ms-python.flake8"
+    "charliermarsh.ruff"
   ]
 }

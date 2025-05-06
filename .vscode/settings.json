@@ -268,6 +268,27 @@
   "djlint.useGitignore": true,
   "djlint.useNewLinterOutputParser": true,
   "djlint.useVenv": true,
+  "djlint.exclude": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/static/**",
+    "**/media/**",
+    "**/migrations/**",
+    "**/__pycache__/**",
+    "**/.git/**",
+    "**/.venv/**",
+    "**/.env/**",
+    "**/.pytest_cache/**",
+    "**/.mypy_cache/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/.eggs/**",
+    "**/docs/conf.py/**",
+    "**/requirements/**",
+    "requirements/*.txt",
+    "*requirements*.txt"
+  ],
   "dotenv.cloakColor": "#000000",
   "dotenv.cloakIcon": "\u2588",
   "dotenv.enableAutocloaking": false,
@@ -315,7 +336,9 @@
     "pdm.toml": "toml",
     "poetry.toml": "toml",
     "pyproject.toml": "toml",
-    "requirements*.txt": "pip-requirements"
+    "*requirements*.txt": "pip-requirements",
+    "requirements/*.txt": "pip-requirements",
+    ".env*": "dotenv"
   },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 500,
@@ -514,7 +537,9 @@
     ".toml",
     ".yaml",
     ".yml",
-    ".enc"
+    ".enc",
+    ".pyi",
+    ".txt"
   ],
   "licenser.license": "AGPLv3",
   "licenser.projectName": "Greenova",
@@ -702,7 +727,7 @@
     "gitignore",
     "properties"
   ],
-  "shellformat.path": "/usr/local/bin/shfmt",
+  "shellformat.path": "/usr/bin/shfmt",
   "shellformat.useEditorConfig": true,
   "snyk.features.codeQuality": true,
   "snyk.features.codeSecurity": true,
@@ -726,8 +751,6 @@
   "task.reconnection": true,
   "terminal.integrated.shellIntegration.enabled": true,
   "typescript.suggest.enabled": false,
-  "websearch.preferredEngine": "tavily",
-  "websearch.useSearchResultsDirectly": false,
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.editor.enablePreview": false,
   "yaml.completion": true,
@@ -739,6 +762,5 @@
   "ruff.enable": true,
   "ruff.lint.enable": true,
   "ruff.fixAll": true,
-  "ruff.nativeServer": "auto",
-  "flake8.enabled": true
+  "ruff.nativeServer": "auto"
 }

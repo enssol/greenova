@@ -1,111 +1,100 @@
+"""Setup script for the Greenova environmental management project."""
+
+import os
+import re
+
 from setuptools import find_packages, setup
 
-# Use a context manager with explicit encoding
+# Load version using safer approach without exec
+version_file_path = "greenova/version.py"
+version = "0.0.0"  # Default version
+
+if os.path.exists(version_file_path):
+    with open(version_file_path, encoding="utf-8") as f:
+        version_content = f.read()
+        # Extract version using regex pattern
+        version_match = re.search(
+            r"__version__\s*=\s*['\"]([^'\"]+)['\"]", version_content
+        )
+        if version_match:
+            version = version_match.group(1)
+
+# Get long description from README
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
+# Setup configuration
 setup(
     name="greenova",
-    version="0.0.6",
-    description="A Django web application for environmental management",
+    version=version,
+    description="Environmental compliance management system",
     long_description=long_description,
-    author="enveng-group",
-    author_email="164126503+enveng-group@users.noreply.github.com",
-    url="https://github.com/enssol/greenova",
+    author="Adrian Gallo",
+    author_email="agallo@enveng-group.com.au",
+    url="https://github.com/enveng-group-sustainability/greenova",
+    license="AGPL-3.0-or-later",
     packages=find_packages(),
-    python_requires=">=3.12,<3.13",
+    include_package_data=True,
     install_requires=[
-        "asgiref==3.8.1",
-        "authlib==1.5.1",
-        "certifi==2025.4.26",
-        "cffi==1.17.1",
-        "click==8.1.8",
-        "cryptography==41.0.7",
-        "django==5.2",
-        "django-allauth==65.4.1",
-        "django-appconf==1.1.0",
-        "django-browser-reload==1.18.0",
-        "django-cors-headers==4.7.0",
-        "django-debug-toolbar==5.1.0",
-        "django-htmx==1.22.0",
-        "django-hyperscript==1.0.2",
-        "django-matplotlib==0.1",
-        "django-pb-model==0.3.3",
-        "django-pdb==0.6.2",
-        "django-select2==8.2.3",
-        "django-tailwind==4.0.1",
-        "django-template-partials==24.4",
-        "fido2==1.2.0",
-        "matplotlib==3.10.1",
-        "numpy==2.2.5",
-        "pillow==11.1.0",
-        "python-dateutil==2.9.0.post0",
-        "python-dotenv==0.21.1",
-        "python-dotenv-vault==0.6.4",
-        "qrcode==8.0",
-        "sentry-sdk==2.23.1",
-        "sqlparse==0.5.3",
-        "urllib3==2.4.0",
+        "Django>=5.0.0,<5.3.0",
+        "django-allauth>=0.60.0,<1.0.0",
+        "django-debug-toolbar>=5.2.0,<6.0.0",
+        "django-htmx>=1.23.0,<2.0.0",
+        "django-hyperscript>=1.5.0,<2.0.0",
+        "django-silk>=5.3.0,<6.0.0",
+        "django-tailwind>=4.0.0,<5.0.0",
+        "django-template-partials>=24.0.0,<25.0.0",
+        "matplotlib>=3.10.0,<4.0.0",
+        "numpy>=1.26.0,<1.27.0",  # Updated for Python 3.12 compatibility
+        "Pillow>=11.2.0,<12.0.0",
+        "python-dotenv>=0.21.0,<1.0.0",
+        "python-dateutil>=2.9.0,<3.0.0",
+        "protobuf>=6.30.0,<7.0.0",
+        "sentry-sdk>=2.27.0,<3.0.0",
+        "cryptography>=41.0.0,<42.0.0",
+        "gunicorn>=23.0.0,<24.0.0",
     ],
     extras_require={
         "dev": [
-            "annotated-types==0.7.0",
-            "anyio==4.9.0",
-            "astroid==3.3.9",
-            "attrs==25.3.0",
-            "autopep8==2.3.2",
-            "bandit==1.8.3",
-            "black==25.1.0",
-            "coverage[toml]==7.8.0",
-            "cssbeautifier==1.15.4",
-            "dill==0.4.0",
-            "djlint==1.36.4",
-            "django-selenium==0.9.8",
-            "django-stubs==5.2.0",
-            "django-stubs-ext==5.2.0",
-            "execnet==2.1.1",
-            "httpcore==1.0.9",
-            "httpx==0.28.1",
-            "isort==6.0.1",
-            "jinja2==3.1.6",
-            "mypy==1.15.0",
-            "mypy_extensions==1.1.0",
-            "pre-commit==4.2.0",
-            "pylint==3.3.6",
-            "pylint-django==2.6.1",
-            "pylint-plugin-utils==0.8.2",
-            "pytest==8.3.5",
-            "pytest-base-url==2.1.0",
-            "pytest-cov==6.1.1",
-            "pytest-django==4.11.1",
-            "pytest-dotenv==0.5.2",
-            "pytest-html==4.1.1",
-            "pytest-metadata==3.1.1",
-            "pytest-selenium==4.1.0",
-            "pytest-variables==3.1.0",
-            "pytest-xdist==3.6.1",
-            "safety==3.4.0",
-            "selenium==4.32.0",
-            "types-pyyaml==6.0.12.20250402",
-            "webdriver-manager==4.0.2",
+            "black>=23.12.0",
+            "isort>=5.13.2",
+            "mypy>=1.7.1",
+            "django-stubs>=4.2.7",
+            "django-stubs-ext>=4.2.0",
+            "types-requests>=2.31.0.1",
+            "types-Pillow>=11.2.0.1",
+            "types-PyYAML>=6.0.12.1",
+            "types-python-dateutil>=2.9.0.1",
+            "types-protobuf>=6.30.0.1",
+            "matplotlib-stubs>=0.5.0",
+            "pandas-stubs>=2.1.0.1",
+            "types-pytz>=2023.3.1",
+            "types-jinja2>=3.1.0.1",
+            "types-setuptools>=80.0.0.1",
         ],
-        "prod": [
-            "gunicorn==23.0.0",
-            "django-silk==5.3.2",
-            "gprof2dot==2025.4.14",
+        "test": [
+            "pytest>=7.4.3",
+            "pytest-cov>=4.1.0",
+            "pytest-django>=4.7.0",
         ],
     },
-    include_package_data=True,
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.12",
+        "Development Status :: 4 - Beta",
+        "Environment :: Web Environment",
+        "Framework :: Django",
+        "Framework :: Django :: 5.0",
+        "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
-        "Framework :: Django",
-        "Framework :: Django :: 5.2",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.12",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
-    project_urls={
-        "Source": "https://github.com/enssol/greenova.git",
-        "Issue Tracker": "https://github.com/enssol/greenova/issues",
+    python_requires=">=3.12",
+    entry_points={
+        "console_scripts": [
+            "greenova-manage=greenova.manage:main",
+        ],
     },
 )

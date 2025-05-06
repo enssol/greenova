@@ -51,7 +51,8 @@ guidelines.
 ### In-text Citations
 
 - Use sequential numbering system in square brackets \[1\]
-- For multiple references, use comma separation \[1\], \[2\], \[3\] or ranges \[1\]-\[3\]
+- For multiple references, use comma separation \[1\], \[2\], \[3\] or ranges
+  \[1\]-\[3\]
 - Place citation number before punctuation
 - Example: "Django provides robust security features \[4\]."
 
@@ -75,15 +76,14 @@ guidelines.
 ## References
 
 [1] Django Software Foundation, "Django Documentation," Django Project, 2023.
-[Online]. Available: https://docs.djangoproject.com/
-[Accessed: Oct. 15, 2023].
+[Online]. Available: https://docs.djangoproject.com/ [Accessed: Oct. 15, 2023].
 
-[2] A. Holovaty and J. Kaplan-Moss, "The Definitive Guide to Django:
-Web Development Done Right," 2nd ed. Berkeley, CA: Apress, 2009.
+[2] A. Holovaty and J. Kaplan-Moss, "The Definitive Guide to Django: Web
+Development Done Right," 2nd ed. Berkeley, CA: Apress, 2009.
 
-[3] M. Smith and P. Johnson, "Environmental Compliance Tracking Systems:
-A Review," Journal of Environmental Management, vol. 45, no. 2,
-pp. 112-125, Apr. 2022, doi:10.1234/jem.2022.045.
+[3] M. Smith and P. Johnson, "Environmental Compliance Tracking Systems: A
+Review," Journal of Environmental Management, vol. 45, no. 2, pp. 112-125, Apr.
+2022, doi:10.1234/jem.2022.045.
 ```
 
 ## Formatting and Style
@@ -136,3 +136,63 @@ pp. 112-125, Apr. 2022, doi:10.1234/jem.2022.045.
 - Keep documentation close to relevant code
 - Maintain a centralized index for all documentation
 - Use relative links between documentation files
+
+### Common Issues and Fixes
+
+#### Double Quotes Found but Single Quotes Preferred (Q000)
+
+- Use single quotes for strings unless the string contains a single quote that
+  needs escaping.
+- Example:
+
+  ```python
+  # Correct
+  message = 'Hello, world!'
+
+  # Incorrect
+  message = "Hello, world!"
+  ```
+
+#### Missing or Improper Docstrings (D100, D104, D200, D205)
+
+- Add docstrings to all public modules, packages, and methods.
+- Ensure one-line docstrings fit on a single line and have proper spacing.
+- Example:
+
+  ```python
+  # Correct
+  """This is a one-line docstring."""
+
+  # Incorrect
+  """This is a one-line docstring
+  """
+  ```
+
+#### Line Too Long (E501)
+
+- Break long lines into multiple lines using implicit line continuation.
+- Example:
+
+  ```python
+  # Correct
+  result = some_function(
+      arg1, arg2, arg3
+  )
+
+  # Incorrect
+  result = some_function(arg1, arg2, arg3)
+  ```
+
+#### Unused Variables or Imports (F401, F841)
+
+- Remove unused variables or imports to clean up the code.
+- Prefix intentionally unused variables with `_`.
+- Example:
+
+  ```python
+  # Correct
+  _ = some_function()
+
+  # Incorrect
+  result = some_function()
+  ```

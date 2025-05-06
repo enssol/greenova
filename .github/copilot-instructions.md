@@ -17,7 +17,8 @@ and manage obligations related to environmental regulations.
 
 ## Frontend Technologies
 
-- **CSS Framework**: Pico's Classless CSS (primary CSS framework) and Tailwind CSS 3.3.2 (secondary CSS framework)
+- **CSS Framework**: Pico's Classless CSS (primary CSS framework) and Tailwind
+  CSS 3.3.2 (secondary CSS framework)
 - **Progressive Enhancement**:
   - **Base Layer**: Server-side rendered Django templates
   - **Enhancement Layer**: django-htmx 1.22.0 for AJAX interactions
@@ -257,6 +258,71 @@ content %}
 - Logic in templates instead of views
 - Unescaped user input
 - Missing form validation
+
+## Handling Long Lines in Code
+
+### Guidelines for Long Lines
+
+1. **Maximum Line Length**:
+
+   - Adhere to a strict maximum line length of 88 characters as per PEP 8.
+
+2. **Breaking Long Lines**:
+
+   - Use implicit line continuation within parentheses, brackets, or braces.
+   - Example:
+
+     ```python
+     # Correct
+     result = some_function(
+         arg1, arg2, arg3
+     )
+
+     # Incorrect
+     result = some_function(arg1, arg2, arg3)
+     ```
+
+3. **String Concatenation**:
+
+   - Use implicit concatenation for long strings.
+   - Example:
+
+     ```python
+     # Correct
+     message = (
+         "This is a long message that "
+         "spans multiple lines."
+     )
+
+     # Incorrect
+     message = "This is a long message that spans multiple lines."
+     ```
+
+4. **Comments and Docstrings**:
+
+   - Break long comments and docstrings into multiple lines.
+   - Example:
+
+     ```python
+     # Correct
+     """
+     This is a long docstring that
+     spans multiple lines.
+     """
+
+     # Incorrect
+     """This is a long docstring that spans multiple lines."""
+     ```
+
+5. **Tools for Automation**:
+
+   - Use `black` to automatically format code to comply with line length
+     limits.
+   - Example command:
+
+     ```bash
+     black --line-length 88 <file>
+     ```
 
 ## Author Information
 

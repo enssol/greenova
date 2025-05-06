@@ -23,6 +23,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   python3-pip \
   python3-venv \
   gh \
+  shfmt \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 

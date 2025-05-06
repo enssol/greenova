@@ -9,3 +9,8 @@
 ## Development Setup
 
 1. Clone the repository:
+
+```bash
+# Corrected missing fenced code block language
+pip install -r requirements.txt
+```

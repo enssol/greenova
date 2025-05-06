@@ -25,17 +25,57 @@ load_dotenv()
 
 
 class DatabaseConfig(TypedDict):
+    """
+    A TypedDict for configuring database settings.
+
+    Attributes:
+    ----------
+    ENGINE : str
+        The database engine to use (e.g., 'django.db.backends.sqlite3').
+    NAME : str | Path
+        The name or path of the database file.
+    """
+
     ENGINE: str
     NAME: str | Path
 
 
 class TemplateOptions(TypedDict, total=False):
+    """
+    A TypedDict for configuring template options.
+
+    Attributes:
+    ----------
+    context_processors : list[str]
+        A list of context processor paths to be used in templates.
+    debug : bool
+        Indicates whether template debugging is enabled.
+    environment : str, optional
+        The environment for Jinja2 templates, if applicable.
+    """
+
     context_processors: list[str]
     debug: bool  # This was the missing required field
     environment: str  # Add environment as an optional field with total=False
 
 
 class TemplateConfig(TypedDict):
+    """
+    A TypedDict for configuring template settings.
+
+    Attributes:
+    ----------
+    BACKEND : str
+        The backend engine to use for templates
+        (e.g., 'django.template.backends.django.DjangoTemplates').
+    DIRS : list[Path | str]
+        A list of directories to search for templates.
+    APP_DIRS : bool
+        Indicates whether to include app directories in the template search.
+    OPTIONS : TemplateOptions
+        Additional options for configuring the template engine.
+    """
+
     BACKEND: str
     DIRS: list[Path | str]  # Updated to accept both Path and str
     APP_DIRS: bool
@@ -44,6 +84,21 @@ class TemplateConfig(TypedDict):
 
 # Update the LoggingHandlerConfig TypedDict to better match Django's expectations
 class LoggingHandlerConfig(TypedDict, total=False):
+    """
+    A TypedDict for configuring logging handler settings.
+
+    Attributes:
+    ----------
+    level : str
+        The logging level (e.g., 'DEBUG', 'INFO').
+    class_ : str
+        The handler class to use (e.g., 'logging.StreamHandler').
+    filename : str
+        The name of the file to log to, if applicable.
+    formatter : str
+        The formatter to use for log messages.
+    """
+
     level: str
     class_: str  # Use class_ in typings to avoid Python keyword conflict
     filename: str
@@ -51,6 +106,25 @@ class LoggingHandlerConfig(TypedDict, total=False):
 
 
 class LoggingConfig(TypedDict):
+    """
+    A TypedDict for configuring logging settings.
+
+    Attributes:
+    ----------
+    version : int
+        The version of the logging configuration schema.
+    disable_existing_loggers : bool
+        Whether to disable existing loggers.
+    formatters : dict[str, dict[str, str]]
+        A dictionary of formatters for log messages.
+    handlers : dict[str, LoggingHandlerConfig]
+        A dictionary of logging handlers.
+    loggers : dict[str, dict[str, str | list[str] | bool]]
+        A dictionary of loggers and their configurations.
+    root : dict[str, Any]
+        The root logger configuration.
+    """
+
     version: int
     disable_existing_loggers: bool
     formatters: dict[str, dict[str, str]]
@@ -61,6 +135,25 @@ class LoggingConfig(TypedDict):
 
 # Add TypedDict for matplotlib figure defaults
 class MatplotlibFigDefaults(TypedDict):
+    """
+    A TypedDict for configuring default settings for Matplotlib figures.
+
+    Attributes:
+    ----------
+    silent : bool
+        Whether to suppress output from Matplotlib.
+    fig_width : int
+        The width of the figure in pixels.
+    fig_height : int
+        The height of the figure in pixels.
+    output_type : str
+        The type of output to generate (e.g., 'string').
+    output_format : str
+        The format of the output (e.g., 'png').
+    cleanup : bool
+        Whether to clean up temporary files after rendering.
+    """
+
     silent: bool
     fig_width: int
     fig_height: int
@@ -77,6 +170,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 def validate_settings() -> None:
     """
     Validate critical environment variables and provide proper defaults.
+
     Raises ValueError for missing required settings.
     """
     # Check SECRET_KEY is set
@@ -97,7 +191,7 @@ def validate_settings() -> None:
         raise ValueError("DJANGO_ALLOWED_HOSTS must be set in production (DEBUG=False)")
 
     # Check for insecure default SECRET_KEY
-    if "django-insecure" in SECRET_KEY:
+    if "django-insecure" in SECRET_KEY and not DEBUG:
         warnings.warn(
             "Using an insecure SECRET_KEY! Please set a secure SECRET_KEY "
             "in production.",
@@ -298,7 +392,9 @@ DATABASES: dict[str, DatabaseConfig] = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
