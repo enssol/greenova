@@ -2,45 +2,17 @@
 {% load static %}
 
 {% block title %}
-{{ action|default:"Create" }} Company
+Update Company
 {% endblock title %}
 
 {% block content %}
   <article>
     <header>
       <h1>
-{{ action|default:"Create" }} Company
+Update Company
       </h1>
     </header>
 
-    <div class="form-container">
-      <form method="post" enctype="multipart/form-data" class="form">
-{% csrf_token %}
-        {% for field in form %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">
-{{ field.label }}
-            </label>
-            {{ field }}
-            {% if field.help_text %}
-              <small class="form-text">{{ field.help_text }}</small>
-            {% endif %}
-            {% if field.errors %}
-              <div class="field-error">
-                {% for error in field.errors %}
-                  <p>
-{{ error }}
-                  </p>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">
-{{ action|default:"Create" }}
-        </button>
-        <a href="{% url 'company:list' %}" class="btn btn-secondary">Cancel</a>
-      </form>
-    </div>
+{% include "company/company_form_base.html" %}
   </article>
 {% endblock content %}

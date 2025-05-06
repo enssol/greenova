@@ -1,0 +1,322 @@
+/**
+ * Card Components
+ *
+ * Styles for content cards, panels, and containers used throughout the application
+ */
+
+// Import mixins for code reuse
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as fn;
+@use '../abstracts/mixins' as mx;
+
+/* Base Card */
+.card {
+  @include card;
+
+  // Card header
+  &-header {
+    padding: spacing(base);
+    border-bottom: border();
+    background: color(background, secondary);
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-size: spacing(base);
+      font-weight: font-weight(bold);
+      color: color(text, primary-dark);
+    }
+
+    &-actions {
+      @include flex-row(nowrap, flex-end);
+
+      gap: spacing(sm);
+    }
+
+    @include flex-between;
+  }
+
+  // Card body
+  &-body {
+    padding: spacing(base);
+  }
+
+  // Card footer
+  &-footer {
+    padding: spacing(base);
+    border-top: border();
+    background: color(background, secondary);
+  }
+
+  // Card with hover effect
+  &.hover {
+    transition: transform transition(),
+                box-shadow transition();
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: shadow(large);
+    }
+  }
+
+  // Card sizes
+  &-sm {
+    .card-header,
+    .card-body,
+    .card-footer {
+      padding: spacing(sm);
+    }
+  }
+
+  &-lg {
+    .card-header,
+    .card-body,
+    .card-footer {
+      padding: spacing(lg);
+    }
+  }
+
+  // Horizontal card layout
+  &-horizontal {
+    @include breakpoint-up(md) {
+      display: grid;
+      grid-template-columns: 33% 1fr;
+      align-items: stretch;
+
+      .card-media {
+        height: 100%;
+
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+
+  // Card with media
+  &-media {
+    position: relative;
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    &-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: spacing(base);
+      background: linear-gradient(to top,
+        rgb(0 0 0 / 80%),
+        rgb(0 0 0 / 0%));
+      color: color(text, primary-light);
+    }
+  }
+
+  // Status cards
+  &-status {
+    &-success {
+      border-left: 4px solid color(notif, low);
+    }
+
+    &-warning {
+      border-left: 4px solid color(notif, mid);
+    }
+
+    &-danger {
+      border-left: 4px solid color(notif, high);
+    }
+  }
+
+  // Card grid layout
+  &-grid {
+    @include grid-layout;
+
+    .card {
+      height: 100%;
+    }
+  }
+
+  // Card list layout
+  &-list {
+    @include flex-column;
+
+    gap: spacing(base);
+
+    .card {
+      margin: 0;
+    }
+  }
+
+  // Interactive card elements
+  &-action {
+    cursor: pointer;
+    transition: transform transition(),
+                box-shadow transition();
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: shadow(large);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Card loading state
+  &-loading {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color(background, secondary) 50%,
+        transparent 100%
+      );
+      animation: card-loading 1.5s infinite;
+    }
+  }
+
+  // Card content sections
+  &-section {
+    &:not(:last-child) {
+      margin-bottom: spacing(base);
+      padding-bottom: spacing(base);
+      border-bottom: border();
+    }
+  }
+}
+
+// Loading animation
+@keyframes card-loading {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Information panels */
+.info-panel {
+  @include card;
+
+  margin-bottom: var(--greenova-spacing);
+
+  &__title {
+    font-weight: var(--greenova-font-weight-bold);
+    margin-bottom: var(--greenova-spacing-small);
+  }
+
+  &__content {
+    font-size: var(--greenova-text-size-small);
+  }
+
+  /* Panel types */
+  &--info {
+    background-color: var(--greenova-info-background);
+    color: var(--greenova-info-text);
+    border-left: 4px solid var(--greenova-notif-primary-mid);
+  }
+
+  &--success {
+    background-color: var(--greenova-success-background);
+    color: var(--greenova-success-text);
+    border-left: 4px solid var(--greenova-notif-primary-low);
+  }
+
+  &--warning {
+    background-color: var(--greenova-warning-background);
+    color: var(--greenova-warning-text);
+    border-left: 4px solid var(--greenova-notif-primary-high);
+  }
+
+  &--error {
+    background-color: var(--greenova-error-background);
+    color: var(--greenova-error-text);
+    border-left: 4px solid var(--greenova-notif-primary-high);
+  }
+}
+
+/* Data cards for dashboard */
+.data-card {
+  @include card;
+
+  &__value {
+    font-size: 2rem;
+    font-weight: var(--greenova-font-weight-bold);
+    margin: var(--greenova-spacing-small) 0;
+  }
+
+  &__label {
+    font-size: var(--greenova-text-size-small);
+    color: var(--greenova-text-tertiary-dark);
+  }
+
+  &__icon {
+    float: right;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--greenova-green-primary);
+    color: var(--greenova-text-primary-light);
+
+    .data-card--warning & {
+      background-color: var(--greenova-notif-primary-mid);
+    }
+
+    .data-card--critical & {
+      background-color: var(--greenova-notif-primary-high);
+    }
+  }
+}
+
+/* Summary cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--greenova-spacing);
+  margin-bottom: var(--greenova-spacing);
+
+  article {
+    padding: var(--greenova-spacing);
+    border-radius: var(--greenova-border-radius);
+    background: var(--greenova-beige-primary);
+    transition: transform var(--greenova-transition);
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .count {
+    font-size: 2em;
+    font-weight: var(--greenova-font-weight-bold);
+    margin: 0;
+    color: var(--greenova-text-primary-dark);
+  }
+
+  .label {
+    color: var(--greenova-text-secondary-dark);
+    margin-top: var(--greenova-spacing-small);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+}

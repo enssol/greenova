@@ -1,0 +1,160 @@
+/**
+ * Common Colors
+ *
+ * These color variables are used across themes for consistent coloring of
+ * notifications, status indicators and other elements.
+ */
+
+// Common colors that apply regardless of theme
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  /**
+   * Notification colors
+   */Highestprioritynotificationmarker--greenova-notif-primary-high
+
+  --greenova-warning-background: var(--greenova-notif-primary-high);
+  --greenova-warning-text: #000;
+  --greenova-error-background: var(--greenova-notif-primary-high);
+  --greenova-error-text: #000;Middleprioritynotificationmarker--greenova-notif-primary-mid
+
+  --greenova-info-background: var(--greenova-notif-primary-mid);
+  --greenova-info-text: #000;Lowestprioritynotificationmarker--greenova-notif-primary-low
+
+  --greenova-success-background: var(--greenova-notif-primary-low);
+  --greenova-success-text: #000;Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
+
+  --pico-mark-background-color: var(--greenova-notif-secondary-low);
+  --pico-mark-color: #000;
+
+  /**
+   * Chat colors
+   */
+  --greenova-chat-user-background: #dedeff;
+  --greenova-chat-user-color: #000;
+  --greenova-chat-bot-background: #99f;
+  --greenova-chat-bot-color: #000;
+
+  /**
+   * Data colors
+   */
+  // Color for when data points are out of focus of the chart
+  --greenova-data-null: #9c9f93;Colorforwhendatapointsareoutoffocusofthechart--greenova-data-null
+}
+
+@use '../abstracts/functions' as *;
+@use '../abstracts/mixins' as *;
+
+// Text colors
+@each $variant in (primary, secondary, tertiary) {
+  .text-#{$variant}
+
+ {
+    color: var(--greenova-text-#{$variant}-dark);
+  }
+}
+
+// Background colors
+.bg {
+  &-primary {
+    background-color: var(--greenova-background-primary);
+  }
+
+  &-secondary {
+    background-color: var(--greenova-background-secondary);
+  }
+
+  &-green {
+    &-primary {
+      background-color: var(--greenova-green-primary);
+    }
+
+    &-secondary {
+      background-color: var(--greenova-green-secondary);
+    }
+
+    &-tertiary {
+      background-color: var(--greenova-green-tertiary);
+    }
+  }
+
+  &-beige {
+    &-primary {
+      background-color: var(--greenova-beige-primary);
+    }
+
+    &-secondary {
+      background-color: var(--greenova-beige-secondary);
+    }
+  }
+}
+
+// Status colors
+.status {
+  &-success {
+    color: var(--greenova-text-primary-light);
+    background-color: var(--greenova-notif-low);
+  }
+
+  &-warning {
+    color: var(--greenova-text-primary-dark);
+    background-color: var(--greenova-notif-mid);
+  }
+
+  &-danger {
+    color: var(--greenova-text-primary-light);
+    background-color: var(--greenova-notif-high);
+  }
+}
+
+// Notification colors
+.notification {
+  &-high {
+    background-color: var(--greenova-notif-high-light);
+    color: var(--greenova-notif-high);
+  }
+
+  &-medium {
+    background-color: var(--greenova-notif-mid-light);
+    color: var(--greenova-notif-mid);
+  }
+
+  &-low {
+    background-color: var(--greenova-notif-low-light);
+    color: var(--greenova-notif-low);
+  }
+}
+
+// Border colors
+.border {
+  &-green {
+    &-primary {
+      border-color: var(--greenova-green-primary);
+    }
+
+    &-secondary {
+      border-color: var(--greenova-green-secondary);
+    }
+
+    &-tertiary {
+      border-color: var(--greenova-green-tertiary);
+    }
+  }
+
+  &-beige {
+    &-primary {
+      border-color: var(--greenova-beige-primary);
+    }
+
+    &-secondary {
+      border-color: var(--greenova-beige-secondary);
+    }
+  }
+}
+
+// Data visualization colors
+.data {
+  &-null {
+    color: var(--greenova-data-null);
+  }
+}

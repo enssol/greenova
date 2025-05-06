@@ -1,0 +1,63 @@
+/**
+ * SCSS Functions
+ *
+ * Utility functions for use throughout the SCSS codebase
+ */
+
+// Color functions
+@use 'sass:color';
+@use 'sass:math';
+
+// Darken a color by a percentage
+@function darken($color, $percentage) {
+  @return color.adjust($color, $lightness: -$percentage);
+}
+
+// Lighten a color by a percentage
+@function lighten($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+// Convert px to rem
+@function to-rem($size) {
+  $rem-size: math.div($size, 16px);
+
+  @return #{$rem-size}rem;
+}
+
+// Generate a tint of a color
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+// Generate a shade of a color
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+// Calculate contrast ratio
+@function contrast-ratio($color) {
+  $luminance: color.lightness($color);
+
+  @return if($luminance > 50, $text-primary-dark, $text-primary-light);
+}
+
+// Get z-index value from map
+@function z-index($key) {
+  @return var(--greenova-z-#{$key});
+}
+
+// Get spacing value
+@function spacing($key) {
+  @return var(--greenova-spacing-#{$key});
+}
+
+// Get color value
+@function color($type, $variant) {
+  @return var(--greenova-#{$type}-#{$variant});
+}
+
+// Convert px to em
+@function em($pixels, $context: 16px) {
+  @return math.div($pixels, $context) * 1em;
+}

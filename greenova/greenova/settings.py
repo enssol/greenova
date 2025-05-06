@@ -299,7 +299,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",  # Keep CSRF for form handling
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "allauth.account.middleware.AccountMiddleware",  # Should follow auth middleware
-    "allauth.account.middleware.AccountMiddleware",  # Should follow auth middleware
+    "company.middleware.ActiveCompanyMiddleware",  # Add ActiveCompanyMiddleware here
     "django.contrib.messages.middleware.MessageMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # Debug after core middleware

@@ -1,0 +1,141 @@
+/**
+ * Spacing Utilities
+ *
+ * Utility classes for margin and padding
+ */
+
+// Spacing utilities
+
+// Margin utilities
+@each $size in (xs, sm, base, lg, xl) {
+  .m-#{$size}
+
+ {
+    margin: var(--greenova-spacing-#{$size});
+  }
+
+  .mt-#{$size}
+
+ {
+    margin-top: var(--greenova-spacing-#{$size});
+  }
+
+  .mb-#{$size}
+
+ {
+    margin-bottom: var(--greenova-spacing-#{$size});
+  }
+
+  .ml-#{$size}
+
+ {
+    margin-left: var(--greenova-spacing-#{$size});
+  }
+
+  .mr-#{$size}
+
+ {
+    margin-right: var(--greenova-spacing-#{$size});
+  }
+
+  .mx-#{$size}
+
+ {
+    margin-left: var(--greenova-spacing-#{$size});
+    margin-right: var(--greenova-spacing-#{$size});
+  }
+
+  .my-#{$size}
+
+ {
+    margin-top: var(--greenova-spacing-#{$size});
+    margin-bottom: var(--greenova-spacing-#{$size});
+  }
+}
+
+// Padding utilities
+@each $size in (xs, sm, base, lg, xl) {
+  .p-#{$size}
+
+ {
+    padding: var(--greenova-spacing-#{$size});
+  }
+
+  .pt-#{$size}
+
+ {
+    padding-top: var(--greenova-spacing-#{$size});
+  }
+
+  .pb-#{$size}
+
+ {
+    padding-bottom: var(--greenova-spacing-#{$size});
+  }
+
+  .pl-#{$size}
+
+ {
+    padding-left: var(--greenova-spacing-#{$size});
+  }
+
+  .pr-#{$size}
+
+ {
+    padding-right: var(--greenova-spacing-#{$size});
+  }
+
+  .px-#{$size}
+
+ {
+    padding-left: var(--greenova-spacing-#{$size});
+    padding-right: var(--greenova-spacing-#{$size});
+  }
+
+  .py-#{$size}
+
+ {
+    padding-top: var(--greenova-spacing-#{$size});
+    padding-bottom: var(--greenova-spacing-#{$size});
+  }
+}
+
+// Gap utilities
+@each $size in (xs, sm, base, lg, xl) {
+  .gap-#{$size}
+
+ {
+    gap: var(--greenova-spacing-#{$size});
+  }
+}
+
+// Auto margins
+.m-auto {
+  margin: auto;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.mb-auto {
+  margin-bottom: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}

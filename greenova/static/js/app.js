@@ -363,13 +363,15 @@ document.addEventListener('DOMContentLoaded', function () {
    * Theme switching functionality
    * Uses the head-support extension to dynamically update theme
    */
-  const themeSwitchers = document.querySelectorAll('[data-theme-switcher]');
+  const themeToggleButtons = document.querySelectorAll(
+    '[data-theme-switcher]'
+  );
   const currentTheme = localStorage.getItem('theme') || 'auto';
 
   // Apply the saved theme on page load
   setTheme(currentTheme);
 
-  themeSwitchers.forEach((switcher) => {
+  themeToggleButtons.forEach((switcher) => {
     const theme = switcher.getAttribute('data-theme-switcher');
 
     // Highlight active theme
@@ -387,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTheme(theme);
 
       // Update active state on links
-      themeSwitchers.forEach((s) => {
+      themeToggleButtons.forEach((s) => {
         s.removeAttribute('aria-current');
       });
       switcher.setAttribute('aria-current', 'true');

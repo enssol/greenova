@@ -13,34 +13,39 @@ Companies
       </h1>
       {% if can_create %}
         <div class="header-actions">
-          <a href="{% url 'company:create' %}" role="button" class="btn-primary">
-            <i class="icon-plus"></i> Add Company
+          <a href="{% url 'company:create' %}"
+             role="button"
+             class="btn-primary"
+             aria-label="Add new company">
+            <i class="icon-plus" aria-hidden="true"></i> Add Company
           </a>
         </div>
       {% endif %}
     </header>
 
+    <!-- Search and filter form -->
     <section class="filter-container">
       <form class="search-form"
             id="company-search-form"
-            hx-post="{% url 'company:search' %}"
-            hx-target="#company-list-container">
+            hx-get="{% url 'company:search' %}"
+            hx-target="#company-list-container"
+            hx-swap="innerHTML">
         <div class="form-row">
           <div class="form-group">
             <label for="{{ search_form.search.id_for_label }}">
-Search
+              Search
             </label>
             {{ search_form.search }}
           </div>
           <div class="form-group">
             <label for="{{ search_form.company_type.id_for_label }}">
-Company Type
+              Company Type
             </label>
             {{ search_form.company_type }}
           </div>
           <div class="form-group">
             <label for="{{ search_form.industry.id_for_label }}">
-Industry
+              Industry
             </label>
             {{ search_form.industry }}
           </div>
@@ -50,14 +55,16 @@ Industry
             </label>
           </div>
         </div>
-        <button type="submit" class="btn-secondary">
-Filter
+        <button type="submit" class="btn-secondary" aria-label="Apply filters">
+          Filter
         </button>
       </form>
     </section>
 
-    <div id="company-list-container" class="table-container">
+    <div id="company-list-container"
+         class="table-container"
+         aria-live="polite">
 {% include "company/partials/company_list.html" %}
     </div>
   </article>
-{% endblock content %}
+{% endblock %}

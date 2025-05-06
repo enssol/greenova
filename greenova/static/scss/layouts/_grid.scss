@@ -1,0 +1,123 @@
+@use '../abstracts/mixins' as *;
+
+// Base grid container
+.grid {
+  display: grid;
+  gap: var(--greenova-spacing-base);
+
+  // Grid columns 1-12
+  @for $i from 1 through 12 {
+    &.cols-#{$i}
+
+ {
+      grid-template-columns: repeat($i, 1fr);
+    }
+  }
+
+  // Responsive grid columns
+  @each $breakpoint in (sm, md, lg, xl) {
+    @include breakpoint-up($breakpoint) {
+      @for $i from 1 through 12 {
+        &.cols-#{$breakpoint}-#{$i}
+
+ {
+          grid-template-columns: repeat($i, 1fr);
+        }
+      }
+    }
+  }
+}
+
+// Grid items span
+.grid-item {
+  @for $i from 1 through 12 {
+    &.span-#{$i}
+
+ {
+      grid-column: span $i;
+    }
+  }
+
+  // Responsive spans
+  @each $breakpoint in (sm, md, lg, xl) {
+    @include breakpoint-up($breakpoint) {
+      @for $i from 1 through 12 {
+        &.span-#{$breakpoint}-#{$i}
+
+ {
+          grid-column: span $i;
+        }
+      }
+    }
+  }
+}
+
+// Auto-fit grid
+.auto-grid {
+  display: grid;
+  gap: var(--greenova-spacing-base);
+
+  &.xs {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  &.sm {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  &.md {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  &.lg {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+}
+
+// Gap utilities
+.gap {
+  &-xs { gap: var(--greenova-spacing-xs); }
+  &-sm { gap: var(--greenova-spacing-sm); }
+  &-md { gap: var(--greenova-spacing-base); }
+  &-lg { gap: var(--greenova-spacing-lg); }
+  &-xl { gap: var(--greenova-spacing-xl); }
+}
+
+// Areas and templates
+.grid-areas {
+  display: grid;
+  gap: var(--greenova-spacing-base);
+
+  &.dashboard {
+    grid-template-areas:
+      "header header header"
+      "sidebar main stats"
+      "footer footer footer";
+
+    @include breakpoint-down(lg) {
+      grid-template-areas:
+        "header header"
+        "sidebar main"
+        "stats stats"
+        "footer footer";
+    }
+
+    @include breakpoint-down(md) {
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "main"
+        "stats"
+        "footer";
+    }
+  }
+}
+
+// Named grid areas
+.grid-area {
+  &-header { grid-area: header; }
+  &-sidebar { grid-area: sidebar; }
+  &-main { grid-area: main; }
+  &-stats { grid-area: stats; }
+  &-footer { grid-area: footer; }
+}

@@ -1,0 +1,108 @@
+/**
+ * Main SCSS Entry Point
+ * This file imports all other SCSS files in the correct order
+ */
+
+// Abstracts
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/mixins';
+// Base
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/accessibility';
+// Layouts
+@use 'layouts/main';
+@use 'layouts/header';
+@use 'layouts/grid';
+@use 'layouts/footer';
+// Components
+@use 'components/button';
+@use 'components/card';
+@use 'components/chat';
+@use 'components/charts';
+@use 'components/dropdown';
+@use 'components/form';
+@use 'components/loader';
+@use 'components/modal';
+@use 'components/navigation';
+@use 'components/notification';
+@use 'components/table';
+@use 'components/list';
+@use 'components/pagination';
+@use 'components/filter';
+// Themes
+@use 'themes/light';
+@use 'themes/dark';
+// Utils
+@use 'utils/spacing';
+@use 'utils/display';
+@use 'utils/colors';
+// Pages
+@use 'pages/company';
+@use 'pages/obligations';
+@use 'pages/user-profile';
+
+// Root variables
+:root {
+  /* Typography */
+  --greenova-font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --greenova-font-monospace: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --greenova-text-size: 1rem;
+  --greenova-text-size-smaller: 0.875rem;
+  --greenova-text-size-smallest: 0.75rem;
+  --greenova-font-weight: 400;
+  --greenova-font-weight-bold: 600;
+  --greenova-line-height: 1.5;
+  --greenova-input-size: 0.875rem;
+  --greenova-input-label: 0.75rem;
+  --greenova-button-size: 0.875rem;
+  --greenova-table-size: 0.875rem;
+
+  /* Spacing */
+  --greenova-spacing-smaller: 0.25rem;
+  --greenova-spacing-small: 0.5rem;
+  --greenova-spacing: 1rem;
+  --greenova-spacing-large: 1.5rem;
+  --greenova-spacing-larger: 2rem;
+
+  /* Padding */
+  --greenova-padding-smaller: 0.25rem;
+  --greenova-padding-small: 0.5rem;
+  --greenova-padding: 1rem;
+  --greenova-padding-large: 1.5rem;
+
+  /* Border Radius */
+  --greenova-border-radius-small: 0.25rem;
+  --greenova-border-radius: 0.5rem;
+  --greenova-border-radius-large: 0.75rem;
+
+  /* Shadows */
+  --greenova-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+  --greenova-shadow-large: 0 4px 6px rgb(0 0 0 / 10%);
+
+  /* Borders */
+  --greenova-table-border: 1px solid var(--greenova-green-secondary);
+  --greenova-border: 1px solid var(--greenova-green-primary);
+
+  /* Transitions */
+  --greenova-transition: 0.2s ease-in-out;
+
+  /* Z-index layers */
+  --greenova-z-background: -1;
+  --greenova-z-default: 1;
+  --greenova-z-dropdown: 10;
+  --greenova-z-sticky: 20;
+  --greenova-z-fixed: 30;
+  --greenova-z-modal: 40;
+  --greenova-z-popover: 50;
+  --greenova-z-tooltip: 60;
+}
+
+/* Add vendor prefixes for better browser support */
+@supports selector(::-webkit-backdrop) {
+  :root {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

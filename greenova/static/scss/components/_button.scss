@@ -1,0 +1,200 @@
+/**
+ * Button Components
+ *
+ * Styles for buttons, action elements, and interactive controls
+ */
+
+// Import mixins for code reuse
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:color';
+
+// Base button styles
+.button {
+  @include button-base;
+
+  // Primary button
+  &-primary {
+    @extend .button;
+
+    background: var(--greenova-green-primary);
+    color: var(--greenova-text-primary-light);
+    border: 1px solid var(--greenova-green-primary);
+
+    &:hover {
+      background: var(--greenova-green-tertiary);
+      border-color: var(--greenova-green-tertiary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px color.adjust($green-primary, $alpha: -0.75);
+    }
+  }
+
+  // Secondary button
+  &-secondary {
+    @extend .button;
+
+    background: var(--greenova-beige-primary);
+    color: var(--greenova-text-secondary-dark);
+    border: 1px solid var(--greenova-beige-primary);
+
+    &:hover {
+      background: var(--greenova-beige-secondary);
+      border-color: var(--greenova-beige-secondary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px color.adjust($beige-primary, $alpha: -0.75);
+    }
+  }
+
+  // Outline button
+  &-outline {
+    @extend .button;
+
+    background: transparent;
+    border: 1px solid var(--greenova-green-primary);
+    color: var(--greenova-green-primary);
+
+    &:hover {
+      background: var(--greenova-green-primary);
+      color: var(--greenova-text-primary-light);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px color.adjust($green-primary, $alpha: -0.75);
+    }
+  }
+
+  // Text button
+  &-text {
+    @extend .button;
+
+    background: transparent;
+    border: none;
+    color: var(--greenova-green-primary);
+    padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
+
+    &:hover {
+      background: var(--greenova-background-secondary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px color.adjust($green-primary, $alpha: -0.75);
+    }
+  }
+
+  // Icon button
+  &-icon {
+    @extend .button;
+
+    padding: var(--greenova-padding-sm);
+    border-radius: 50%;
+    line-height: 1;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Button sizes
+  &-sm {
+    font-size: var(--greenova-text-size-xs);
+    padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
+  }
+
+  &-lg {
+    font-size: var(--greenova-text-size);
+    padding: var(--greenova-padding-sm) var(--greenova-padding-lg);
+  }
+
+  // Button states
+  &[disabled],
+  &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  &.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      @include loading-spinner;
+
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  // Full width button
+  &-block {
+    width: 100%;
+  }
+
+  // Button group
+  &-group {
+    @include flex-row(nowrap);
+
+    .button {
+      &:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right-width: 0;
+      }
+    }
+  }
+}
+
+// Status buttons
+.button-status {
+  &-success {
+    @extend .button;
+
+    background: var(--greenova-notif-low);
+    color: var(--greenova-text-primary-light);
+    border: 1px solid var(--greenova-notif-low);
+
+    &:hover {
+      background: color.adjust($notif-low, $lightness: -10%);
+      border-color: color.adjust($notif-low, $lightness: -10%);
+    }
+  }
+
+  &-warning {
+    @extend .button;
+
+    background: var(--greenova-notif-mid);
+    color: var(--greenova-text-primary-dark);
+    border: 1px solid var(--greenova-notif-mid);
+
+    &:hover {
+      background: color.adjust($notif-mid, $lightness: -10%);
+      border-color: color.adjust($notif-mid, $lightness: -10%);
+    }
+  }
+
+  &-danger {
+    @extend .button;
+
+    background: var(--greenova-notif-high);
+    color: var(--greenova-text-primary-light);
+    border: 1px solid var(--greenova-notif-high);
+
+    &:hover {
+      background: color.adjust($notif-high, $lightness: -10%);
+      border-color: color.adjust($notif-high, $lightness: -10%);
+    }
+  }
+}

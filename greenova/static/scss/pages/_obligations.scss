@@ -1,0 +1,22 @@
+// Copyright 2025 Enveng Group.
+// SPDX-License-Identifier: 	AGPL-3.0-or-later
+
+/* Summary Cards Layout */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-base;
+  margin-bottom: $spacing-base;
+}
+
+.summary-cards article {
+  padding: $spacing-base;
+  border-radius: $border-radius-base;
+  background: $background-secondary;
+}
+
+.summary-cards .count {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0;
+}

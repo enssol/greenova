@@ -1,0 +1,142 @@
+// Copyright 2025 Enveng Group.
+// SPDX-License-Identifier: 	AGPL-3.0-or-later
+
+/* Company specific styling */
+/* Company logo */
+.company-logo-container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: $spacing-base;
+  overflow: hidden;
+  border-radius: $border-radius-base;
+  background-color: $background-secondary;
+}
+
+.company-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.company-logo.placeholder {
+  font-size: 4rem;
+  font-weight: bold;
+  color: $text-primary-dark;
+  text-transform: uppercase;
+}
+
+/* Company details layout */
+.company-header {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-base;
+  margin-bottom: $spacing-lg;
+}
+
+@media (min-width: 768px) {
+  .company-header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .company-basic-info {
+    flex: 1;
+  }
+}
+
+.company-body {
+  margin-top: $spacing-lg;
+}
+
+/* Company section styling */
+.company-profile,
+.company-projects,
+.company-members,
+.company-documents {
+  margin-bottom: $spacing-lg;
+  padding: $spacing-base;
+  background-color: $background-secondary;
+  border-radius: $border-radius-base;
+}
+
+.company-profile h2,
+.company-projects h2,
+.company-members h2,
+.company-documents h2 {
+  margin-bottom: $spacing-base;
+}
+
+/* Modal for member role editing */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: $background-primary;
+  padding: $spacing-lg;
+  border-radius: $border-radius-base;
+  max-width: 500px;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Document form container */
+.document-form-container {
+  background-color: $background-secondary;
+  padding: $spacing-base;
+  border-radius: $border-radius-base;
+  margin-bottom: $spacing-base;
+}
+
+/* Delete confirmation styling */
+.delete-confirmation {
+  background-color: $background-secondary;
+  padding: $spacing-base;
+  border-radius: $border-radius-base;
+}
+
+.company-info,
+.document-info {
+  margin: $spacing-base 0;
+}
+
+.company-info dl,
+.document-info dl {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0.5rem;
+}
+
+.company-info dt,
+.document-info dt {
+  font-weight: bold;
+}
+
+/* Company list page */
+.company-list-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-base;
+}

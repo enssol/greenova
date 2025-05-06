@@ -1,0 +1,213 @@
+/**
+ * Variables
+ * All design tokens and variables used throughout the application
+ */
+
+// Typography
+$font-family-base: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", arial, sans-serif;Typography$font-family-base
+$font-family-monospace: ui-monospace, sfmono-regular, "SF Mono", menlo, monaco, consolas, monospace;
+$font-size-base: 1rem;
+$font-size-sm: 0.875rem;
+$font-size-xs: 0.75rem;
+$font-weight-normal: 400;
+$font-weight-bold: 600;
+$line-height-base: 1.5;
+
+// Input sizes
+$input-font-size: 0.875rem;Inputsizes$input-font-size
+$input-label-size: 0.75rem;
+$button-font-size: 0.875rem;
+$table-font-size: 0.875rem;
+
+// Spacing
+$spacing-xs: 0.25rem;Spacing$spacing-xs
+$spacing-sm: 0.5rem;
+$spacing-base: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Padding
+$padding-xs: 0.25rem;Padding$padding-xs
+$padding-sm: 0.5rem;
+$padding-base: 1rem;
+$padding-lg: 1.5rem;
+
+// Border Radius
+$border-radius-sm: 0.25rem;BorderRadius$border-radius-sm
+$border-radius-base: 0.5rem;
+$border-radius-lg: 0.75rem;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgb(0 0 0 / 10%);Shadows$shadow-sm
+$shadow-lg: 0 4px 6px rgb(0 0 0 / 10%);
+
+// Z-index layers
+$z-background: -1;Z-indexlayers$z-background
+$z-default: 1;
+$z-dropdown: 10;
+$z-sticky: 20;
+$z-fixed: 30;
+$z-modal: 40;
+$z-popover: 50;
+$z-tooltip: 60;
+
+// Grid breakpoints
+$breakpoint-sm: 576px;Gridbreakpoints$breakpoint-sm
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Container max-widths
+$container-sm: 540px;Containermax-widths$container-sm
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1140px;
+
+// Theme colors (light mode defaults)
+$green-primary: #6a784e;Themecolors$green-primary
+$green-secondary: #a5b485;
+$green-tertiary: #505a3d;
+$beige-primary: #d8ccba;
+$beige-secondary: #b8a694;
+$background-primary: #f5f7f2;
+$background-secondary: #e8ede3;
+
+// Text colors
+$text-primary-dark: #000;Textcolors$text-primary-dark
+$text-secondary-dark: #222;
+$text-tertiary-dark: #767676;
+$text-primary-light: #fff;
+
+// Notification colors
+$notif-high: #ff1f1f;Notificationcolors$notif-high
+$notif-mid: #fae100;
+$notif-low: #2fc709;
+$notif-high-light: #ffb6b6;
+$notif-mid-light: #ffef9c;
+$notif-low-light: #b1e5a4;
+
+// Status colors
+$status-warning: $notif-high;Statuscolors$status-warning
+$status-info: $notif-mid;
+$status-success: $notif-low;
+
+// Chat colors
+$chat-user-bg: #dedeff;Chatcolors$chat-user-bg
+$chat-user-text: #000;
+$chat-bot-bg: #99f;
+$chat-bot-text: #000;
+
+// Data visualization
+$data-null: #9c9f93;Datavisualization$data-null
+// Transitions
+$transition-base: 0.2s ease-in-out;Transitions$transition-base
+
+// Export variables as CSS variables
+:root {
+  // Typography
+  --greenova-font-family: #{$font-family-base};
+
+  --greenova-font-monospace: #{$font-family-monospace};
+  --greenova-text-size: #{$font-size-base};
+  --greenova-text-size-sm: #{$font-size-sm};
+  --greenova-text-size-xs: #{$font-size-xs};
+  --greenova-font-weight: #{$font-weight-normal};
+  --greenova-font-weight-bold: #{$font-weight-bold};
+  --greenova-line-height: #{$line-height-base};
+
+  // Spacing
+  --greenova-spacing-xs: #{$spacing-xs};
+
+  --greenova-spacing-sm: #{$spacing-sm};
+  --greenova-spacing-base: #{$spacing-base};
+  --greenova-spacing-lg: #{$spacing-lg};
+  --greenova-spacing-xl: #{$spacing-xl};
+
+  // Padding
+  --greenova-padding-xs: #{$padding-xs};
+
+  --greenova-padding-sm: #{$padding-sm};
+  --greenova-padding-base: #{$padding-base};
+  --greenova-padding-lg: #{$padding-lg};
+
+  // Borders
+  --greenova-border-radius-sm: #{$border-radius-sm};
+
+  --greenova-border-radius-base: #{$border-radius-base};
+  --greenova-border-radius-lg: #{$border-radius-lg};
+
+  // Shadows
+  --greenova-shadow-sm: #{$shadow-sm};
+
+  --greenova-shadow-lg: #{$shadow-lg};
+
+  // Z-index layers
+  --greenova-z-background: #{$z-background};
+
+  --greenova-z-default: #{$z-default};
+  --greenova-z-dropdown: #{$z-dropdown};
+  --greenova-z-sticky: #{$z-sticky};
+  --greenova-z-fixed: #{$z-fixed};
+  --greenova-z-modal: #{$z-modal};
+  --greenova-z-popover: #{$z-popover};
+  --greenova-z-tooltip: #{$z-tooltip};
+
+  // Grid breakpoints
+  --greenova-breakpoint-sm: #{$breakpoint-sm};
+
+  --greenova-breakpoint-md: #{$breakpoint-md};
+  --greenova-breakpoint-lg: #{$breakpoint-lg};
+  --greenova-breakpoint-xl: #{$breakpoint-xl};
+
+  // Container max-widths
+  --greenova-container-sm: #{$container-sm};
+
+  --greenova-container-md: #{$container-md};
+  --greenova-container-lg: #{$container-lg};
+  --greenova-container-xl: #{$container-xl};
+
+  // Theme colors
+  --greenova-green-primary: #{$green-primary};
+
+  --greenova-green-secondary: #{$green-secondary};
+  --greenova-green-tertiary: #{$green-tertiary};
+  --greenova-beige-primary: #{$beige-primary};
+  --greenova-beige-secondary: #{$beige-secondary};
+  --greenova-background-primary: #{$background-primary};
+  --greenova-background-secondary: #{$background-secondary};
+
+  // Text colors
+  --greenova-text-primary-dark: #{$text-primary-dark};
+
+  --greenova-text-secondary-dark: #{$text-secondary-dark};
+  --greenova-text-tertiary-dark: #{$text-tertiary-dark};
+  --greenova-text-primary-light: #{$text-primary-light};
+
+  // Notification colors
+  --greenova-notif-high: #{$notif-high};
+
+  --greenova-notif-mid: #{$notif-mid};
+  --greenova-notif-low: #{$notif-low};
+  --greenova-notif-high-light: #{$notif-high-light};
+  --greenova-notif-mid-light: #{$notif-mid-light};
+  --greenova-notif-low-light: #{$notif-low-light};
+
+  // Status colors
+  --greenova-status-warning: #{$status-warning};
+
+  --greenova-status-info: #{$status-info};
+  --greenova-status-success: #{$status-success};
+
+  // Chat colors
+  --greenova-chat-user-bg: #{$chat-user-bg};
+
+  --greenova-chat-user-text: #{$chat-user-text};
+  --greenova-chat-bot-bg: #{$chat-bot-bg};
+  --greenova-chat-bot-text: #{$chat-bot-text};
+
+  // Data visualization
+  --greenova-data-null: #{$data-null};
+
+  // Transitions
+  --greenova-transition: #{$transition-base};
+}

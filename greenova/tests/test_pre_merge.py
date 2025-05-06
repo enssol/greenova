@@ -13,7 +13,7 @@ from django.utils import timezone
 from mechanisms.models import EnvironmentalMechanism
 from obligations.models import Obligation
 from projects.models import Project
-from users.models import Profile
+from users.models import Profile, User
 
 # Replace magic values with constants
 HTTP_OK = 200
@@ -126,6 +126,179 @@ def test_obligation_delete_view(admin_client: Client):
     response = admin_client.post(url)
     assert response.status_code == HTTP_OK
     assert not Obligation.objects.filter(obligation_number="OBL001").exists()
+
+
+@pytest.mark.django_db
+def test_company_creation(authenticated_client, regular_user):
+    """Test creating a new company."""
+    # Make the user a company admin by creating a company and making them an admin
+    initial_company = Company.objects.create(name="Initial Company")
+    CompanyMembership.objects.create(
+        company=initial_company, user=regular_user, role="admin", is_primary=True
+    )
+
+    url = reverse("company:create")
+    data = {
+        "name": "New Company",
+        "description": "A newly created company",
+        "company_type": "client",
+        "industry": "consulting",  # Updated to use a valid industry choice
+        "is_active": True,
+    }
+    response = authenticated_client.post(url, data)
+
+    # Print response content if status code is 200 (form errors)
+    if response.status_code == 200:
+        print("Form errors:", response.content.decode())
+
+    assert response.status_code == 302  # Redirect after successful creation
+    assert Company.objects.filter(name="New Company").exists()
+
+
+@pytest.mark.django_db
+def test_company_update(authenticated_client, company, regular_user):
+    """Test updating an existing company."""
+    # Make the user an admin of the company
+    CompanyMembership.objects.create(
+        company=company, user=regular_user, role="admin", is_primary=True
+    )
+
+    # Make sure the user is properly associated with the company
+    company.users.add(regular_user)
+    company.save()
+
+    url = reverse("company:update", args=[company.id])
+    data = {
+        "name": "Updated Company",
+        "description": "Updated description",
+        "company_type": "contractor",
+        "industry": "consulting",
+        "is_active": False,
+        # Add all other possible fields to ensure form validation
+        "website": "https://example.com",
+        "phone": "123-456-7890",
+        "email": "info@example.com",
+        "address": "123 Main St",
+        "size": "medium",
+    }
+    response = authenticated_client.post(url, data)
+
+    # Debug output
+    if response.status_code != 302:
+        print(f"Response status: {response.status_code}")
+        print(f"Response content: {response.content.decode()}")
+
+    assert response.status_code == 302
+    company.refresh_from_db()
+    assert company.name == "Updated Company"
+    assert company.description == "Updated description"
+    assert company.company_type == "contractor"
+    assert company.industry == "consulting"
+    assert not company.is_active
+
+
+@pytest.mark.django_db
+def test_company_delete(authenticated_client, company, regular_user):
+    """Test deleting a company."""
+    # Make the user an owner of the company (only owners can delete companies)
+    company.users.add(regular_user)
+    CompanyMembership.objects.create(
+        company=company,
+        user=regular_user,
+        role="owner",  # Must be owner to delete
+        is_primary=True,
+    )
+
+    url = reverse("company:delete", args=[company.id])
+    response = authenticated_client.post(url)
+
+    # Debug output
+    if response.status_code != 302:
+        print(f"Delete response status: {response.status_code}")
+        print(f"Delete response content: {response.content.decode()}")
+
+    assert response.status_code == 302
+    assert not Company.objects.filter(id=company.id).exists()
+
+
+@pytest.mark.django_db
+def test_company_list_view(authenticated_client, company, regular_user):
+    """Test the company list view."""
+    # Associate the user with the company to grant access
+    company.users.add(regular_user)
+    CompanyMembership.objects.create(
+        company=company, user=regular_user, role="member", is_primary=True
+    )
+
+    url = reverse("company:list")
+    response = authenticated_client.get(url)
+    assert response.status_code == 200
+    assert company.name in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_company_membership_creation(authenticated_client, company, regular_user):
+    """Test adding a user to a company."""
+    # First make the regular user an admin of the company (to have permission to add members)
+    company.users.add(regular_user)
+    CompanyMembership.objects.create(
+        company=company,
+        user=regular_user,
+        role="admin",  # Admin role needed to add other users
+        is_primary=True,
+    )
+
+    # Create a new user to add to the company
+    new_user = User.objects.create_user(
+        username="newuser", password="password123", email="newuser@example.com"
+    )
+
+    url = reverse("company:add_member", args=[company.id])
+    data = {
+        "user": new_user.id,
+        "role": "manager",
+        "department": "Engineering",
+        "position": "Lead Engineer",
+        "is_primary": True,
+    }
+    response = authenticated_client.post(url, data)
+    assert response.status_code == 200  # HTMX response is 200 OK, not 302
+    assert CompanyMembership.objects.filter(company=company, user=new_user).exists()
+
+
+@pytest.mark.django_db
+def test_company_membership_removal(authenticated_client, company, regular_user):
+    """Test removing a user from a company."""
+    # First make the regular user an admin of the company (to have permission to remove members)
+    company.users.add(regular_user)
+    CompanyMembership.objects.create(
+        company=company,
+        user=regular_user,
+        role="admin",  # Admin role needed to remove users
+        is_primary=True,
+    )
+
+    # Create a new user to remove from the company
+    new_user = User.objects.create_user(
+        username="removeme", password="password123", email="removeme@example.com"
+    )
+
+    # Add the new user to the company
+    company.users.add(new_user)
+    membership = CompanyMembership.objects.create(
+        company=company, user=new_user, role="manager"
+    )
+
+    url = reverse("company:remove_member", args=[company.id, membership.id])
+    response = authenticated_client.post(url)
+
+    # Debug output
+    if response.status_code != 200:  # HTMX response is 200 OK, not 302
+        print(f"Remove member response status: {response.status_code}")
+        print(f"Remove member response content: {response.content.decode()}")
+
+    assert response.status_code == 200  # HTMX response is 200 OK
+    assert not CompanyMembership.objects.filter(id=membership.id).exists()
 
 
 @pytest.mark.django_db
