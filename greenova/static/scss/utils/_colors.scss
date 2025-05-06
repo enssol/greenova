@@ -6,52 +6,21 @@
  */
 
 // Common colors that apply regardless of theme
-:root,
-:root[data-theme="light"],
-:root[data-theme="dark"] {
-  /**
-   * Notification colors
-   */
+:root {
+  // Notification colors
+  $greenova-notif-primary-high: #ff0000;
+  $greenova-notif-primary-mid: #ffcc00;
+  $greenova-notif-primary-low: #00ff00;
+  $greenova-notif-secondary-low: #cccccc;
 
-Highestprioritynotificationmarker--greenova-notif-primary-high
+  // Chat colors
+  $greenova-chat-user-background: #dedeff;
+  $greenova-chat-user-color: #000;
+  $greenova-chat-bot-background: #99f;
+  $greenova-chat-bot-color: #000;
 
-  --greenova-warning-background: var(--greenova-notif-primary-high);--greenova-warning-background
-
-  --greenova-warning-text: #000;
-  --greenova-error-background: var(--greenova-notif-primary-high);
-  --greenova-error-text: #000;
-
-Middleprioritynotificationmarker--greenova-notif-primary-mid
-
-  --greenova-info-background: var(--greenova-notif-primary-mid);--greenova-info-background
-
-  --greenova-info-text: #000;
-
-Lowestprioritynotificationmarker--greenova-notif-primary-low
-
-  --greenova-success-background: var(--greenova-notif-primary-low);--greenova-success-background
-
-  --greenova-success-text: #000;
-
-Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
-
-  --pico-mark-background-color: var(--greenova-notif-secondary-low);--pico-mark-background-color
-
-  --pico-mark-color: #000;
-
-  /**
-   * Chat colors
-   */
-  --greenova-chat-user-background: #dedeff;
-  --greenova-chat-user-color: #000;
-  --greenova-chat-bot-background: #99f;
-  --greenova-chat-bot-color: #000;
-
-  /**
-   * Data colors
-   */
-  // Color for when data points are out of focus of the chart
-  --greenova-data-null: #9c9f93;Colorforwhendatapointsareoutoffocusofthechart--greenova-data-nullColorforwhendatapointsareoutoffocusofthechart--greenova-data-null
+  // Data colors
+  $greenova-data-null: #9c9f93;
 }
 
 @use '../abstracts/functions' as *;
@@ -59,44 +28,42 @@ Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
 
 // Text colors
 @each $variant in (primary, secondary, tertiary) {
-  .text-#{$variant}
-
- {
-    color: var(--greenova-text-#{$variant}-dark);
+  .text-#{$variant} {
+    color: $greenova-text-#{$variant}-dark;
   }
 }
 
 // Background colors
 .bg {
   &-primary {
-    background-color: var(--greenova-background-primary);
+    background-color: $greenova-background-primary;
   }
 
   &-secondary {
-    background-color: var(--greenova-background-secondary);
+    background-color: $greenova-background-secondary;
   }
 
   &-green {
     &-primary {
-      background-color: var(--greenova-green-primary);
+      background-color: $greenova-green-primary;
     }
 
     &-secondary {
-      background-color: var(--greenova-green-secondary);
+      background-color: $greenova-green-secondary;
     }
 
     &-tertiary {
-      background-color: var(--greenova-green-tertiary);
+      background-color: $greenova-green-tertiary;
     }
   }
 
   &-beige {
     &-primary {
-      background-color: var(--greenova-beige-primary);
+      background-color: $greenova-beige-primary;
     }
 
     &-secondary {
-      background-color: var(--greenova-beige-secondary);
+      background-color: $greenova-beige-secondary;
     }
   }
 }
@@ -104,36 +71,36 @@ Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
 // Status colors
 .status {
   &-success {
-    color: var(--greenova-text-primary-light);
-    background-color: var(--greenova-notif-low);
+    color: $greenova-text-primary-light;
+    background-color: $greenova-notif-primary-low;
   }
 
   &-warning {
-    color: var(--greenova-text-primary-dark);
-    background-color: var(--greenova-notif-mid);
+    color: $greenova-text-primary-dark;
+    background-color: $greenova-notif-primary-mid;
   }
 
   &-danger {
-    color: var(--greenova-text-primary-light);
-    background-color: var(--greenova-notif-high);
+    color: $greenova-text-primary-light;
+    background-color: $greenova-notif-primary-high;
   }
 }
 
 // Notification colors
 .notification {
   &-high {
-    background-color: var(--greenova-notif-high-light);
-    color: var(--greenova-notif-high);
+    background-color: lighten($greenova-notif-primary-high, 20%);
+    color: $greenova-notif-primary-high;
   }
 
   &-medium {
-    background-color: var(--greenova-notif-mid-light);
-    color: var(--greenova-notif-mid);
+    background-color: lighten($greenova-notif-primary-mid, 20%);
+    color: $greenova-notif-primary-mid;
   }
 
   &-low {
-    background-color: var(--greenova-notif-low-light);
-    color: var(--greenova-notif-low);
+    background-color: lighten($greenova-notif-primary-low, 20%);
+    color: $greenova-notif-primary-low;
   }
 }
 
@@ -141,25 +108,25 @@ Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
 .border {
   &-green {
     &-primary {
-      border-color: var(--greenova-green-primary);
+      border-color: $greenova-green-primary;
     }
 
     &-secondary {
-      border-color: var(--greenova-green-secondary);
+      border-color: $greenova-green-secondary;
     }
 
     &-tertiary {
-      border-color: var(--greenova-green-tertiary);
+      border-color: $greenova-green-tertiary;
     }
   }
 
   &-beige {
     &-primary {
-      border-color: var(--greenova-beige-primary);
+      border-color: $greenova-beige-primary;
     }
 
     &-secondary {
-      border-color: var(--greenova-beige-secondary);
+      border-color: $greenova-beige-secondary;
     }
   }
 }
@@ -167,6 +134,6 @@ Outlineoflowestprioritynotificationmarker--greenova-notif-secondary-low
 // Data visualization colors
 .data {
   &-null {
-    color: var(--greenova-data-null);
+    color: $greenova-data-null;
   }
 }

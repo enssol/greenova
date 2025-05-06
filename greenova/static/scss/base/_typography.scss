@@ -12,18 +12,18 @@
 
 /* Base body typography */
 body {
-  font-family: var(--greenova-font-family);
-  font-size: var(--greenova-text-size);
-  font-weight: var(--greenova-font-weight);
-  color: var(--greenova-text-secondary-dark);
+  font-family: $greenova-font-family;
+  font-size: $greenova-text-size;
+  font-weight: $greenova-font-weight;
+  color: $greenova-text-secondary-dark;
 }
 
 // Headings
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--greenova-font-family);
-  font-weight: var(--greenova-font-weight-bold);
+  font-family: $greenova-font-family;
+  font-weight: $greenova-font-weight-bold;
   line-height: 1.2;
-  margin-bottom: var(--greenova-spacing-base);
+  margin-bottom: $greenova-spacing-base;
 }
 
 h1 {
@@ -76,7 +76,7 @@ h6 {
 
 // Body text
 p {
-  margin-bottom: var(--greenova-spacing-base);
+  margin-bottom: $greenova-spacing-base;
   max-width: 70ch;
 
   &:last-child {
@@ -86,12 +86,12 @@ p {
 
 // Links
 a {
-  color: var(--greenova-green-primary);
+  color: $greenova-green-primary;
   text-decoration: none;
-  transition: color var(--greenova-transition);
+  transition: color $greenova-transition;
 
   &:hover {
-    color: var(--greenova-green-tertiary);
+    color: $greenova-green-tertiary;
     text-decoration: underline;
   }
 
@@ -103,12 +103,12 @@ a {
 
 // Lists
 ul, ol {
-  margin-bottom: var(--greenova-spacing-base);
-  padding-left: var(--greenova-spacing-lg);
+  margin-bottom: $greenova-spacing-base;
+  padding-left: $greenova-spacing-lg;
 }
 
 li {
-  margin-bottom: var(--greenova-spacing-sm);
+  margin-bottom: $greenova-spacing-sm;
 
   &:last-child {
     margin-bottom: 0;
@@ -117,31 +117,31 @@ li {
 
 // Code
 code, pre {
-  font-family: var(--greenova-font-monospace);
+  font-family: $greenova-font-monospace;
   font-size: 0.9em;
 }
 
 pre {
-  background: var(--greenova-background-secondary);
-  padding: var(--greenova-spacing-base);
-  border-radius: var(--greenova-border-radius-base);
+  background: $greenova-background-secondary;
+  padding: $greenova-spacing-base;
+  border-radius: $greenova-border-radius-base;
   overflow-x: auto;
-  margin-bottom: var(--greenova-spacing-base);
+  margin-bottom: $greenova-spacing-base;
 }
 
 code {
-  background-color: var(--greenova-background-secondary);
-  color: var(--greenova-text-primary-dark);
+  background-color: $greenova-background-secondary;
+  color: $greenova-text-primary-dark;
   padding: 0.125rem 0.25rem;
-  border-radius: var(--greenova-border-radius-small);
+  border-radius: $greenova-border-radius-sm;
 }
 
 // Blockquotes
 blockquote {
-  border-left: 4px solid var(--greenova-green-primary);
-  margin: var(--greenova-spacing-base) 0;
-  padding: var(--greenova-spacing-base);
-  background: var(--greenova-background-secondary);
+  border-left: 4px solid $greenova-green-primary;
+  margin: $greenova-spacing-base 0;
+  padding: $greenova-spacing-base;
+  background: $greenova-background-secondary;
   font-style: italic;
 
   p {
@@ -150,7 +150,7 @@ blockquote {
 
   cite {
     display: block;
-    margin-top: var(--greenova-spacing-sm);
+    margin-top: $greenova-spacing-sm;
     font-size: 0.9em;
     font-style: normal;
   }
@@ -158,22 +158,22 @@ blockquote {
 
 // Small text
 small {
-  font-size: var(--greenova-text-size-xs);
+  font-size: $greenova-text-size-xs;
 }
 
 // Bold text
 strong {
-  font-weight: var(--greenova-font-weight-bold);
+  font-weight: $greenova-font-weight-bold;
 }
 
 // Selection
 ::selection {
-  background: var(--greenova-green-primary);
-  color: var(--greenova-text-primary-light);
+  background: $greenova-green-primary;
+  color: $greenova-text-primary-light;
 }
 
 // Tables
 table {
-  font-size: var(--greenova-table-font-size);
+  font-size: $table-font-size;
   line-height: 1.4;
 }

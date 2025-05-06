@@ -1,4 +1,6 @@
 @use "sass:color";
+@use "sass:map";
+@use './variables' as *;
 
 /**
  * Mixins
@@ -27,19 +29,19 @@
 
 // Media query mixins
 @mixin breakpoint-up($breakpoint) {
-  @media (min-width: var(--greenova-breakpoint-#{$breakpoint})) {
+  @media (min-width: map.get($breakpoints, $breakpoint)) {
     @content;
   }
 }
 
 @mixin breakpoint-down($breakpoint) {
-  @media (max-width: var(--greenova-breakpoint-#{$breakpoint})) {
+  @media (max-width: map.get($breakpoints, $breakpoint)) {
     @content;
   }
 }
 
 // Flexbox row with optional wrapping and alignment
-@mixin flex-row($wrap: nowrap, $justify: flex-start, $align: center, $gap: var(--greenova-spacing)) {
+@mixin flex-row($wrap: nowrap, $justify: flex-start, $align: center, $gap: $spacing-base) {
   display: flex;
   flex-flow: row $wrap;
   justify-content: $justify;
@@ -48,7 +50,7 @@
 }
 
 // Flexbox column
-@mixin flex-column($justify: flex-start, $align: stretch, $gap: var(--greenova-spacing)) {
+@mixin flex-column($justify: flex-start, $align: stretch, $gap: $spacing-base) {
   display: flex;
   flex-direction: column;
   justify-content: $justify;
@@ -85,7 +87,7 @@
 
 // Typography mixins
 @mixin font-size($size) {
-  font-size: var(--greenova-text-size-#{$size});
+  font-size: map-get($font-sizes, $size);
 }
 
 @mixin line-clamp($lines) {
@@ -96,19 +98,11 @@
 }
 
 // Card style mixin
-@mixin card($padding: var(--greenova-padding), $bg: var(--greenova-background-secondary)) {
+@mixin card($padding: $padding-base, $bg: $background-secondary) {
   padding: $padding;
   background-color: $bg;
-  border-radius: var(--greenova-border-radius);
-  box-shadow: var(--greenova-shadow);
-}
-
-// Card mixin
-@mixin card {
-  background: var(--greenova-background-secondary);
-  border-radius: var(--greenova-border-radius-base);
-  padding: var(--greenova-padding-base);
-  box-shadow: var(--greenova-shadow-sm);
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-sm;
 }
 
 // Button mixin
@@ -116,49 +110,39 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--greenova-padding-sm) var(--greenova-padding-base);
-  border-radius: var(--greenova-border-radius-base);
-  font-size: var(--greenova-text-size-sm);
-  font-weight: var(--greenova-font-weight-bold);
+  padding: $padding-sm $padding-base;
+  border-radius: $border-radius-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--greenova-transition);
+  transition: all $transition-base;
 }
 
 // Status badge mixin
-@mixin status-badge($bg-color, $text-color: #000) {
-  display: inline-block;
-  padding: var(--greenova-padding-smaller) var(--greenova-padding-small);
-  background-color: $bg-color;
-  color: $text-color;
-  font-weight: var(--greenova-font-weight-bold);
-  border-radius: var(--greenova-border-radius-small);
-}
-
-// Status indicator mixin
 @mixin status-badge($type) {
   display: inline-block;
-  padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
-  border-radius: var(--greenova-border-radius-sm);
-  font-size: var(--greenova-text-size-xs);
-  font-weight: var(--greenova-font-weight-bold);
+  padding: $padding-xs $padding-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
   line-height: 1;
   text-align: center;
 
   @if $type == 'success' {
-    background: var(--greenova-status-success);
-    color: var(--greenova-text-primary-light);
+    background: $status-success;
+    color: $text-primary-light;
   }
 
- @else if $type == 'warning' {
-    background: var(--greenova-status-warning);
-    color: var(--greenova-text-primary-light);
+  @else if $type == 'warning' {
+    background: $status-warning;
+    color: $text-primary-light;
   }
 
- @else if $type == 'info' {
-    background: var(--greenova-status-info);
-    color: var(--greenova-text-primary-dark);
+  @else if $type == 'info' {
+    background: $status-info;
+    color: $text-primary-dark;
   }
 }
 

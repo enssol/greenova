@@ -1,3 +1,5 @@
+@use '../abstracts/variables' as *;
+
 /**
  * Modern CSS Reset
  * Adapted and customized for Greenova
@@ -37,10 +39,10 @@ html {
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
-  line-height: var(--greenova-line-height);
-  font-family: var(--greenova-font-family);
-  background-color: var(--greenova-background-primary);
-  color: var(--greenova-text-primary-dark);
+  line-height: $greenova-line-height;
+  font-family: $greenova-font-family;
+  background-color: $greenova-background-primary;
+  color: $greenova-text-primary-dark;
 }
 
 // Make images easier to work with
@@ -176,7 +178,7 @@ textarea {
 
 // Focus styles
 :focus-visible {
-  outline: 2px solid var(--greenova-green-primary);
+  outline: 2px solid $greenova-green-primary;
   outline-offset: 2px;
 }
 

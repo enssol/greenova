@@ -9,8 +9,8 @@
   &-spinner {
     width: 40px;
     height: 40px;
-    border: 4px solid var(--greenova-background-secondary);
-    border-top-color: var(--greenova-green-primary);
+    border: 4px solid $background-secondary;
+    border-top-color: $green-primary;
     border-radius: 50%;
     animation: spin 1s infinite linear;
   }
@@ -51,8 +51,8 @@
   &-fullscreen {
     position: fixed;
     inset: 0;
-    background: rgb(255 255 255 / 90%);
-    z-index: var(--greenova-z-loader);
+    background: rgba($white, 0.9);
+    z-index: $z-loader;
 
     @include flex-center;
   }
@@ -91,13 +91,13 @@
   &-progress {
     width: 100%;
     height: 4px;
-    background: var(--greenova-background-secondary);
-    border-radius: var(--greenova-border-radius-sm);
+    background: $background-secondary;
+    border-radius: $border-radius-sm;
     overflow: hidden;
 
     &-bar {
       height: 100%;
-      background: var(--greenova-green-primary);
+      background: $green-primary;
       border-radius: inherit;
       transition: width 0.3s ease;
     }
@@ -115,13 +115,13 @@
     display: block;
     background: linear-gradient(
       90deg,
-      var(--greenova-background-secondary) 25%,
-      var(--greenova-background-elevated) 50%,
-      var(--greenova-background-secondary) 75%
+      $background-secondary 25%,
+      $background-elevated 50%,
+      $background-secondary 75%
     );
     background-size: 200% 100%;
     animation: skeleton 1.5s infinite;
-    border-radius: var(--greenova-border-radius-sm);
+    border-radius: $border-radius-sm;
 
     &-text {
       height: 1em;

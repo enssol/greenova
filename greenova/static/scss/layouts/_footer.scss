@@ -1,16 +1,18 @@
+@use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+// Replaced CSS variables with Sass variables for footer styles.
 .site-footer {
-  padding: var(--greenova-padding-lg) var(--greenova-padding-base);
-  background-color: var(--greenova-background-secondary);
-  border-top: 1px solid var(--greenova-green-secondary);
+  padding: $spacing-lg $spacing-base;
+  background: $background-secondary;
+  border-top: 1px solid $green-secondary;
   margin-top: auto;
 
   .footer-content {
-    @include flex-row(wrap, space-between, flex-start);
-
-    gap: var(--greenova-spacing-lg);
-    max-width: var(--greenova-container-xl);
+    @include flex-between;
+    flex-wrap: wrap;
+    gap: $spacing-base;
+    max-width: $container-xl;
     margin: 0 auto;
 
     @include breakpoint-down(md) {
@@ -25,48 +27,48 @@
     min-width: 250px;
 
     h4 {
-      color: var(--greenova-text-primary-dark);
-      margin-bottom: var(--greenova-spacing-base);
-      font-size: var(--greenova-text-size-sm);
+      color: $text-primary-dark;
+      margin-bottom: $spacing-base;
+      font-size: $font-size-sm;
     }
 
     ul {
       @include flex-column(flex-start, flex-start);
 
-      gap: var(--greenova-spacing-sm);
+      gap: $spacing-sm;
     }
 
     a {
-      color: var(--greenova-text-secondary-dark);
+      color: $text-secondary-dark;
       text-decoration: none;
-      transition: color var(--greenova-transition);
+      transition: color $transition-base;
 
       &:hover {
-        color: var(--greenova-green-primary);
+        color: $green-primary;
       }
     }
   }
 
   .footer-bottom {
-    margin-top: var(--greenova-spacing-lg);
-    padding-top: var(--greenova-spacing-base);
-    border-top: 1px solid var(--greenova-green-secondary);
+    margin-top: $spacing-lg;
+    padding-top: $spacing-base;
+    border-top: 1px solid $green-secondary;
     text-align: center;
-    color: var(--greenova-text-tertiary-dark);
-    font-size: var(--greenova-text-size-xs);
+    color: $text-tertiary-dark;
+    font-size: $font-size-xs;
 
     .footer-links {
       @include flex-row(wrap, center);
 
-      gap: var(--greenova-spacing-base);
-      margin-top: var(--greenova-spacing-sm);
+      gap: $spacing-base;
+      margin-top: $spacing-sm;
 
       a {
         color: inherit;
         text-decoration: none;
 
         &:hover {
-          color: var(--greenova-green-primary);
+          color: $green-primary;
         }
       }
     }
@@ -75,7 +77,7 @@
   .social-links {
     @include flex-row(wrap, center);
 
-    gap: var(--greenova-spacing-base);
+    gap: $spacing-base;
 
     a {
       @include flex-center;
@@ -83,9 +85,9 @@
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background: var(--greenova-green-primary);
-      color: var(--greenova-text-primary-light);
-      transition: transform var(--greenova-transition);
+      background: $green-primary;
+      color: $text-primary-light;
+      transition: transform $transition-base;
 
       &:hover {
         transform: translateY(-2px);

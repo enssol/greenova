@@ -11,7 +11,7 @@ table tbody {
 /* Table Styles */
 .table-container {
   overflow-x: auto;
-  margin: var(--greenova-spacing) 0;
+  margin: $spacing-base 0;
   display: flex;
   flex-direction: column;
   max-height: 600px;
@@ -37,9 +37,9 @@ th {
 table thead th {
   position: sticky;
   top: 0;
-  background: var(--greenova-green-primary);
+  background: $green-primary;
   z-index: 1;
-  box-shadow: var(--greenova-shadow);
+  box-shadow: $shadow-base;
 }
 
 /* Ensure certain columns have max width */
@@ -111,10 +111,10 @@ mark[role='status'] {
 /* Error notices */
 .notice,
 .error {
-  background: var(--greenova-error-background);
-  color: var(--greenova-error-text);
-  padding: var(--greenova-spacing);
-  border-radius: var(--greenova-border-radius);
+  background: $error-background;
+  color: $error-text;
+  padding: $spacing-base;
+  border-radius: $border-radius-base;
   margin: var(--greenova-spacing) 0;
 }
 

@@ -13,17 +13,19 @@
 .button {
   @include button-base;
 
+  font-size: $font-size-sm;
+
   // Primary button
   &-primary {
     @extend .button;
 
-    background: var(--greenova-green-primary);
-    color: var(--greenova-text-primary-light);
-    border: 1px solid var(--greenova-green-primary);
+    background: $green-primary;
+    color: $text-primary-light;
+    border: 1px solid $green-primary;
 
     &:hover {
-      background: var(--greenova-green-tertiary);
-      border-color: var(--greenova-green-tertiary);
+      background: $green-tertiary;
+      border-color: $green-tertiary;
     }
 
     &:focus {
@@ -35,13 +37,13 @@
   &-secondary {
     @extend .button;
 
-    background: var(--greenova-beige-primary);
-    color: var(--greenova-text-secondary-dark);
-    border: 1px solid var(--greenova-beige-primary);
+    background: $beige-primary;
+    color: $text-secondary-dark;
+    border: 1px solid $beige-primary;
 
     &:hover {
-      background: var(--greenova-beige-secondary);
-      border-color: var(--greenova-beige-secondary);
+      background: $beige-secondary;
+      border-color: $beige-secondary;
     }
 
     &:focus {
@@ -54,12 +56,12 @@
     @extend .button;
 
     background: transparent;
-    border: 1px solid var(--greenova-green-primary);
-    color: var(--greenova-green-primary);
+    border: 1px solid $green-primary;
+    color: $green-primary;
 
     &:hover {
-      background: var(--greenova-green-primary);
-      color: var(--greenova-text-primary-light);
+      background: $green-primary;
+      color: $text-primary-light;
     }
 
     &:focus {
@@ -73,11 +75,11 @@
 
     background: transparent;
     border: none;
-    color: var(--greenova-green-primary);
-    padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
+    color: $green-primary;
+    padding: $padding-xs $padding-sm;
 
     &:hover {
-      background: var(--greenova-background-secondary);
+      background: $background-secondary;
     }
 
     &:focus {
@@ -89,7 +91,7 @@
   &-icon {
     @extend .button;
 
-    padding: var(--greenova-padding-sm);
+    padding: $padding-sm;
     border-radius: 50%;
     line-height: 1;
 
@@ -101,13 +103,13 @@
 
   // Button sizes
   &-sm {
-    font-size: var(--greenova-text-size-xs);
-    padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
+    font-size: $font-size-xs;
+    padding: $padding-xs $padding-sm;
   }
 
   &-lg {
-    font-size: var(--greenova-text-size);
-    padding: var(--greenova-padding-sm) var(--greenova-padding-lg);
+    font-size: $font-size-base;
+    padding: $padding-sm $padding-lg;
   }
 
   // Button states
@@ -162,9 +164,9 @@
   &-success {
     @extend .button;
 
-    background: var(--greenova-notif-low);
-    color: var(--greenova-text-primary-light);
-    border: 1px solid var(--greenova-notif-low);
+    background: $notif-low;
+    color: $text-primary-light;
+    border: 1px solid $notif-low;
 
     &:hover {
       background: color.adjust($notif-low, $lightness: -10%);
@@ -175,9 +177,9 @@
   &-warning {
     @extend .button;
 
-    background: var(--greenova-notif-mid);
-    color: var(--greenova-text-primary-dark);
-    border: 1px solid var(--greenova-notif-mid);
+    background: $notif-mid;
+    color: $text-primary-dark;
+    border: 1px solid $notif-mid;
 
     &:hover {
       background: color.adjust($notif-mid, $lightness: -10%);
@@ -188,9 +190,9 @@
   &-danger {
     @extend .button;
 
-    background: var(--greenova-notif-high);
-    color: var(--greenova-text-primary-light);
-    border: 1px solid var(--greenova-notif-high);
+    background: $notif-high;
+    color: $text-primary-light;
+    border: 1px solid $notif-high;
 
     &:hover {
       background: color.adjust($notif-high, $lightness: -10%);

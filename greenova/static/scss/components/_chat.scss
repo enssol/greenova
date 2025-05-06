@@ -4,12 +4,12 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: z-index(fixed);
+    z-index: $z-fixed;
     width: 350px;
     max-height: 500px;
-    background: color(background, secondary);
-    border-radius: spacing(base);
-    box-shadow: shadow(large);
+    background: $background-secondary;
+    border-radius: $spacing-base;
+    box-shadow: $shadow-large;
     overflow: hidden;
   }
 

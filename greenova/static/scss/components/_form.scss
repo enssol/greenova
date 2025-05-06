@@ -11,18 +11,18 @@
 .form-container {
   @include card;
 
-  margin-bottom: spacing(base);
+  margin-bottom: $spacing-base;
 }
 
 /* Form sections */
 .form-section {
-  margin-bottom: spacing(large);
+  margin-bottom: $spacing-large;
 
   &__title {
-    border-bottom: border();
-    margin-bottom: spacing(base);
-    padding-bottom: spacing(sm);
-    font-size: spacing(base);
+    border-bottom: $border;
+    margin-bottom: $spacing-base;
+    padding-bottom: $spacing-sm;
+    font-size: $spacing-base;
   }
 }
 
@@ -30,7 +30,7 @@
 .form-group {
   @include flex-column;
 
-  margin-bottom: spacing(base);
+  margin-bottom: $spacing-base;
 
   &:last-child {
     margin-bottom: 0;

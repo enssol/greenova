@@ -4,22 +4,22 @@
 // Base table styles
 .table {
   width: 100%;
-  margin-bottom: var(--greenova-spacing-base);
+  margin-bottom: $spacing-base;
   border-collapse: collapse;
-  background: var(--greenova-background-elevated);
-  border-radius: var(--greenova-border-radius-base);
+  background: $background-elevated;
+  border-radius: $border-radius-base;
   overflow: hidden;
 
   // Table header
   thead {
-    background: var(--greenova-table-header-background);
-    border-bottom: 2px solid var(--greenova-border-color);
+    background: $table-header-background;
+    border-bottom: 2px solid $border-color;
 
     th {
-      padding: var(--greenova-padding-sm) var(--greenova-padding-base);
+      padding: $padding-sm $padding-base;
       text-align: left;
-      font-weight: var(--greenova-font-weight-bold);
-      color: var(--greenova-text-secondary-dark);
+      font-weight: $font-weight-bold;
+      color: $text-secondary-dark;
       white-space: nowrap;
 
       // Sortable headers
@@ -28,12 +28,12 @@
         user-select: none;
 
         &:hover {
-          background: var(--greenova-background-secondary);
+          background: $background-secondary;
         }
 
         &::after {
           content: '↕';
-          margin-left: var(--greenova-spacing-xs);
+          margin-left: $spacing-xs;
           opacity: 0.5;
         }
 
@@ -53,11 +53,11 @@
   // Table body
   tbody {
     tr {
-      border-bottom: 1px solid var(--greenova-table-border);
-      transition: background var(--greenova-transition);
+      border-bottom: 1px solid $table-border;
+      transition: background $transition;
 
       &:hover {
-        background: var(--greenova-table-row-hover);
+        background: $table-row-hover;
       }
 
       &:last-child {
@@ -66,19 +66,19 @@
     }
 
     td {
-      padding: var(--greenova-padding-sm) var(--greenova-padding-base);
-      color: var(--greenova-text-secondary-dark);
+      padding: $padding-sm $padding-base;
+      color: $text-secondary-dark;
     }
   }
 
   // Table footer
   tfoot {
-    background: var(--greenova-table-header-background);
-    border-top: 2px solid var(--greenova-border-color);
+    background: $table-header-background;
+    border-top: 2px solid $border-color;
 
     td {
-      padding: var(--greenova-padding-sm) var(--greenova-padding-base);
-      font-weight: var(--greenova-font-weight-bold);
+      padding: $padding-sm $padding-base;
+      font-weight: $font-weight-bold;
     }
   }
 
@@ -95,21 +95,21 @@
   // Striped rows
   &-striped {
     tbody tr:nth-child(odd) {
-      background: var(--greenova-background-secondary);
+      background: $background-secondary;
 
       &:hover {
-        background: var(--greenova-table-row-hover);
+        background: $table-row-hover;
       }
     }
   }
 
   // Bordered table
   &-bordered {
-    border: 1px solid var(--greenova-table-border);
+    border: 1px solid $table-border;
 
     th,
     td {
-      border: 1px solid var(--greenova-table-border);
+      border: 1px solid $table-border;
     }
   }
 
@@ -117,8 +117,8 @@
   &-sm {
     th,
     td {
-      padding: var(--greenova-padding-xs) var(--greenova-padding-sm);
-      font-size: var(--greenova-text-size-sm);
+      padding: $padding-xs $padding-sm;
+      font-size: $text-size-sm;
     }
   }
 
@@ -130,15 +130,15 @@
     }
 
     &-success {
-      background: var(--greenova-notif-low);
+      background: $notif-low;
     }
 
     &-warning {
-      background: var(--greenova-notif-mid);
+      background: $notif-mid;
     }
 
     &-danger {
-      background: var(--greenova-notif-high);
+      background: $notif-high;
     }
   }
 
@@ -148,7 +148,7 @@
       cursor: pointer;
 
       &:active {
-        background: var(--greenova-background-secondary);
+        background: $background-secondary;
       }
     }
   }
@@ -167,7 +167,7 @@
 .table-toolbar {
   @include flex-between;
 
-  margin-bottom: var(--greenova-spacing-base);
+  margin-bottom: $spacing-base;
 
   // Search input
   .table-search {
@@ -176,17 +176,17 @@
 
     input {
       width: 100%;
-      padding-left: var(--greenova-spacing-xl);
+      padding-left: $spacing-xl;
     }
 
     svg {
       position: absolute;
-      left: var(--greenova-spacing-sm);
+      left: $spacing-sm;
       top: 50%;
       transform: translateY(-50%);
       width: 16px;
       height: 16px;
-      color: var(--greenova-text-tertiary-dark);
+      color: $text-tertiary-dark;
     }
   }
 
@@ -194,7 +194,7 @@
   .table-actions {
     @include flex-row(wrap);
 
-    gap: var(--greenova-spacing-sm);
+    gap: $spacing-sm;
   }
 }
 
@@ -202,15 +202,15 @@
 .table-pagination {
   @include flex-between;
 
-  padding: var(--greenova-padding-sm) var(--greenova-padding-base);
-  background: var(--greenova-background-secondary);
-  border-top: 1px solid var(--greenova-border-color);
+  padding: $padding-sm $padding-base;
+  background: $background-secondary;
+  border-top: 1px solid $border-color;
 
   // Page size selector
   .page-size {
     @include flex-row(nowrap);
 
-    gap: var(--greenova-spacing-sm);
+    gap: $spacing-sm;
     align-items: center;
 
     select {

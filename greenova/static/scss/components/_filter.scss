@@ -3,25 +3,25 @@
 
 /* Filter section layout */
 .filter-section {
-  margin-bottom: spacing(large);
+  margin-bottom: $spacing-large;
 }
 
 .filter-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: spacing(base);
+  margin-bottom: $spacing-base;
 }
 
 .filter-header h3 {
   margin: 0;
-  font-size: spacing(base);
+  font-size: $spacing-base;
 }
 
 .filter-actions {
   display: flex;
   align-items: flex-start;
-  gap: spacing(sm);
+  gap: $spacing-sm;
 }
 
 /* Filter controls */

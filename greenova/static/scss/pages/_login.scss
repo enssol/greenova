@@ -1,0 +1,75 @@
+// Replaced CSS variables with Sass variables for login page styles.
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: $background-secondary;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  padding: $spacing-lg;
+  background: $background-primary;
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-lg;
+}
+
+.login-form h1 {
+  margin-bottom: $spacing-base;
+  font-size: $text-size-lg;
+  text-align: center;
+}
+
+.login-form .form-group {
+  margin-bottom: $spacing-base;
+}
+
+.login-form .form-group label {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-weight: $font-weight-bold;
+}
+
+.login-form .form-group input {
+  width: 100%;
+  padding: $padding-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+}
+
+.login-form .form-group input:focus {
+  border-color: $green-primary;
+  box-shadow: 0 0 0 3px rgba($green-primary, 0.25);
+}
+
+.login-form .form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-form .form-actions button {
+  padding: $padding-sm $padding-base;
+  background: $green-primary;
+  color: $text-primary-light;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background $transition;
+}
+
+.login-form .form-actions button:hover {
+  background: $green-tertiary;
+}
+
+.login-form .form-actions a {
+  color: $text-secondary-dark;
+  text-decoration: none;
+  font-size: $text-size-sm;
+}
+
+.login-form .form-actions a:hover {
+  text-decoration: underline;
+}

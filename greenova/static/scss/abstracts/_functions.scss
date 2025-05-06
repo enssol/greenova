@@ -44,17 +44,17 @@
 
 // Get z-index value from map
 @function z-index($key) {
-  @return var(--greenova-z-#{$key});
+  @return map-get($z-index-map, $key);
 }
 
 // Get spacing value
 @function spacing($key) {
-  @return var(--greenova-spacing-#{$key});
+  @return map-get($spacing-map, $key);
 }
 
 // Get color value
 @function color($type, $variant) {
-  @return var(--greenova-#{$type}-#{$variant});
+  @return map-get(map-get($color-map, $type), $variant);
 }
 
 // Convert px to em

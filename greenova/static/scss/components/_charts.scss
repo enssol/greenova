@@ -1,34 +1,34 @@
 // Chart components
 .chart {
   &-container {
-    padding: spacing(base);
-    background: color(background, secondary);
-    border-radius: spacing(base);
-    margin-bottom: spacing(base);
+    padding: $spacing-base;
+    background: $background-secondary;
+    border-radius: $spacing-base;
+    margin-bottom: $spacing-base;
   }
 
   &-header {
-    margin-bottom: spacing(base);
+    margin-bottom: $spacing-base;
 
     h3 {
       margin: 0;
-      font-size: spacing(base);
-      color: color(text, primary-dark);
+      font-size: $spacing-base;
+      color: $text-primary-dark;
     }
   }
 
   &-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: spacing(small);
-    margin-top: spacing(base);
+    gap: $spacing-small;
+    margin-top: $spacing-base;
   }
 
   &-legend-item {
     display: flex;
     align-items: center;
-    gap: spacing(smaller);
-    font-size: spacing(smaller);
+    gap: $spacing-smaller;
+    font-size: $spacing-smaller;
 
     &::before {
       content: '';

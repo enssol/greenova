@@ -1,0 +1,41 @@
+// Replaced CSS variables with Sass variables for error page styles.
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: $background-secondary;
+}
+
+.error-content {
+  text-align: center;
+  padding: $spacing-lg;
+  background: $background-primary;
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-lg;
+}
+
+.error-content h1 {
+  font-size: $text-size-xl;
+  margin-bottom: $spacing-base;
+}
+
+.error-content p {
+  font-size: $text-size-md;
+  margin-bottom: $spacing-base;
+  color: $text-secondary-dark;
+}
+
+.error-content a {
+  display: inline-block;
+  padding: $padding-sm $padding-base;
+  background: $green-primary;
+  color: $text-primary-light;
+  border-radius: $border-radius-sm;
+  text-decoration: none;
+  transition: background $transition;
+}
+
+.error-content a:hover {
+  background: $green-tertiary;
+}

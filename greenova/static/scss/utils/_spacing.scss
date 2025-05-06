@@ -4,108 +4,85 @@
  * Utility classes for margin and padding
  */
 
-// Spacing utilities
+// Define spacing sizes
+$spacing-sizes: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  base: 1rem,
+  lg: 1.5rem,
+  xl: 2rem
+);
 
 // Margin utilities
-@each $size in (xs, sm, base, lg, xl) {
-  .m-#{$size}
-
- {
-    margin: var(--greenova-spacing-#{$size});
+@each $size, $value in $spacing-sizes {
+  .m-#{$size} {
+    margin: #{$value};
   }
 
-  .mt-#{$size}
-
- {
-    margin-top: var(--greenova-spacing-#{$size});
+  .mt-#{$size} {
+    margin-top: #{$value};
   }
 
-  .mb-#{$size}
-
- {
-    margin-bottom: var(--greenova-spacing-#{$size});
+  .mb-#{$size} {
+    margin-bottom: #{$value};
   }
 
-  .ml-#{$size}
-
- {
-    margin-left: var(--greenova-spacing-#{$size});
+  .ml-#{$size} {
+    margin-left: #{$value};
   }
 
-  .mr-#{$size}
-
- {
-    margin-right: var(--greenova-spacing-#{$size});
+  .mr-#{$size} {
+    margin-right: #{$value};
   }
 
-  .mx-#{$size}
-
- {
-    margin-left: var(--greenova-spacing-#{$size});
-    margin-right: var(--greenova-spacing-#{$size});
+  .mx-#{$size} {
+    margin-left: #{$value};
+    margin-right: #{$value};
   }
 
-  .my-#{$size}
-
- {
-    margin-top: var(--greenova-spacing-#{$size});
-    margin-bottom: var(--greenova-spacing-#{$size});
+  .my-#{$size} {
+    margin-top: #{$value};
+    margin-bottom: #{$value};
   }
 }
 
 // Padding utilities
-@each $size in (xs, sm, base, lg, xl) {
-  .p-#{$size}
-
- {
-    padding: var(--greenova-spacing-#{$size});
+@each $size, $value in $spacing-sizes {
+  .p-#{$size} {
+    padding: #{$value};
   }
 
-  .pt-#{$size}
-
- {
-    padding-top: var(--greenova-spacing-#{$size});
+  .pt-#{$size} {
+    padding-top: #{$value};
   }
 
-  .pb-#{$size}
-
- {
-    padding-bottom: var(--greenova-spacing-#{$size});
+  .pb-#{$size} {
+    padding-bottom: #{$value};
   }
 
-  .pl-#{$size}
-
- {
-    padding-left: var(--greenova-spacing-#{$size});
+  .pl-#{$size} {
+    padding-left: #{$value};
   }
 
-  .pr-#{$size}
-
- {
-    padding-right: var(--greenova-spacing-#{$size});
+  .pr-#{$size} {
+    padding-right: #{$value};
   }
 
-  .px-#{$size}
-
- {
-    padding-left: var(--greenova-spacing-#{$size});
-    padding-right: var(--greenova-spacing-#{$size});
+  .px-#{$size} {
+    padding-left: #{$value};
+    padding-right: #{$value};
   }
 
-  .py-#{$size}
-
- {
-    padding-top: var(--greenova-spacing-#{$size});
-    padding-bottom: var(--greenova-spacing-#{$size});
+  .py-#{$size} {
+    padding-top: #{$value};
+    padding-bottom: #{$value};
   }
 }
 
 // Gap utilities
-@each $size in (xs, sm, base, lg, xl) {
-  .gap-#{$size}
-
- {
-    gap: var(--greenova-spacing-#{$size});
+@each $size, $value in $spacing-sizes {
+  .gap-#{$size} {
+    gap: #{$value};
   }
 }
 

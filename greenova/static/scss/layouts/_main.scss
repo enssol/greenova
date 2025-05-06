@@ -1,4 +1,5 @@
 @use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
 
 // Page wrapper
 .page-wrapper {
@@ -11,12 +12,12 @@
 .main-content {
   flex: 1;
   width: 100%;
-  max-width: var(--greenova-container-xl);
+  max-width: $container-xl;
   margin: 0 auto;
-  padding: var(--greenova-padding-lg) var(--greenova-padding-base);
+  padding: $padding-lg $padding-base;
 
   @include breakpoint-down(md) {
-    padding: var(--greenova-padding-base);
+    padding: $padding-base;
   }
 }
 
@@ -29,7 +30,7 @@
 .two-column-layout {
   display: grid;
   grid-template-columns: 1fr 300px;
-  gap: var(--greenova-spacing-lg);
+  gap: $spacing-lg;
 
   @include breakpoint-down(lg) {
     grid-template-columns: 1fr;
@@ -40,7 +41,7 @@
 .three-column-layout {
   display: grid;
   grid-template-columns: 250px 1fr 300px;
-  gap: var(--greenova-spacing-lg);
+  gap: $spacing-lg;
 
   @include breakpoint-down(xl) {
     grid-template-columns: 250px 1fr;
@@ -65,7 +66,7 @@
       left: 0;
       bottom: 0;
       width: 300px;
-      z-index: var(--greenova-z-modal);
+      z-index: $z-modal;
       overflow-y: auto;
     }
   }
@@ -73,7 +74,7 @@
 
 // Content sections
 .content-section {
-  margin-bottom: var(--greenova-spacing-xl);
+  margin-bottom: $spacing-xl;
 
   &:last-child {
     margin-bottom: 0;
@@ -83,33 +84,33 @@
 // Container widths
 .container {
   width: 100%;
-  max-width: var(--greenova-container-xl);
+  max-width: $container-xl;
   margin: 0 auto;
-  padding: 0 var(--greenova-padding-base);
+  padding: 0 $spacing-base;
 
   &-sm {
-    max-width: var(--greenova-container-sm);
+    max-width: $container-sm;
   }
 
   &-md {
-    max-width: var(--greenova-container-md);
+    max-width: $container-md;
   }
 
   &-lg {
-    max-width: var(--greenova-container-lg);
+    max-width: $container-lg;
   }
 }
 
 // Page header
 .page-header {
-  margin-bottom: var(--greenova-spacing-lg);
+  margin-bottom: $spacing-lg;
 
   h1 {
-    margin-bottom: var(--greenova-spacing-sm);
+    margin-bottom: $spacing-sm;
   }
 
   .page-description {
-    color: var(--greenova-text-tertiary-dark);
+    color: $text-tertiary-dark;
   }
 }
 

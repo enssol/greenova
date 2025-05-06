@@ -1,0 +1,21 @@
+// Copyright 2025 Enveng Group.
+// SPDX-License-Identifier: 	AGPL-3.0-or-later
+
+// Responsive grid layout for procedures charts
+.procedures-gallery {
+  display: grid;
+  gap: $spacing-base;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  &-item {
+    background: $background-secondary;
+    border-radius: $spacing-smaller;
+    padding: $spacing-base;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+

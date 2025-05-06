@@ -1,0 +1,56 @@
+// Replaced CSS variables with Sass variables for dashboard page styles.
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background: $background-secondary;
+}
+
+.dashboard-sidebar {
+  background: $background-primary;
+  padding: $spacing-base;
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-lg;
+}
+
+.dashboard-sidebar h2 {
+  margin-bottom: $spacing-base;
+  font-size: $text-size-md;
+}
+
+.dashboard-content {
+  background: $background-primary;
+  padding: $spacing-lg;
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-lg;
+}
+
+.dashboard-content h1 {
+  margin-bottom: $spacing-base;
+  font-size: $text-size-lg;
+}
+
+.dashboard-content .stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-base;
+}
+
+.dashboard-content .stats .stat {
+  background: $background-secondary;
+  padding: $spacing-base;
+  border-radius: $border-radius-sm;
+  text-align: center;
+}
+
+.dashboard-content .stats .stat h3 {
+  margin: 0;
+  font-size: $text-size-md;
+}
+
+.dashboard-content .stats .stat p {
+  margin: 0;
+  font-size: $text-size-sm;
+  color: $text-secondary-dark;
+}

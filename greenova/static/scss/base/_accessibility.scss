@@ -5,7 +5,12 @@
  */
 
 // Import core abstracts
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+@use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
 
 // Skip to main content link
 .skip-link {
@@ -13,37 +18,44 @@
 
   &:focus {
     position: fixed;
-    top: var(--greenova-spacing-sm);
-    left: var(--greenova-spacing-sm);
-    padding: var(--greenova-padding-sm) var(--greenova-padding-base);
-    background: var(--greenova-green-primary);
-    color: var(--greenova-text-primary-light);
-    z-index: var(--greenova-z-tooltip);
+    top: $greenova-spacing-sm;
+    left: $greenova-spacing-sm;
+    padding: $greenova-padding-sm $greenova-padding-base;
+    background: $greenova-green-primary;
+    color: $greenova-text-primary-light;
+    z-index: $greenova-z-tooltip;
     width: auto;
     height: auto;
     clip: auto;
     text-decoration: none;
-    border-radius: var(--greenova-border-radius-sm);
+    border-radius: $greenova-border-radius-sm;
   }
 }
 
 // Focus styles
 :focus-visible {
-  outline: 3px solid var(--greenova-green-primary);
+  outline: 3px solid $greenova-green-primary;
   outline-offset: 2px;
 }
 
 // Ensure sufficient color contrast
 @each $variant in (primary, secondary, tertiary) {
-  .text-#{$variant}
-
- {
-    @if contrast-ratio(var(--greenova-green-#{$variant})) == var(--greenova-text-primary-light) {
-      color: var(--greenova-text-primary-light);
-    }
-
- @else {
-      color: var(--greenova-text-primary-dark);
+  .text-#{$variant} {
+    $color: if($variant == 'primary', $green-primary,
+             if($variant == 'secondary', $green-secondary,
+             if($variant == 'tertiary', $green-tertiary, $green-primary)));
+    
+    // Use relative luminance to determine text color
+    $luminance: calc((
+      color.channel($color, "red") * 0.299 + 
+      color.channel($color, "green") * 0.587 + 
+      color.channel($color, "blue") * 0.114
+    ) / 255);
+    
+    @if $luminance > 0.5 {
+      color: $text-primary-dark;
+    } @else {
+      color: $text-primary-light;
     }
   }
 }
@@ -58,7 +70,7 @@ button,
 [role='button'],
 a {
   &:focus-visible {
-    outline: 3px solid var(--greenova-green-primary);
+    outline: 3px solid $greenova-green-primary;
     outline-offset: 2px;
   }
 }
@@ -68,7 +80,7 @@ input,
 select,
 textarea {
   &::placeholder {
-    color: var(--greenova-text-tertiary-dark);
+    color: $greenova-text-tertiary-dark;
     opacity: 1;
   }
 }
@@ -78,25 +90,25 @@ input,
 select,
 textarea {
   &:focus {
-    outline: 2px solid var(--greenova-green-primary);
+    outline: 2px solid $greenova-green-primary;
     outline-offset: 0;
   }
 }
 
 // Error state styling with proper contrast
 .error {
-  color: var(--greenova-warning-text);
-  background-color: var(--greenova-warning-background);
-  border-radius: var(--greenova-border-radius-sm);
-  padding: var(--greenova-padding-sm);
+  color: $greenova-warning-text;
+  background-color: $greenova-warning-background;
+  border-radius: $greenova-border-radius-sm;
+  padding: $greenova-padding-sm;
 }
 
 // Success state styling with proper contrast
 .success {
-  color: var(--greenova-success-text);
-  background-color: var(--greenova-success-background);
-  border-radius: var(--greenova-border-radius-sm);
-  padding: var(--greenova-padding-sm);
+  color: $greenova-success-text;
+  background-color: $greenova-success-background;
+  border-radius: $greenova-border-radius-sm;
+  padding: $greenova-padding-sm;
 }
 
 // ARIA live regions

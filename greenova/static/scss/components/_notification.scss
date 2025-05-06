@@ -4,10 +4,10 @@
 .alert {
   @include flex-row(nowrap, flex-start);
 
-  gap: var(--greenova-spacing-sm);
-  padding: var(--greenova-padding-base);
-  border-radius: var(--greenova-border-radius-base);
-  margin-bottom: var(--greenova-spacing-base);
+  gap: $spacing-sm;
+  padding: $padding-base;
+  border-radius: $border-radius-base;
+  margin-bottom: $spacing-base;
 
   // Alert icon
   &-icon {
@@ -21,14 +21,14 @@
     flex-grow: 1;
 
     h4 {
-      margin: 0 0 var(--greenova-spacing-xs);
-      font-size: var(--greenova-text-size);
-      font-weight: var(--greenova-font-weight-bold);
+      margin: 0 0 $spacing-xs;
+      font-size: $text-size;
+      font-weight: $font-weight-bold;
     }
 
     p {
       margin: 0;
-      font-size: var(--greenova-text-size-sm);
+      font-size: $text-size-sm;
     }
   }
 
@@ -40,7 +40,7 @@
     padding: 0;
     cursor: pointer;
     opacity: 0.5;
-    transition: opacity var(--greenova-transition);
+    transition: opacity $transition;
 
     &:hover {
       opacity: 1;
@@ -54,27 +54,27 @@
 
   // Alert variants
   &-success {
-    background: var(--greenova-notif-low-light);
-    color: var(--greenova-notif-low);
-    border-left: 4px solid var(--greenova-notif-low);
+    background: $notif-low-light;
+    color: $notif-low;
+    border-left: 4px solid $notif-low;
   }
 
   &-warning {
-    background: var(--greenova-notif-mid-light);
-    color: var(--greenova-notif-mid);
-    border-left: 4px solid var(--greenova-notif-mid);
+    background: $notif-mid-light;
+    color: $notif-mid;
+    border-left: 4px solid $notif-mid;
   }
 
   &-danger {
-    background: var(--greenova-notif-high-light);
-    color: var(--greenova-notif-high);
-    border-left: 4px solid var(--greenova-notif-high);
+    background: $notif-high-light;
+    color: $notif-high;
+    border-left: 4px solid $notif-high;
   }
 
   &-info {
-    background: var(--greenova-green-secondary);
-    color: var(--greenova-green-primary);
-    border-left: 4px solid var(--greenova-green-primary);
+    background: $green-secondary;
+    color: $green-primary;
+    border-left: 4px solid $green-primary;
   }
 }
 

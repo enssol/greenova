@@ -1,0 +1,75 @@
+// Replaced CSS variables with Sass variables for registration page styles.
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: $background-secondary;
+}
+
+.registration-form {
+  width: 100%;
+  max-width: 500px;
+  padding: $spacing-lg;
+  background: $background-primary;
+  border-radius: $border-radius-base;
+  box-shadow: $shadow-lg;
+}
+
+.registration-form h1 {
+  margin-bottom: $spacing-base;
+  font-size: $text-size-lg;
+  text-align: center;
+}
+
+.registration-form .form-group {
+  margin-bottom: $spacing-base;
+}
+
+.registration-form .form-group label {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-weight: $font-weight-bold;
+}
+
+.registration-form .form-group input {
+  width: 100%;
+  padding: $padding-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+}
+
+.registration-form .form-group input:focus {
+  border-color: $green-primary;
+  box-shadow: 0 0 0 3px rgba($green-primary, 0.25);
+}
+
+.registration-form .form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.registration-form .form-actions button {
+  padding: $padding-sm $padding-base;
+  background: $green-primary;
+  color: $text-primary-light;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background $transition;
+}
+
+.registration-form .form-actions button:hover {
+  background: $green-tertiary;
+}
+
+.registration-form .form-actions a {
+  color: $text-secondary-dark;
+  text-decoration: none;
+  font-size: $text-size-sm;
+}
+
+.registration-form .form-actions a:hover {
+  text-decoration: underline;
+}

@@ -1,16 +1,18 @@
+@use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+// Replaced CSS variables with Sass variables for header styles.
 .site-header {
   @include flex-between;
 
-  padding: var(--greenova-padding-base);
-  background-color: var(--greenova-background-secondary);
-  border-bottom: 1px solid var(--greenova-green-secondary);
+  padding: $padding-base;
+  background-color: $background-secondary;
+  border-bottom: 1px solid $green-secondary;
 
   .logo {
     @include flex-center;
 
-    gap: var(--greenova-spacing-sm);
+    gap: $spacing-sm;
 
     img {
       height: 40px;
@@ -18,8 +20,8 @@
     }
 
     span {
-      font-weight: var(--greenova-font-weight-bold);
-      font-size: var(--greenova-text-size-sm);
+      font-weight: $font-weight-bold;
+      font-size: $font-size-sm;
     }
   }
 
@@ -33,24 +35,24 @@
         top: 60px;
         left: 0;
         right: 0;
-        background: var(--greenova-background-secondary);
-        padding: var(--greenova-padding-base);
-        border-bottom: 1px solid var(--greenova-green-secondary);
+        background: $background-secondary;
+        padding: $padding-base;
+        border-bottom: 1px solid $green-secondary;
       }
     }
 
     ul {
       @include flex-row(wrap, flex-end);
 
-      gap: var(--greenova-spacing-base);
+      gap: $spacing-base;
     }
 
     a {
-      color: var(--greenova-text-secondary-dark);
-      font-weight: var(--greenova-font-weight-bold);
+      color: $text-secondary-dark;
+      font-weight: $font-weight-bold;
 
       &[aria-current="page"] {
-        color: var(--greenova-green-primary);
+        color: $green-primary;
       }
     }
   }
@@ -68,12 +70,12 @@
   .user-menu {
     @include flex-row(nowrap, flex-end);
 
-    gap: var(--greenova-spacing-sm);
+    gap: $spacing-sm;
 
     .user-profile {
       @include flex-center;
 
-      gap: var(--greenova-spacing-sm);
+      gap: $spacing-sm;
 
       img {
         width: 32px;
@@ -89,9 +91,9 @@
         position: absolute;
         top: -8px;
         right: -8px;
-        background: var(--greenova-notif-high);
-        color: var(--greenova-text-primary-light);
-        font-size: var(--greenova-text-size-xs);
+        background: $notif-high;
+        color: $text-primary-light;
+        font-size: $font-size-xs;
         padding: 2px 6px;
         border-radius: 10px;
       }

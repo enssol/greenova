@@ -15,21 +15,21 @@
 
   // Card header
   &-header {
-    padding: spacing(base);
-    border-bottom: border();
-    background: color(background, secondary);
+    padding: $spacing-base;
+    border-bottom: $border;
+    background: $background-secondary;
 
     h1, h2, h3, h4, h5, h6 {
       margin: 0;
-      font-size: spacing(base);
-      font-weight: font-weight(bold);
-      color: color(text, primary-dark);
+      font-size: $spacing-base;
+      font-weight: $font-weight-bold;
+      color: $text-primary-dark;
     }
 
     &-actions {
       @include flex-row(nowrap, flex-end);
 
-      gap: spacing(sm);
+      gap: $spacing-sm;
     }
 
     @include flex-between;
@@ -37,14 +37,14 @@
 
   // Card body
   &-body {
-    padding: spacing(base);
+    padding: $spacing-base;
   }
 
   // Card footer
   &-footer {
-    padding: spacing(base);
-    border-top: border();
-    background: color(background, secondary);
+    padding: $spacing-base;
+    border-top: $border;
+    background: $background-secondary;
   }
 
   // Card with hover effect

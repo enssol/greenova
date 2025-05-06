@@ -6,10 +6,10 @@
   inset: 0;
   background: rgb(0 0 0 / 50%);
   backdrop-filter: blur(4px);
-  z-index: var(--greenova-z-modal-backdrop);
+  z-index: $z-modal-backdrop;
   opacity: 0;
   visibility: hidden;
-  transition: all var(--greenova-transition);
+  transition: all $transition-base;
 
   &.show {
     opacity: 1;
@@ -21,14 +21,14 @@
 .modal {
   position: fixed;
   inset: 0;
-  z-index: var(--greenova-z-modal);
+  z-index: $z-modal;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--greenova-spacing-base);
+  padding: $spacing-base;
   opacity: 0;
   visibility: hidden;
-  transition: all var(--greenova-transition);
+  transition: all $transition-base;
 
   &.show {
     opacity: 1;
@@ -75,12 +75,12 @@
   position: relative;
   width: 100%;
   max-width: 600px;
-  max-height: calc(100vh - var(--greenova-spacing-xl) * 2);
-  background: var(--greenova-background-elevated);
-  border-radius: var(--greenova-border-radius-lg);
-  box-shadow: var(--greenova-shadow-xl);
+  max-height: calc(100vh - #{$spacing-xl} * 2);
+  background: $background-elevated;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
   transform: translateY(-20px);
-  transition: transform var(--greenova-transition);
+  transition: transform $transition-base;
   display: flex;
   flex-direction: column;
 }
@@ -89,22 +89,22 @@
 .modal-header {
   @include flex-between;
 
-  padding: var(--greenova-padding-base);
-  border-bottom: 1px solid var(--greenova-border-color);
+  padding: $padding-base;
+  border-bottom: 1px solid $border-color;
 
   h4 {
     margin: 0;
-    font-size: var(--greenova-text-size-lg);
-    font-weight: var(--greenova-font-weight-bold);
+    font-size: $text-size-lg;
+    font-weight: $font-weight-bold;
   }
 
   .modal-close {
-    padding: var(--greenova-padding-xs);
+    padding: $padding-xs;
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--greenova-text-tertiary-dark);
-    transition: color var(--greenova-transition);
+    color: $text-tertiary-dark;
+    transition: color $transition-base;
 
     &:hover {
       color: var(--greenova-text-secondary-dark);
@@ -127,9 +127,9 @@
 .modal-footer {
   @include flex-row(wrap, flex-end);
 
-  gap: var(--greenova-spacing-sm);
-  padding: var(--greenova-padding-base);
-  border-top: 1px solid var(--greenova-border-color);
+  gap: $spacing-sm;
+  padding: $padding-base;
+  border-top: 1px solid $border-color;
 }
 
 // Side modal
