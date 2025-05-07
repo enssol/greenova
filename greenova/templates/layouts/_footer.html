@@ -1,8 +1,16 @@
 {% load core_tags %}
-<footer role="contentinfo">
-  <div class="container">
+<footer role="contentinfo" class="fade-in">
     <p>
-        © {% now "Y" %} greenova environmental management. <small>version {% site_version %}</small>
+      System Status:
+      <mark>{{ system_status }}</mark> |
+      Version: {{ app_version }} |
+      Last Updated: {{ last_updated|format_date }}
     </p>
-  </div>
+    {% if user.is_authenticated %}
+    <p>
+      Need help? Contact
+      <a href="mailto:support@enveng-group.com.au">support@enveng-group.com.au</a>
+      <a href="{% url 'feedback:index' %}">Click here to submit feedback</a>
+    </p>
+    {% endif %}
 </footer>

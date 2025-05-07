@@ -1,84 +1,36 @@
-<nav>
-  <ul class="theme-container">
-    <li>
-      <a href="#" data-theme-switcher="auto">Auto</a>
-    </li>
-    <li>
-      <a href="#" data-theme-switcher="light">Light</a>
-    </li>
-    <li>
-      <a href="#" data-theme-switcher="dark">Dark</a>
-    </li>
-  </ul>
-  <ul role="menubar" aria-label="Primary navigation">
+<nav class="navbar">
+
+  <ul class="navbar-nav">
     {% if request.user.is_authenticated %}
-      <li role="none" class="menubar-breadcrumbs">
-        <nav aria-label="Primary navigation" role="navigation">
-          <ul>
-            {% if request.resolver_match.namespace == 'dashboard' %}
-              <li>
-                <a href="{% url 'dashboard:home' %}"
-                   role="menuitem"
-                   aria-current="{% if request.resolver_match.namespace == 'dashboard' %}
-                                   page
-                                 {% endif %}"
-                   _="on load if location.pathname is '{% url 'dashboard:home' %}' then hide me">Dashboard</a>
-              </li>
-            {% else %}
-              <li>
-                <a href="{% url 'dashboard:home' %}"
-                   role="menuitem"
-                   aria-current="{% if request.resolver_match.namespace == 'dashboard' %}
-                                   page
-                                 {% endif %}"
-                   _="on load if location.pathname is '{% url 'dashboard:home' %}' then hide me">Dashboard</a>
-              </li>
-            {% endif %}
-            {% block breadcrumbs %}
-            {% endblock breadcrumbs %}
-          </ul>
-        </nav>
+      <!-- Left side navigation -->
+      <li class="navbar-nav-item">
+      {% include "layouts/_breadcrumbs.html" %}
+    </li>
+      <li class="navbar-nav-item">
+        <a href="{% url 'users:profile' %}" class="navbar-nav-link">Profile</a>
       </li>
-      <li role="none" class="auth-actions">
-{% load chatbot_tags %}
-{% chat_widget %}
-        <a href="{% url 'users:profile' %}"
-           role="menuitem"
-           {% if request.path == '/users/profile/' %}
-             aria-current="page"
-           {% endif %}>Profile</a>
-        {% if request.user.is_staff %}
-          <a href="{% url 'company:list' %}"
-             role="menuitem"
-             {% if '/company/' in request.path %}
-               aria-current="page"
-             {% endif %}>Companies</a>
-        {% endif %}
+      <!-- Right side navigation -->
+      <li class="navbar-nav-item navbar-right">
+        <a href="{% url 'admin:index' %}" class="navbar-nav-link">Admin</a>
+      </li>
+      {% if request.user.is_staff %}
+        <li class="navbar-nav-item navbar-right">
+          <a href="{% url 'company:list' %}" class="navbar-nav-link">Companies</a>
+        </li>
+      {% endif %}
+      <li class="navbar-nav-item navbar-right">
         <a href="#"
-           role="menuitem"
+           class="navbar-nav-link"
            hx-post="{% url 'account_logout' %}"
-           hx-push-url="true"
            hx-target="body"
-           hx-redirect="/"
            hx-include="[name='csrfmiddlewaretoken']">Logout</a>
-        <form id="logout-form" class="hidden">
-{% csrf_token %}
-        </form>
       </li>
     {% else %}
-      <li role="none" class="auth-actions">
-        <a href="{% url 'account_signup' %}"
-           role="menuitem"
-           aria-label="Register"
-           _="on load if location.pathname is '{% url 'account_signup' %}' then hide me">Register</a>
-        <a href="{% url 'account_login' %}"
-           role="menuitem"
-           aria-label="Login"
-           _="on load if location.pathname is '{% url 'account_login' %}' then hide me">Login</a>
-        <a href="{% url 'admin:index' %}"
-           role="menuitem"
-           aria-label="Admin"
-           _="on load if location.pathname.startsWith('/admin/') then hide me">Admin</a>
+      <li class="navbar-nav-item navbar-right">
+        <a href="{% url 'account_signup' %}" class="navbar-nav-link">Register</a>
+      </li>
+      <li class="navbar-nav-item navbar-right">
+        <a href="{% url 'account_login' %}" class="navbar-nav-link">Login</a>
       </li>
     {% endif %}
   </ul>

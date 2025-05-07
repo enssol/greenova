@@ -164,6 +164,20 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4
   },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[assemblyscript]": {
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
   "autopep8.args": [
     "--max-line-length=88",
     "--experimental",
@@ -750,7 +764,14 @@
   "tailwindCSS.validate": true,
   "task.reconnection": true,
   "terminal.integrated.shellIntegration.enabled": true,
-  "typescript.suggest.enabled": false,
+  "typescript.suggest.enabled": true,
+  "typescript.format.enable": true,
+  "typescript.format.semicolons": "insert",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.suggest.autoImports": true,
+  "typescript.suggest.completeJSDocs": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.validate.enable": true,
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.editor.enablePreview": false,
   "yaml.completion": true,

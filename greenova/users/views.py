@@ -13,11 +13,13 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+from django.views.generic import ListView
 from django_htmx.http import trigger_client_event
 from obligations.models import Obligation
 from projects.models import Project
@@ -31,6 +33,20 @@ User = get_user_model()
 def is_admin(user: User) -> bool:
     """Check if the user is an admin."""
     return user.is_authenticated and (user.is_staff or user.is_superuser)
+
+
+class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    """List all users for admin/staff."""
+
+    model = User
+    template_name = "users/users_list.html"
+    context_object_name = "users"
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_queryset(self):
+        return User.objects.all().order_by("-date_joined")
 
 
 @login_required

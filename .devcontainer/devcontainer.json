@@ -87,7 +87,8 @@
         "dbcode.dbcode",
         "ms-vscode.copilot-mermaid-diagram",
         "ms-toolsai.datawrangler",
-        "charliermarsh.ruff"
+        "charliermarsh.ruff",
+        "ms-vscode.vscode-copilot-vision"
       ]
     }
   },

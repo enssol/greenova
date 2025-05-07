@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_headers
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.edit import DeleteView
 from django_htmx.http import trigger_client_event
 from mechanisms.models import EnvironmentalMechanism
@@ -654,6 +654,17 @@ class ToggleCustomAspectView(View):
             "obligations/partials/custom_aspect_field.html",
             {"show_field": show_field},
         )
+
+
+class ObligationListView(LoginRequiredMixin, ListView):
+    """List all obligations."""
+
+    model = Obligation
+    template_name = "obligations/obligations_list.html"
+    context_object_name = "obligations"
+
+    def get_queryset(self):
+        return Obligation.objects.all()
 
 
 def upload_evidence(request, obligation_id):

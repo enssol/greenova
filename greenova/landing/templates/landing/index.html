@@ -1,131 +1,537 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
+Welcome to Greenova
+{% endblock %}
 
-  welcome to greenova
-{% endblock title %}
+{% block meta_tags %}
+  <meta name="description"
+        content="Greenova helps environmental professionals monitor compliance status and manage regulatory obligations efficiently." />
+  <meta name="keywords"
+        content="environmental management, compliance tracking, regulatory obligations, sustainability" />
+  <!-- Preconnect and Preload for jsdelivr CDN -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js">
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js">
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/dist/pages/landing.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'css/dist/components/animations.css' %}" />
+{% endblock %}
 
 {% block content %}
-  <article>
-    <header>
-      <hgroup>
-        <h1>
-Welcome to Greenova
+  <div class="hero-logo-container fade-in pulse"
+       style="display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 0.5rem;
+              margin-bottom: 1.5rem;
+              margin-top: 0.5rem">
+    <img src="{% static 'img/favicon.svg' %}"
+         alt="Greenova Logo"
+         class="hero-logo float"
+         width="80"
+         height="80"
+         style="margin-bottom: 0.5rem" />
+    <span class="hero-brand-title fade-in pulse"
+          style="font-size: 2.2rem;
+                 font-weight: 700;
+                 letter-spacing: 0.04em;
+                 color: var(--color-green-primary, #1a4d2e);
+                 text-shadow: 0 2px 16px rgba(47, 70, 36, 0.07)">
+      Greenova
+    </span>
+  </div>
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section fade-in slide-up" aria-labelledby="hero-heading">
+      <div class="hero-content">
+        <h1 id="hero-heading" class="hero-title fade-in stagger-1">
+Simplified Environmental Compliance Management
         </h1>
-        <h2>
-Environmental Compliance Management System
-        </h2>
-      </hgroup>
-      <p>
-        At Enveng Group, we are committed to making environmental compliance on major capital projects easier and more transparent. Our innovative app is designed to streamline the management of environmental regulations, ensuring that your projects not only meet but exceed compliance standards, commitments and obligations.
-      </p>
-    </header>
-    <section>
-      <!-- Landing page content -->
-      <nav class="{% if not user_authenticated %} visible {% else %} hidden {% endif %}">
-        <a href="{% url 'account_signup' %}" class="primary">Get Started</a>
-        <a href="#features" role="button" class="outline">Learn More</a>
-      </nav>
+        <p class="hero-subtitle fade-in stagger-2">
+Streamline your environmental obligations tracking, ensure regulatory compliance, and make data-driven sustainability decisions with our comprehensive platform.
+        </p>
+
+        <div class="hero-cta fade-in stagger-3">
+          <a href="{% url 'account_signup' %}" class="btn-primary pulse">Start Free Trial</a>
+          <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <a href="#features"
+         class="scroll-indicator fade-in stagger-4 pulse"
+         aria-label="Scroll to features section">↓</a>
     </section>
-    <section id="mission" aria-labelledby="mission-heading">
-      <h2 id="mission-heading">
-Our Mission
-      </h2>
-      <p>
-        Our mission is to empower Environmental Managers, environmental consultants, and stakeholders with the tools they need
-        to efficiently manage environmental compliance. We believe that transparency and ease of use are key to achieving
-        sustainable and successful projects.
-      </p>
-    </section>
-    <section id="features" aria-labelledby="features-heading">
-      <h2 id="features-heading">
+
+    <!-- Features Section -->
+    <section id="features"
+             class="features-section fade-in slide-up"
+             aria-labelledby="features-heading">
+      <div class="container">
+        <h2 id="features-heading" class="section-title fade-in stagger-1">
 Key Features
-      </h2>
-      <div class="grid">
-        <article>
-          <h3>
-Real-Time Monitoring
-          </h3>
-          <p>
-Stay updated with real-time data on environmental compliance metrics.
-          </p>
-        </article>
-        <article>
-          <h3>
-Comprehensive Reporting
-          </h3>
-          <p>
-            Generate detailed reports that provide insights into compliance status and areas for improvement.
-          </p>
-        </article>
-        <article>
-          <h3>
-User-Friendly Interface
-          </h3>
-          <p>
-            Navigate through our intuitive interface designed for ease of use and accessibility.
-          </p>
-        </article>
-        <article>
-          <h3>
-Collaboration Tools
-          </h3>
-          <p>
-            Facilitate seamless communication and collaboration among team members and stakeholders.
-          </p>
-        </article>
+        </h2>
+
+        <div class="features-grid">
+          <div class="feature-card fade-in stagger-2">
+            <div class="feature-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2">
+</path>
+<rect x="9" y="3" width="6" height="4" rx="2"></rect>
+<path d="M9 14l2 2 4-4">
+</path>
+              </svg>
+            </div>
+            <div class="feature-content">
+              <h3 class="feature-title">
+Compliance Tracking
+              </h3>
+              <p class="feature-description">
+Monitor all your environmental obligations and compliance requirements in one central dashboard with real-time status updates.
+              </p>
+              <a href="#" class="feature-link">Learn more</a>
+            </div>
+          </div>
+
+          <div class="feature-card fade-in stagger-3">
+            <div class="feature-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M22 12h-4l-3 9L9 3l-3 9H2">
+</path>
+              </svg>
+            </div>
+            <div class="feature-content">
+              <h3 class="feature-title">
+Performance Analytics
+              </h3>
+              <p class="feature-description">
+Gain insights with customizable dashboards and reports that highlight your environmental performance and areas for improvement.
+              </p>
+              <a href="#" class="feature-link">Learn more</a>
+            </div>
+          </div>
+
+          <div class="feature-card fade-in stagger-4">
+            <div class="feature-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M10 21h4">
+</path>
+<path d="M2 7v7c0 .5.5 1 1 1h18c.5 0 1-.5 1-1V7">
+</path>
+<path d="M6 3h12v4H6z">
+</path>
+<circle cx="12" cy="19" r="2"></circle>
+              </svg>
+            </div>
+            <div class="feature-content">
+              <h3 class="feature-title">
+Automated Notifications
+              </h3>
+              <p class="feature-description">
+Never miss a deadline with intelligent alerts and reminders for upcoming compliance requirements.
+              </p>
+              <a href="#" class="feature-link">Learn more</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-    <section id="about" aria-labelledby="about-heading">
-      <h2 id="about-heading">
-Why Choose Us?
+
+    <!-- Stats Section -->
+    <section class="stats-section fade-in slide-up"
+         aria-labelledby="stats-heading">
+      <div class="container">
+      <h2 id="stats-heading"
+        class="section-title fade-in stagger-1"
+        style="color: var(--color-green-primary);
+             text-align: center">
+        Our Impact
       </h2>
-      <div class="grid">
-        <article>
-          <h3>
-Expertise
-          </h3>
-          <p>
-            Our team consists of industry experts with years of experience in environmental compliance and project management.
-          </p>
-        </article>
-        <article>
-          <h3>
-Innovation
-          </h3>
-          <p>
-            We leverage the latest technology to provide cutting-edge solutions that simplify compliance management.
-          </p>
-        </article>
-        <article>
-          <h3>
-Commitment
-          </h3>
-          <p>
-            We are dedicated to helping you achieve your environmental goals and ensuring the success of your projects.
-          </p>
-        </article>
+
+      <div class="stats-grid"
+         style="display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2.5rem;">
+        <div class="stat-item fade-in stagger-2"
+           style="flex: 1 1 220px;
+              max-width: 220px;
+              min-width: 180px;
+              background: var(--greenova-background-secondary, #fff);
+              border-radius: 1.5rem;
+              box-shadow: 0 2px 16px 0 rgba(47, 70, 36, 0.07);
+              padding: 2.5rem 1.5rem 2rem 1.5rem;
+              text-align: center;
+              transition: transform 0.2s;">
+        <div class="stat-value"
+           style="font-size: 2.75rem;
+              font-weight: 700;
+              color: var(--color-blue-primary);
+              margin-bottom: 0.5rem;">
+          500+
+        </div>
+        <div class="stat-label"
+           style="font-size: 1.1rem;
+              color: var(--color-gray-dark);
+              letter-spacing: 0.03em;">
+          Companies
+        </div>
+        </div>
+        <div class="stat-item fade-in stagger-4"
+           style="flex: 1 1 220px;
+              max-width: 220px;
+              min-width: 180px;
+              background: var(--greenova-background-secondary, #fff);
+              border-radius: 1.5rem;
+              box-shadow: 0 2px 16px 0 rgba(47, 70, 36, 0.07);
+              padding: 2.5rem 1.5rem 2rem 1.5rem;
+              text-align: center;
+              transition: transform 0.2s;">
+        <div class="stat-value"
+           style="font-size: 2.75rem;
+              font-weight: 700;
+              color: var(--color-orange-primary);
+              margin-bottom: 0.5rem;">
+          30%
+        </div>
+        <div class="stat-label"
+           style="font-size: 1.1rem;
+              color: var(--color-gray-dark);
+              letter-spacing: 0.03em;">
+          Time Saved
+        </div>
+        </div>
+        <div class="stat-item fade-in stagger-1"
+           style="flex: 1 1 220px;
+              max-width: 220px;
+              min-width: 180px;
+              background: var(--greenova-background-secondary, #fff);
+              border-radius: 1.5rem;
+              box-shadow: 0 2px 16px 0 rgba(47, 70, 36, 0.07);
+              padding: 2.5rem 1.5rem 2rem 1.5rem;
+              text-align: center;
+              transition: transform 0.2s;">
+        <div class="stat-value"
+           style="font-size: 2.75rem;
+              font-weight: 700;
+              color: var(--color-green-olive);
+              margin-bottom: 0.5rem;">
+          24/7
+        </div>
+        <div class="stat-label"
+           style="font-size: 1.1rem;
+              color: var(--color-gray-dark);
+              letter-spacing: 0.03em;">
+          Support
+        </div>
+        </div>
+      </div>
       </div>
     </section>
-    <section id="get-involved" aria-labelledby="get-involved-heading">
-      <h2 id="get-involved-heading">
-Get Involved
-      </h2>
-      <p>
-        We are excited to share our journey with you. Stay tuned for updates on our app development and upcoming features.
-        Join our community and be a part of the movement towards more transparent and efficient environmental compliance management.
-      </p>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section fade-in slide-up"
+             aria-labelledby="benefits-heading">
+      <div class="container">
+        <h2 id="benefits-heading" class="section-title fade-in stagger-1">
+Why Choose Greenova
+        </h2>
+
+        <div class="benefits-list">
+          <div class="benefit-item fade-in stagger-2">
+            <div class="benefit-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M17 20v-9l-5-5V4a2 2 0 01-2-2H6a2 2 0 01-2 2v1H3a2 2 0 01-2 2v9a2 2 0 002 2h14a2 2 0 002-2z">
+</path>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">
+Reduced Risk
+              </h3>
+              <p class="benefit-description">
+Minimize the risk of non-compliance with comprehensive tracking and proactive notifications.
+              </p>
+            </div>
+          </div>
+
+          <div class="benefit-item fade-in stagger-3">
+            <div class="benefit-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M12 6v6l4 2">
+</path>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">
+Time Efficiency
+              </h3>
+              <p class="benefit-description">
+Automate routine tasks and reporting to free up your team for strategic environmental initiatives.
+              </p>
+            </div>
+          </div>
+
+          <div class="benefit-item fade-in stagger-4">
+            <div class="benefit-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M6 15a7 7 0 1 0 14 0 7 7 0 1 0-14 0z">
+</path>
+<path d="M16 7A9.2 9.2 0 0 0 13 6c-1.9 0-3.5 1-4.8 2.4A9 9 0 0 0 5 15a7 7 0 1 0 11-8z">
+</path>
+<path d="M13 6c.8-1.5 2-3 4-3 3.5 0 6 3.5 6 7 0 2.5-2 5-5 8-3 3.1-6.7 4.3-8 5 .2-1.4-.3-4.9-4-8-3.5-3-5-5.5-5-8 0-3.5 2.5-7 6-7 2 0 3.2 1.5 4 3z">
+</path>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">
+Sustainability Focus
+              </h3>
+              <p class="benefit-description">
+Transform compliance data into actionable insights that drive your sustainability goals.
+              </p>
+            </div>
+          </div>
+
+          <div class="benefit-item fade-in stagger-1">
+            <div class="benefit-icon pulse" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+<path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2">
+</path>
+<circle cx="8.5" cy="7" r="4"></circle>
+<path d="M20 8v6m-3-3h6">
+</path>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h3 class="benefit-title">
+Team Collaboration
+              </h3>
+              <p class="benefit-description">
+Enable seamless collaboration between departments with role-based access and shared dashboards.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-    <section aria-labelledby="cta-heading">
-      <h2 id="cta-heading">
-Ready to get started?
-      </h2>
-      <p>
-        Join Greenova today and take control of your environmental compliance management.
-      </p>
-      <nav aria-label="Sign up">
-        <a href="{% url 'account_signup' %}" class="primary">Sign Up Now</a>
-      </nav>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section fade-in slide-up"
+             aria-labelledby="testimonials-heading">
+      <div class="container">
+        <h2 id="testimonials-heading" class="section-title fade-in stagger-1">
+What Our Clients Say
+        </h2>
+
+        <div class="testimonials-container">
+          <div class="testimonial-item fade-in stagger-2">
+            <div class="testimonial-quote">
+                        "Greenova has transformed how we manage our environmental compliance. What used to take days now takes minutes, and we have complete visibility across all our operations."
+            </div>
+            <div class="testimonial-author">
+              <img src="{% static 'img/testimonial-1.svg' %}"
+                   alt=""
+                   class="author-avatar" />
+              <div class="author-info">
+                <div class="author-name">
+Sarah Johnson
+                </div>
+                <div class="author-role">
+Environmental Director, EcoCorp
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item fade-in stagger-3">
+            <div class="testimonial-quote">
+                        "The analytics and reporting capabilities have helped us identify trends we never saw before, resulting in a 40% improvement in our environmental performance indicators."
+            </div>
+            <div class="testimonial-author">
+              <img src="{% static 'img/testimonial-2.svg' %}"
+                   alt=""
+                   class="author-avatar" />
+              <div class="author-info">
+                <div class="author-name">
+David Chen
+                </div>
+                <div class="author-role">
+Sustainability Manager, GreenTech Industries
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-item fade-in stagger-4">
+            <div class="testimonial-quote">
+                        "The automated notification system has been a game-changer for our team. We haven't missed a single compliance deadline since implementing Greenova two years ago."
+            </div>
+            <div class="testimonial-author">
+              <img src="{% static 'img/testimonial-3.svg' %}"
+                   alt=""
+                   class="author-avatar" />
+              <div class="author-info">
+                <div class="author-name">
+Lisa Nkomo
+                </div>
+                <div class="author-role">
+Compliance Officer, Sustainable Energy Co.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-  </article>
+
+    <!-- CTA Section -->
+    <section class="cta-section fade-in slide-up">
+      <div class="cta-content">
+        <h2 class="cta-title fade-in stagger-1">
+Ready to Simplify Your Environmental Compliance?
+        </h2>
+        <p class="cta-description fade-in stagger-2">
+Join hundreds of companies using Greenova to streamline their environmental management and achieve compliance excellence.
+        </p>
+        <a href="{% url 'account_signup' %}"
+           class="cta-btn pulse fade-in stagger-3">Start Your Free Trial</a>
+
+        <div class="newsletter-form fade-in stagger-4">
+          <form hx-post="{% url 'landing:newsletter_signup' %}"
+                hx-target="#newsletter-response"
+                hx-swap="outerHTML">
+{% csrf_token %}
+            <div class="newsletter-form-group">
+              <input type="email"
+                     name="email"
+                     class="newsletter-input"
+                     placeholder="Enter your email for updates"
+                     aria-label="Email address for newsletter"
+                     required />
+              <button type="submit" class="newsletter-submit">
+Subscribe
+              </button>
+            </div>
+          </form>
+          <div id="newsletter-response" class="privacy-note">
+                    We respect your privacy. Your information is safe and will never be shared.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 {% endblock content %}
+
+{% block extra_js %}
+
+  <!-- GSAP Core and Plugins (deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js" defer></script>
+
+  <!-- Landing page script -->
+  <script src="{% static 'js/landing.js' %}"></script>
+  <script>
+    // Interactive floating logo effect
+    const logo = document.querySelector('.hero-logo');
+    if (logo) {
+      logo.addEventListener('mouseenter', () => {
+        logo.classList.add('pulse');
+      });
+      logo.addEventListener('mouseleave', () => {
+        logo.classList.remove('pulse');
+      });
+    }
+    // Scroll indicator bounce
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+      scrollIndicator.addEventListener('mouseenter', () => {
+        scrollIndicator.classList.add('pulse');
+      });
+      scrollIndicator.addEventListener('mouseleave', () => {
+        scrollIndicator.classList.remove('pulse');
+      });
+    }
+  </script>
+{% endblock %}

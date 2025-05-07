@@ -158,6 +158,12 @@ else
     pip install --disable-pip-version-check --no-cache-dir uvx
 fi
 
+# Install npm-check-updates globally if it doesn't exist
+if ! command -v ncu &> /dev/null; then
+    log "Installing npm-check-updates globally"
+    npm install -g npm-check-updates
+fi
+
 # Install Node.js dependencies if needed
 if [ -f "$WORKSPACE_DIR/package.json" ]; then
     log "Installing Node.js dependencies"

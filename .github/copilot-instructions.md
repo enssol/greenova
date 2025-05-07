@@ -18,7 +18,7 @@ and manage obligations related to environmental regulations.
 ## Frontend Technologies
 
 - **CSS Framework**: Pico's Classless CSS (primary CSS framework) and Tailwind
-  CSS 3.3.2 (secondary CSS framework)
+  CSS 4.1.5 (secondary CSS framework)
 - **Progressive Enhancement**:
   - **Base Layer**: Server-side rendered Django templates
   - **Enhancement Layer**: django-htmx 1.22.0 for AJAX interactions

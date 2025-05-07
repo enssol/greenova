@@ -1,0 +1,44 @@
+/* Footer styles */
+footer {
+  background-color: #f8f9fa; /* Light background for contrast */
+  padding: 1rem; /* Add padding for spacing */
+  text-align: center; /* Center-align text */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  border-top: 1px solid #dee2e6; /* Add a subtle top border */
+}
+
+footer p {
+  margin: 0.5rem 0; /* Add spacing between paragraphs */
+  color: #6c757d; /* Muted text color */
+}
+
+footer a {
+  color: #007bff; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+
+footer a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+footer mark {
+  background-color: #ffc107; /* Highlight color for system status */
+  color: #212529; /* Text color for better readability */
+  padding: 0.2rem 0.4rem; /* Add padding to the mark element */
+  border-radius: 0.2rem; /* Rounded corners */
+}
+
+/* Fade-in animation for the footer */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

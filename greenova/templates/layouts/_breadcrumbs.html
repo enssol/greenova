@@ -1,24 +1,10 @@
-<nav aria-label="Primary navigation" role="navigation">
-  <ul>
-    {% if request.resolver_match.namespace == 'dashboard' %}
-      <li>
-        <a href="{% url 'dashboard:home' %}"
-           role="menuitem"
-           aria-current="{% if request.resolver_match.namespace == 'dashboard' %}
-                           page
-                         {% endif %}"
-           _="on load if location.pathname is '{% url 'dashboard:home' %}' then hide me">Dashboard</a>
-      </li>
-    {% else %}
-      <li>
-        <a href="{% url 'dashboard:home' %}"
-           role="menuitem"
-           aria-current="{% if request.resolver_match.namespace == 'dashboard' %}
-                           page
-                         {% endif %}"
-           _="on load if location.pathname is '{% url 'dashboard:home' %}' then hide me">Dashboard</a>
-      </li>
-    {% endif %}
+<nav aria-label="Breadcrumb navigation"
+     role="navigation"
+     class="breadcrumbs">
+  <ul class="breadcrumbs-list">
+    <li>
+      <a href="{% url 'dashboard:home' %}" role="menuitem" aria-current="page">Dashboard</a>
+    </li>
     {% block breadcrumbs %}
     {% endblock breadcrumbs %}
   </ul>

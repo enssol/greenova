@@ -39,20 +39,79 @@
         {% endblock page_title %}
       {% endblock title %}
     </title>
+
+    <!-- Resource hints for performance optimization -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
+
     <!-- Favicon -->
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
-    <!-- Critical CSS -->
+    
+    <!-- Critical CSS - preloaded and applied immediately -->
     <link rel="preload"
           href="{% static 'css/dist/critical-styles.css' %}"
           as="style" />
-    <!-- CSS files -->
     <link rel="stylesheet" href="{% static 'css/dist/critical-styles.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
-    {% tailwind_css %}
+
+    <link rel="preload"
+          href="{% static 'css/dist/critical-secondary-styles.css' %}"
+          as="style" />
+    <link rel="stylesheet"
+          href="{% static 'css/dist/critical-secondary-styles.css' %}" />
+
+    <!-- Primary CSS Framework - PicoCSS (classless) -->
+    <link rel="preload"
+          href="{% static 'css/dist/vendor/pico.classless.css' %}"
+          as="style" />
+    
+    <!-- Secondary CSS - deferred loading for non-critical styles -->
+    <link rel="preload"
+          href="{% static 'css/dist/styles.css' %}"
+          as="style"
+          onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
+    </noscript>
+
+    <link rel="preload"
+          href="{% static 'css/dist/secondary-styles.css' %}"
+          as="style"
+          onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet" href="{% static 'css/dist/secondary-styles.css' %}" />
+    </noscript>
+
+    <!-- Preload WebAssembly if available -->
+    {% if wasm_available %}
+      <link rel="preload"
+            href="{% static 'as/optimized.wasm' %}"
+            as="fetch"
+            type="application/wasm"
+            crossorigin="anonymous" />
+    {% endif %}
 
     {% block extra_css %}
     {% endblock extra_css %}
     {% block extra_head %}
+      <script type="text/hyperscript">
+        behavior SidebarCollapser
+          on click
+            toggle .expanded on the closest <div.sidebar-collapse />
+            toggle @aria-expanded
+            set expanded to @aria-expanded
+            set targetId to @aria-controls
+            set target to the <div id={targetId}/>
+            if expanded
+              set target.style.maxHeight to target.scrollHeight + "px"
+            else
+              set target.style.maxHeight to "0px"
+            end
+          end
+        end
+      </script>
+      {{ block.super }}
     {% endblock extra_head %}
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -62,52 +121,97 @@
     <!-- Skip to main content link for accessibility -->
     <a class="skip-link" href="#main-content">Skip to content</a>
     <!-- {% include "core/components/error_boundary.html" %} -->
-    
+
     <!-- Header with semantic nav -->
     <header role="banner">
-      {% include "layouts/_header.html" %}
+{% include "layouts/_header.html" %}
     </header>
-    
+
     <!-- After header, before main content -->
-    {% include "core/components/status_messages.html" %}
+{% include "core/components/status_messages.html" %}
     
     <!-- Main content -->
     <main id="main-content" role="main">
-      {% include "layouts/_breadcrumbs.html" %}
       {% block body %}
         {% block content %}
         {% endblock content %}
+        {% block body_end %}
+        {% endblock body_end %}
       {% endblock body %}
     </main>
-    
+
     <!-- Footer -->
     {% block footer %}
       <footer role="contentinfo">
-        {% include "layouts/_footer.html" %}
+{% include "layouts/_footer.html" %}
       </footer>
     {% endblock footer %}
-    
+
     <!-- Loading indicator for HTMX requests -->
     <div id="htmx-indicator" class="htmx-indicator" aria-hidden="true">
       <div class="spinner">
       </div>
     </div>
-    
+
     <!-- JavaScript at the end for better performance -->
-    <script src="{% static 'js/vendor/htmx/htmx.min.js' %}" defer></script>
-    {% django_htmx_script %}
-    <!-- Extensions -->
-    <script src="{% static 'js/vendor/htmx/ext/head-support.min.js' %}" defer></script>
-    <script src="{% static 'js/vendor/htmx/ext/loading-states.min.js' %}" defer></script>
-    <script src="{% static 'js/vendor/htmx/ext/class-tools.min.js' %}" defer></script>
-    <script src="{% static 'js/vendor/htmx/ext/path-deps.min.js' %}" defer></script>
-    <script src="{% static 'js/vendor/_hyperscript.min.js' %}" defer></script>
-    <script src="{% static 'js/app.js' %}" defer></script>
+    <!-- Core libraries -->
+    <script src="{% static 'js/vendor/htmx/htmx.min.js' %}"></script>
+{% django_htmx_script %}
+    <script src="{% static 'js/vendor/_hyperscript.min.js' %}"></script>
+
+    <!-- HTMX Extensions -->
+    <script src="{% static 'js/vendor/htmx/ext/head-support.min.js' %}"></script>
+    <script src="{% static 'js/vendor/htmx/ext/loading-states.min.js' %}"></script>
+    <script src="{% static 'js/vendor/htmx/ext/class-tools.min.js' %}"></script>
+    <script src="{% static 'js/vendor/htmx/ext/path-deps.min.js' %}"></script>
+    
+    <!-- TypeScript modules (if available) -->
+    {% if ts_available %}
+      <script src="{% static 'ts/dist/index.js' %}" type="module"></script>
+    {% endif %}
+    <!-- Additional JavaScript files -->
+    <script src="{% static 'ts/dist/modules/app-modules.js' %}" type="module"></script>
+    <script src="{% static 'ts/dist/modules/error-handler.js' %}" type="module"></script>
+    <script src="{% static 'ts/dist/modules/foldable.js' %}" type="module"></script>
+    <script src="{% static 'ts/dist/modules/theme-manager.js' %}" type="module"></script>
+    <script src="{% static 'ts/dist/utils/helper.js' %}" type="module"></script>
+    <script src="{% static 'ts/dist/utils/wasm-loader.js' %}" type="module"></script>
+
+    <!-- Optional WebAssembly support -->
+    {% if wasm_available %}
+      <script src="{% static 'as/index.js' %}" type="module"></script>
+    {% endif %}
     
     {% block extra_js %}
     {% endblock extra_js %}
 
     <!-- Include at the end of your body section before the closing body tag -->
-    {% include "chatbot/chat_widget.html" %}
+{% include "chatbot/chat_widget.html" %}
+
+    <!-- Inline script for CSS fallback loading -->
+    <script>
+      // Fallback for browsers that don't support preload
+      var cssLoaded = false;
+      function loadCss() {
+        if (cssLoaded) return;
+        cssLoaded = true;
+
+        // Load styles.css if not already loaded
+        var link1 = document.createElement('link');
+        link1.rel = 'stylesheet';
+        link1.href = "{% static 'css/dist/styles.css' %}";
+        document.head.appendChild(link1);
+
+        // Load secondary-styles.css if not already loaded
+        var link2 = document.createElement('link');
+        link2.rel = 'stylesheet';
+        link2.href = "{% static 'css/dist/secondary-styles.css' %}";
+        document.head.appendChild(link2);
+      }
+      // Load after 2 seconds if not loaded by other means
+      window.addEventListener('load', function() {
+        setTimeout(loadCss, 2000);
+      });
+    </script>
   </body>
 </html>

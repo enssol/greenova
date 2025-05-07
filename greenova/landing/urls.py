@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import HomeView
+from .views import HomeView, newsletter_signup
 
-app_name = 'landing'
+app_name = "landing"
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
+    path("", HomeView.as_view(), name="home"),
+    path("newsletter-signup/", newsletter_signup, name="newsletter_signup"),
 ]

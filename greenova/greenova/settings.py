@@ -223,6 +223,16 @@ if DEBUG:
 # Run validation
 validate_settings()
 
+# Security Headers Configuration
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'wasm-unsafe-eval'")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com")
+CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_CONNECT_SRC = ("'self'",)
+
 # Tailwind CSS configuration
 TAILWIND_APP_NAME = "theme"
 INTERNAL_IPS = [
@@ -274,6 +284,8 @@ INSTALLED_APPS = [
     "theme.apps.ThemeConfig",  # UI Styling
     "chatbot.apps.ChatbotConfig",  # Standalone feature, placed last
     "feedback.apps.FeedbackConfig",  # Add the feedback app here
+    "reports.apps.ReportsConfig",  # Reports app for managing reports
+    "settings.apps.SettingsConfig",  # Settings app for managing settings
 ]
 
 
@@ -293,6 +305,7 @@ DJANGO_MATPLOTLIB_FIG_DEFAULTS: MatplotlibFigDefaults = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",  # First for security headers
+    "csp.middleware.CSPMiddleware",  # Add CSP middleware early
     "corsheaders.middleware.CorsMiddleware",  # CORS headers should be early
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -300,6 +313,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "allauth.account.middleware.AccountMiddleware",  # Should follow auth middleware
     "company.middleware.ActiveCompanyMiddleware",  # Add ActiveCompanyMiddleware here
+    "core.middleware.ProjectSelectionMiddleware",
+    "dashboard.middleware.DashboardPersistenceMiddleware",  # Add our new middleware
     "django.contrib.messages.middleware.MessageMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # Debug after core middleware
@@ -573,6 +588,7 @@ mimetypes.add_type("image/tiff", ".tif", True)
 mimetypes.add_type("image/vnd.microsoft.icon", ".ico", True)
 mimetypes.add_type("text/html", ".html", True)
 mimetypes.add_type("text/plain", ".txt", True)
+mimetypes.add_type("application/wasm", ".wasm", True)
 
 # User sessions configuration
 # USERSESSIONS_TRACK_ACTIVITY = True

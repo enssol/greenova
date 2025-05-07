@@ -43,4 +43,5 @@ urlpatterns = [
         ToggleCustomAspectView.as_view(),
         name="toggle_custom_aspect",
     ),
+    path("list/", views.ObligationListView.as_view(), name="obligation_list"),
 ]

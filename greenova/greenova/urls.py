@@ -65,6 +65,10 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("responsibility/", include("responsibility.urls")),
     # Add feedback URLs
     path("feedback/", include("feedback.urls", namespace="feedback")),
+    # Include reports URLs
+    path("reports/", include("reports.urls", namespace="reports")),
+    # Include settings URLs
+    path("settings/", include("settings.urls", namespace="settings")),
     # Sentry error page to verify Sentry is working
     path("sentry-debug/", trigger_error),
 ] + debug_toolbar_urls()
