@@ -23,8 +23,6 @@ __pycache__/
 *.so
 *.egg
 *.egg-info/
-build/
-dist/
 develop-eggs/
 downloads/
 eggs/
