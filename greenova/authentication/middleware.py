@@ -9,6 +9,12 @@ from django_htmx.middleware import HtmxDetails
 logger = logging.getLogger(__name__)
 
 
+class CustomHttpRequest(HttpRequest):
+    """Custom HttpRequest class with additional attributes."""
+
+    is_post_logout: bool = False
+
+
 class LogoutStateMiddleware:
     """Middleware to handle post-logout state and ensure proper page rendering."""
 
@@ -20,7 +26,7 @@ class LogoutStateMiddleware:
         """
         self.get_response = get_response
 
-    def __call__(self, request: HttpRequest) -> HttpResponse:
+    def __call__(self, request: CustomHttpRequest) -> HttpResponse:
         """Process the request through the middleware.
 
         Args:
