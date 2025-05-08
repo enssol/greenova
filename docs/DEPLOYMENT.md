@@ -56,6 +56,19 @@ User → HTTPS → Cloudflare Edge → HTTPS → Nginx Server → Gunicorn → D
    - Configure `STATIC_ROOT` and `MEDIA_ROOT`
    - Set secure cookies and CSRF settings
 
+### Step 5: Ensure Database Schema Consistency
+
+Run the custom management command to ensure the `company_company_users` table
+exists in the database:
+
+```bash
+python manage.py check_and_create_company_users_table
+```
+
+This command checks if the table exists and creates it if necessary. Include
+this step in your deployment or startup scripts to ensure the database schema
+is consistent across all hosts.
+
 ## Django Production Settings
 
 Edit your `settings.py` file to include these production-ready configurations:

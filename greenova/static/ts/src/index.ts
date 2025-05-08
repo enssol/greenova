@@ -123,3 +123,9 @@ declare global {
     GreenovaApp: GreenovaApp;
   }
 }
+
+/**
+ * Entry point for Greenova TypeScript modules
+ */
+export { initializeWasmModule } from './utils/wasm-loader';
+export { ThemeManager } from './modules/theme-manager';

@@ -182,3 +182,5 @@ backups/
 .direnv/*
 .python-version
 .dev-container
+greenova/db.sqlite3-shm
+greenova/db.sqlite3-wal

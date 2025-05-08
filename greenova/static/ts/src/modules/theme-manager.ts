@@ -1,158 +1,162 @@
 /**
- * Greenova TypeScript Theme Manager
+ * Theme Manager Module
  *
- * This module manages theme application and system preference detection,
- * leveraging the AssemblyScript WASM module for performance-critical operations.
+ * This module manages the application's theme system, handling:
+ * - Theme switching (light/dark/auto)
+ * - System preference detection
+ * - Local storage persistence
+ * - WASM-based theme calculations
  */
 
 import { GreenovaWasmModule } from '../utils/wasm-loader';
 
-/**
- * Theme configuration
- */
 interface ThemeConfig {
   rootAttribute: string;
   localStorageKey: string;
   defaultScheme: string;
 }
 
-/**
- * Theme manager class
- */
+type ThemeScheme = 'light' | 'dark' | 'auto';
+
 export class ThemeManager {
-  private wasmModule: GreenovaWasmModule;
-  private config: ThemeConfig;
-  private mediaQuery: MediaQueryList;
+  private readonly config: ThemeConfig;
+  private readonly mediaQuery: MediaQueryList;
+  private currentTheme: ThemeScheme;
 
-  constructor(wasmModule: GreenovaWasmModule) {
-    this.wasmModule = wasmModule;
-
-    // Theme configuration
+  constructor(private readonly wasmModule: GreenovaWasmModule) {
     this.config = {
       rootAttribute: 'data-theme',
-      localStorageKey: 'picoPreferredColorScheme',
+      localStorageKey: 'greenova-theme',
       defaultScheme: 'auto'
     };
-
-    // System preference media query
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    this.currentTheme = this.getStoredTheme();
   }
 
   /**
    * Initialize the theme manager
-   * Important: This should be called as early as possible in the page load
    */
   public init(): void {
-    // Get stored theme preference
-    const savedTheme = this.getStoredTheme();
-
-    // Set theme preference in WASM
-    this.setThemeInWasm(savedTheme);
-
-    // Apply theme to document
-    this.applyTheme(savedTheme);
-
-    // Set up listener for system preference changes
-    this.setupSystemPreferenceListener();
-
-    // Set up theme toggle listeners
-    this.setupThemeToggleListeners();
+    try {
+      const savedTheme = this.getStoredTheme();
+      this.setThemeInWasm(savedTheme);
+      this.applyTheme(savedTheme);
+      this.setupSystemPreferenceListener();
+      this.setupThemeToggleListeners();
+    } catch (error) {
+      console.error('Theme initialization failed:', error);
+      this.applyThemeWithoutWasm('light');
+    }
   }
 
   /**
-   * Get theme from local storage or use default
-   * @returns The stored theme or default
+   * Apply theme without WASM support
    */
-  private getStoredTheme(): string {
-    const storedTheme = window.localStorage?.getItem(this.config.localStorageKey);
-    return storedTheme || this.config.defaultScheme;
+  private applyThemeWithoutWasm(theme: ThemeScheme): void {
+    const rootElement = document.documentElement;
+    if (!rootElement) return;
+
+    const effectiveTheme = theme === 'auto'
+      ? (this.getSystemPreference() ? 'dark' : 'light')
+      : theme;
+
+    rootElement.setAttribute(this.config.rootAttribute, effectiveTheme);
+    this.currentTheme = theme;
   }
 
   /**
-   * Set theme preference in WASM module
-   * @param theme The theme to set ('light', 'dark', or 'auto')
+   * Get stored theme preference
    */
-  private setThemeInWasm(theme: string): void {
-    let themeValue: number;
+  private getStoredTheme(): ThemeScheme {
+    try {
+      return (window.localStorage?.getItem(this.config.localStorageKey) || this.config.defaultScheme) as ThemeScheme;
+    } catch {
+      return this.config.defaultScheme as ThemeScheme;
+    }
+  }
+
+  /**
+   * Set theme in WASM module
+   */
+  private setThemeInWasm(theme: ThemeScheme): void {
+    try {
+      const themeValue = this.getThemeValue(theme);
+      this.wasmModule.setTheme(themeValue);
+    } catch (error) {
+      console.error('Failed to set theme in WASM:', error);
+    }
+  }
+
+  /**
+   * Get theme value for WASM module
+   */
+  private getThemeValue(theme: ThemeScheme): number {
     switch (theme) {
       case 'light':
-        themeValue = this.wasmModule.THEME_LIGHT;
-        break;
+        return this.wasmModule.THEME_LIGHT;
       case 'dark':
-        themeValue = this.wasmModule.THEME_DARK;
-        break;
+        return this.wasmModule.THEME_DARK;
       case 'auto':
       default:
-        themeValue = this.wasmModule.THEME_AUTO;
-        break;
+        return this.wasmModule.THEME_AUTO;
     }
-
-    this.wasmModule.setTheme(themeValue);
   }
 
   /**
-   * Get system preference for dark mode
-   * @returns True if system prefers dark mode
+   * Get system color scheme preference
    */
   private getSystemPreference(): boolean {
-    return this.mediaQuery.matches;
+    return this.mediaQuery?.matches ?? false;
   }
 
   /**
    * Apply theme to document
-   * @param theme The theme to apply ('light', 'dark', or 'auto')
    */
-  public applyTheme(theme: string): void {
+  public applyTheme(theme: ThemeScheme): void {
     const rootElement = document.documentElement;
     if (!rootElement) return;
 
-    if (theme === 'auto') {
-      // Use WASM module to resolve theme based on system preference
-      const systemPrefersDark = this.getSystemPreference() ? 1 : 0;
-      const resolvedTheme = this.wasmModule.resolveTheme(systemPrefersDark);
+    try {
+      if (theme === 'auto') {
+        const systemPrefersDark = this.getSystemPreference() ? 1 : 0;
+        const resolvedTheme = this.wasmModule.resolveTheme(systemPrefersDark);
+        rootElement.setAttribute(
+          this.config.rootAttribute,
+          resolvedTheme === this.wasmModule.THEME_DARK ? 'dark' : 'light'
+        );
+      } else {
+        rootElement.setAttribute(this.config.rootAttribute, theme);
+      }
 
-      // Apply resolved theme
-      rootElement.setAttribute(
-        this.config.rootAttribute,
-        resolvedTheme === this.wasmModule.THEME_DARK ? 'dark' : 'light'
-      );
-    } else {
-      // Apply explicit theme
-      rootElement.setAttribute(this.config.rootAttribute, theme);
+      this.currentTheme = theme;
+      this.dispatchThemeChangedEvent(theme);
+    } catch (error) {
+      console.error('Failed to apply theme:', error);
+      this.applyThemeWithoutWasm(theme);
     }
-
-    // Dispatch theme changed event
-    this.dispatchThemeChangedEvent(theme);
   }
 
   /**
-   * Set up listener for system preference changes
+   * Set up system preference change listener
    */
   private setupSystemPreferenceListener(): void {
-    // Check if matchMedia is supported
-    if (!this.mediaQuery || !this.mediaQuery.addEventListener) return;
+    if (!this.mediaQuery?.addEventListener) return;
 
-    // Use the modern event listener approach
     this.mediaQuery.addEventListener('change', () => {
-      const storedTheme = this.getStoredTheme();
-      if (storedTheme === 'auto') {
+      if (this.currentTheme === 'auto') {
         this.applyTheme('auto');
       }
     });
   }
 
   /**
-   * Set up listeners for theme toggle elements
+   * Set up theme toggle button listeners
    */
   private setupThemeToggleListeners(): void {
-    // Find all theme toggles
-    const themeToggles = document.querySelectorAll('[data-theme-toggle]');
-
-    themeToggles.forEach(toggle => {
+    document.querySelectorAll('[data-theme-toggle]').forEach(toggle => {
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
-
-        const targetTheme = toggle.getAttribute('data-theme-value') || 'auto';
+        const targetTheme = (toggle.getAttribute('data-theme-value') || 'auto') as ThemeScheme;
         this.setTheme(targetTheme);
       });
     });
@@ -160,63 +164,46 @@ export class ThemeManager {
 
   /**
    * Set and save theme preference
-   * @param theme The theme to set ('light', 'dark', or 'auto')
    */
-  public setTheme(theme: string): void {
-    // Validate theme
-    if (!['light', 'dark', 'auto'].includes(theme)) {
-      theme = this.config.defaultScheme;
-    }
-
-    // Save to local storage
+  public setTheme(theme: ThemeScheme): void {
     try {
-      window.localStorage.setItem(this.config.localStorageKey, theme);
+      window.localStorage?.setItem(this.config.localStorageKey, theme);
+      this.setThemeInWasm(theme);
+      this.applyTheme(theme);
     } catch (error) {
-      console.error('Failed to save theme preference to localStorage:', error);
+      console.error('Failed to set theme:', error);
+      this.applyThemeWithoutWasm(theme);
     }
-
-    // Update WASM module
-    this.setThemeInWasm(theme);
-
-    // Apply theme
-    this.applyTheme(theme);
   }
 
   /**
-   * Dispatch custom event when theme changes
-   * @param theme The current theme
+   * Dispatch theme changed event
    */
-  private dispatchThemeChangedEvent(theme: string): void {
-    window.dispatchEvent(
-      new CustomEvent('themeChanged', {
-        detail: { theme }
-      })
-    );
+  private dispatchThemeChangedEvent(theme: ThemeScheme): void {
+    try {
+      window.dispatchEvent(
+        new CustomEvent('themeChanged', {
+          detail: { theme }
+        })
+      );
+    } catch (error) {
+      console.error('Failed to dispatch theme changed event:', error);
+    }
   }
 
   /**
-   * Get the current theme
-   * @returns The current theme ('light', 'dark', or 'auto')
+   * Get current theme
    */
-  public getCurrentTheme(): string {
-    const storedTheme = this.getStoredTheme();
-
-    if (storedTheme === 'auto') {
-      const systemPrefersDark = this.getSystemPreference() ? 1 : 0;
-      const resolvedTheme = this.wasmModule.resolveTheme(systemPrefersDark);
-      return resolvedTheme === this.wasmModule.THEME_DARK ? 'dark' : 'light';
-    }
-
-    return storedTheme;
+  public getCurrentTheme(): ThemeScheme {
+    return this.currentTheme;
   }
 
   /**
    * Toggle between light and dark themes
-   * If current theme is auto, sets to light or dark based on current appearance
    */
   public toggleTheme(): void {
     const currentTheme = this.getCurrentTheme();
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    const newTheme: ThemeScheme = currentTheme === 'light' ? 'dark' : 'light';
     this.setTheme(newTheme);
   }
 }

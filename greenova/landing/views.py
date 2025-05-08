@@ -7,7 +7,7 @@ handling newsletter signups.
 import logging
 import smtplib
 from smtplib import SMTPException
-from typing import Any, TypedDict, cast
+from typing import Any, TypedDict
 
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 from django.views.decorators.vary import vary_on_headers
 from django.views.generic import TemplateView
-from django_htmx.http import HttpResponseClientRedirect, push_url, trigger_client_event
+from django_htmx.http import HttpResponseClientRefresh, push_url
 
 logger = logging.getLogger(__name__)
 
@@ -36,48 +36,58 @@ class HtmxDetails(TypedDict, total=False):
     trigger_name: str
 
 
-@method_decorator(cache_control(max_age=300), name="dispatch")
+@method_decorator(
+    cache_control(private=True, no_cache=True, no_store=True, must_revalidate=True),
+    name="dispatch",
+)
 @method_decorator(vary_on_headers("HX-Request"), name="dispatch")
 class HomeView(TemplateView):
-    """Landing page view."""
+    """Landing page view that handles both regular and HTMX requests."""
 
     template_name = "landing/index.html"
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        """Handle GET requests."""
+        """Handle GET requests for the landing page."""
         logger.debug(
-            "Landing page - User authenticated: %s", request.user.is_authenticated
+            "Landing page - User authenticated: %s, Post-logout: %s",
+            request.user.is_authenticated,
+            getattr(request, "is_post_logout", False),
         )
 
+        # If user is authenticated, redirect to dashboard unless post-logout
+        if request.user.is_authenticated and not getattr(
+            request, "is_post_logout", False
+        ):
+            logger.debug("Redirecting authenticated user to dashboard")
+            return HttpResponseClientRefresh("/dashboard/")
+
+        # Get standard response
         response = super().get(request, *args, **kwargs)
 
-        # If htmx request, handle proper URL management
-        if hasattr(request, "htmx"):
-            # Cast request.htmx to our type definition for mypy
-            htmx = cast(HtmxDetails, request.htmx)
+        # Ensure proper cache control
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
 
-            # Push the URL to the browser history to ensure proper navigation
+        # Handle HTMX-specific behavior
+        if getattr(request, "htmx", None):
             push_url(response, request.path)
 
-            # Trigger animations or other client-side effects if needed
-            trigger_client_event(response, "landingLoaded")
-
-            # If user is authenticated and accessing the landing page directly,
-            # we might want to redirect them to the dashboard
-            if request.user.is_authenticated and htmx.get("boosted", False):
-                return HttpResponseClientRedirect("/dashboard/")
+            # Check for forced refresh after logout
+            if request.session.pop("_force_refresh", False):
+                return HttpResponseClientRefresh()
 
         return response
 
-    def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         """Add landing page context data."""
         context = super().get_context_data(**kwargs)
-        # Add basic context data that was previously in utils
         context.update(
             {
                 "app_version": getattr(settings, "APP_VERSION", "0.1.0"),
                 "show_landing_content": True,
                 "show_dashboard_link": self.request.user.is_authenticated,
+                "is_post_logout": getattr(self.request, "is_post_logout", False),
             }
         )
         return context

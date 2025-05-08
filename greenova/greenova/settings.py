@@ -227,11 +227,23 @@ validate_settings()
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'wasm-unsafe-eval'")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com")
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "'wasm-unsafe-eval'",
+    "'unsafe-inline'",
+)  # Required for Debug Toolbar
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    "fonts.googleapis.com",
+)  # Required for Debug Toolbar
 CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
 CSP_IMG_SRC = ("'self'", "data:")
-CSP_CONNECT_SRC = ("'self'",)
+CSP_CONNECT_SRC = (
+    "'self'",
+    "ws://127.0.0.1:*",
+    "ws://localhost:*",
+)  # Required for Debug Toolbar WebSocket
 
 # Tailwind CSS configuration
 TAILWIND_APP_NAME = "theme"
@@ -312,6 +324,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",  # Keep CSRF for form handling
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "allauth.account.middleware.AccountMiddleware",  # Should follow auth middleware
+    "authentication.middleware.LogoutStateMiddleware",  # Add our new middleware here
     "company.middleware.ActiveCompanyMiddleware",  # Add ActiveCompanyMiddleware here
     "core.middleware.ProjectSelectionMiddleware",
     "dashboard.middleware.DashboardPersistenceMiddleware",  # Add our new middleware
@@ -627,3 +640,22 @@ SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 50  # Run GC check on 50% of request
 SILKY_MAX_REQUEST_BODY_SIZE = 1024  # Limit request body size to 1KB
 SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # Limit response body size to 1KB
 SILKY_INTERCEPT_PERCENT = 25  # Only profile 25% of requests
+
+# Debug Toolbar Configuration
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: DEBUG,
+    "JQUERY_URL": "",  # Don't load jQuery
+    "DISABLE_PANELS": {"debug_toolbar.panels.redirects.RedirectsPanel"},
+    "SHOW_COLLAPSED": True,
+    "SHOW_TEMPLATE_CONTEXT": True,
+    "SQL_WARNING_THRESHOLD": 100,
+    "ENABLE_STACKTRACES": True,
+    "EXTRA_SIGNALS": [],
+    "HIDE_IN_STACKTRACES": (
+        "django",
+        "debug_toolbar",
+        "django.db",
+        "django.core",
+        "django.contrib",
+    ),
+}

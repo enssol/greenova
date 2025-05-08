@@ -5,22 +5,17 @@
  * and provides a typed interface for interacting with it.
  */
 
-// Interface for the WASM module exports
+/**
+ * Interface for the WASM module exports
+ */
 export interface GreenovaWasmModule {
-  // Memory management
   memory: WebAssembly.Memory;
-
-  // Theme functions
   getTheme: () => number;
   setTheme: (theme: number) => void;
   resolveTheme: (systemPrefersDark: number) => number;
-
-  // Constants
   THEME_LIGHT: number;
   THEME_DARK: number;
   THEME_AUTO: number;
-
-  // Error handling
   getLastErrorCode: () => number;
   getLastErrorDetails: () => number;
   recordError: (code: number, details: number) => void;
@@ -29,8 +24,6 @@ export interface GreenovaWasmModule {
   ERROR_GENERAL: number;
   ERROR_THEME: number;
   ERROR_ANIMATION: number;
-
-  // Animation functions
   linearEasing: (current: number, duration: number) => number;
   easeInOutEasing: (current: number, duration: number) => number;
   calculateAnimationHeight: (
@@ -42,45 +35,129 @@ export interface GreenovaWasmModule {
 }
 
 /**
- * Initialize the WebAssembly module
- * @returns Promise resolving to the initialized WASM module
+ * Implementation of a fallback module when WASM is not available
+ */
+class FallbackWasmModule implements GreenovaWasmModule {
+  memory: WebAssembly.Memory;
+  THEME_LIGHT = 0;
+  THEME_DARK = 1;
+  THEME_AUTO = 2;
+  ERROR_NONE = 0;
+  ERROR_GENERAL = 1;
+  ERROR_THEME = 2;
+  ERROR_ANIMATION = 3;
+
+  constructor() {
+    this.memory = new WebAssembly.Memory({ initial: 1 });
+  }
+
+  getTheme(): number { return 0; }
+  setTheme(): void { /* no-op */ }
+  resolveTheme(systemPrefersDark: number): number { return systemPrefersDark ? 1 : 0; }
+  getLastErrorCode(): number { return 0; }
+  getLastErrorDetails(): number { return 0; }
+  recordError(): void { /* no-op */ }
+  clearError(): void { /* no-op */ }
+  linearEasing(current: number, duration: number): number { return current / duration; }
+  easeInOutEasing(current: number, duration: number): number { return current / duration; }
+  calculateAnimationHeight(): number { return 0; }
+}
+
+/**
+ * Initialize the WebAssembly module with proper fallback
  */
 export async function initializeWasmModule(): Promise<GreenovaWasmModule> {
+  if (!isWasmSupported()) {
+    console.warn('WebAssembly is not supported, using fallback module');
+    return new FallbackWasmModule();
+  }
+
   try {
-    // Path to the WASM file
-    const wasmPath = '/static/as/build/optimized.wasm';
+    const wasmPath = new URL('/static/as/build/optimized.wasm', window.location.origin).href;
+    const response = await fetchWithRetry(wasmPath);
 
-    // Fetch the WASM module
-    const response = await fetch(wasmPath);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch WASM module: ${response.statusText}`);
+    }
+
     const buffer = await response.arrayBuffer();
+    if (!buffer) {
+      throw new Error('Empty WASM buffer received');
+    }
 
-    // Instantiate the WASM module
+    const memory = new WebAssembly.Memory({
+      initial: 2,
+      maximum: 10
+    });
+
     const { instance } = await WebAssembly.instantiate(buffer, {
       env: {
-        memory: new WebAssembly.Memory({ initial: 1 }),
-        abort: (message: number, fileName: number, lineNumber: number, columnNumber: number) => {
+        memory,
+        abort: (
+          message: number,
+          fileName: number,
+          lineNumber: number,
+          columnNumber: number
+        ) => {
           console.error(
             'WASM module aborted:',
             { message, fileName, lineNumber, columnNumber }
           );
+          throw new Error('WASM module aborted');
         }
       }
     });
 
-    // Return the exports as a typed module
+    if (!instance?.exports) {
+      throw new Error('WASM instance exports not found');
+    }
+
     return instance.exports as unknown as GreenovaWasmModule;
   } catch (error) {
-    console.error('Failed to initialize WASM module:', error);
-    throw new Error('WASM module initialization failed');
+    console.error('WASM initialization failed:', error);
+    console.warn('Falling back to JavaScript implementation');
+    return new FallbackWasmModule();
   }
 }
 
 /**
- * Check if WebAssembly is supported in the current browser
- * @returns True if WebAssembly is supported
+ * Fetch with retry logic
  */
-export function isWasmSupported(): boolean {
-  return typeof WebAssembly === 'object'
-    && typeof WebAssembly.instantiate === 'function'
-    && typeof WebAssembly.Memory === 'function';
+async function fetchWithRetry(
+  url: string,
+  retries = 3,
+  backoff = 1000
+): Promise<Response> {
+  let lastError: Error | undefined;
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fetch(url);
+    } catch (error) {
+      lastError = error as Error;
+      if (i === retries - 1) break;
+      await new Promise(resolve => setTimeout(resolve, backoff * (i + 1)));
+    }
+  }
+
+  throw lastError || new Error('Failed to fetch after retries');
+}
+
+/**
+ * Check if WebAssembly is supported in the current browser
+ */
+function isWasmSupported(): boolean {
+  try {
+    if (typeof WebAssembly !== 'object') return false;
+
+    // Check if required WebAssembly functions exist and are callable
+    if (typeof WebAssembly.instantiate !== 'function') return false;
+    if (typeof WebAssembly.Memory !== 'function') return false;
+    if (typeof WebAssembly.compile !== 'function') return false;
+    if (typeof WebAssembly.Instance !== 'function') return false;
+
+    return true;
+  } catch {
+    return false;
+  }
 }
