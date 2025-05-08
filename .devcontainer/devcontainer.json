@@ -87,14 +87,13 @@
         "dbcode.dbcode",
         "ms-vscode.copilot-mermaid-diagram",
         "ms-toolsai.datawrangler",
-        "charliermarsh.ruff",
-        "ms-vscode.vscode-copilot-vision"
+        "charliermarsh.ruff"
       ]
     }
   },
 
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=delegated",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=delegated",
     "source=dotfiles,target=/home/vscode/dotfiles,type=volume"
   ],
 

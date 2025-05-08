@@ -1,3 +1,15 @@
+---
+description:
+  Automated issue resolution for logout, landing page, and JS errors in
+  Greenova.
+mode: agent
+
+tools:
+  - filesystem
+  - sequential-thinking
+  - json
+---
+
 # GitHub Copilot Prompt Template for Automated Issue Resolution
 
 ## Goal
@@ -98,28 +110,3 @@ Fix the following issues:
    and remain stable upon reload.
 
 ## Acceptance Criteria
-
-- The `/landing/` page loads automatically and displays its content immediately
-  after logging out from `/dashboard/`.
-- The `/landing/` page remains stable upon reload without flashing or
-  disappearing.
-- The logout process and redirection work seamlessly.
-- All JavaScript errors are resolved.
-- The code adheres to the project's coding standards and passes all pre-commit
-  checks.
-
-## Instructions
-
-1. Investigate the logout functionality in the `dashboard` app to identify the
-   cause of the blank page and flashing issues.
-2. Check the templates for the `/landing/` page to ensure they are correctly
-   structured.
-3. Analyze the newly added files in the `landing` app for potential logic
-   issues or missing configurations.
-4. Debug and fix the JavaScript errors in `theme-manager.js`, `wasm-loader.js`,
-   `htmx.min.js`, and `toolbar.js`.
-5. Refactor the code, templates, or newly added files as needed to resolve the
-   issues.
-6. Test the logout process and `/landing/` page to ensure they work correctly
-   and remain stable upon reload.
-7. Document the changes made to resolve the issues.

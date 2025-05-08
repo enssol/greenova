@@ -1,3 +1,19 @@
+---
+description:
+  Business scope generation guide and template for Greenova modules, including
+  structure, use cases, and data model.
+mode: general
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/business-scope.prompt.md -->
+
 # Greenova Business Scope Generation Guide
 
 ## Module Definition Instructions

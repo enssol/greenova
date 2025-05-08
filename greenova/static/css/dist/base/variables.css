@@ -89,8 +89,7 @@
   --greenova-error-text: #721c24;
 
   /* Shadow system */
-  --greenova-shadow:
-    0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
+  --greenova-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);
   --greenova-shadow-hover:
     0 4px 6px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 12%);
   --greenova-shadow-large:
@@ -216,8 +215,7 @@
   --greenova-beige-secondary: #3a3d47;
   --greenova-beige-tertiary: #4a4d59;
   --greenova-border-color: #4a4d59;
-  --greenova-shadow:
-    0 1px 3px rgb(0 0 0 / 30%), 0 1px 2px rgb(0 0 0 / 50%);
+  --greenova-shadow: 0 1px 3px rgb(0 0 0 / 30%), 0 1px 2px rgb(0 0 0 / 50%);
   --greenova-shadow-hover:
     0 4px 6px rgb(0 0 0 / 40%), 0 1px 3px rgb(0 0 0 / 30%);
   --greenova-shadow-large:

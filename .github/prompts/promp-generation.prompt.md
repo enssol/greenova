@@ -1,3 +1,21 @@
+---
+description:
+  Template for generating automated issue resolution prompts for Copilot,
+  including context, objectives, and acceptance criteria.
+mode: agent
+
+tools:
+  - filesystem
+  - semantic_search
+  - get_errors
+  - run_tests
+  - file_search
+  - read_file
+  - insert_edit_into_file
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/promp-generation.prompt.md -->
+
 # GitHub Copilot Prompt Template for Automated Issue Resolution
 
 ## Goal

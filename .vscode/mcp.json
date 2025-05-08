@@ -15,6 +15,7 @@
   ],
   "servers": {
     "github": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
@@ -22,6 +23,7 @@
       }
     },
     "filesystem": {
+      "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
@@ -30,6 +32,7 @@
       ]
     },
     "json": {
+      "type": "stdio",
       "command": "npx",
       "args": ["@gongrzhe/server-json-mcp@1.0.3"]
     },
@@ -39,6 +42,7 @@
       "args": ["-y", "@upstash/context7-mcp@latest"]
     },
     "sqlite": {
+      "type": "stdio",
       "command": "uvenv",
       "args": [
         "run",
@@ -49,16 +53,47 @@
       ]
     },
     "git": {
+      "type": "stdio",
       "command": "uvenv",
       "args": ["run", "mcp-server-git"]
     },
     "fetch": {
+      "type": "stdio",
       "command": "uvenv",
       "args": ["run", "mcp-server-fetch"]
     },
     "sequential-thinking": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "snyk": {
+      "type": "stdio",
+      "command": "snyk",
+      "args": ["mcp", "-t", "stdio", "--experimental"],
+      "env": {
+        "SNYK_TOKEN": "${env:SNYK_TOKEN}"
+      }
+    },
+    "calculator": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-server-calculator"]
+    },
+    "mcp-server-ds": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-server-ds"]
+    },
+    "mcp-pandoc": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-pandoc"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
     }
   }
 }

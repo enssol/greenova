@@ -1,3 +1,20 @@
+---
+description:
+  GitHub issue template for Greenova, including project fields, structure, and
+  automation instructions.
+mode: agent
+
+tools:
+  - github
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/github-issue.prompt.md -->
+
 # GitHub Issue Template for Greenova Project
 
 ## Project Fields (for GitHub Project Automation)

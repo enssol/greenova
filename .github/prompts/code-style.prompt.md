@@ -1,3 +1,19 @@
+---
+description:
+  Code style and formatting standards for Python, Django, HTML, CSS, and
+  JavaScript in the Greenova project.
+mode: general
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/code-style.prompt.md -->
+
 # Code Style and Formatting Standards
 
 ## Python Code Style

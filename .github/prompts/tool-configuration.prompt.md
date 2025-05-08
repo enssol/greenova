@@ -1,3 +1,19 @@
+---
+description:
+  Guide for configuring and using development tools, linters, and formatters in
+  the Greenova project.
+mode: configuration
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/tool-configuration.prompt.md -->
+
 # Development Tools Configuration Guide
 
 ## Code Quality Tools
@@ -172,7 +188,7 @@ from django.db import models
 from .models import MyModel
 ```
 
-2. Line length:
+1. Line length:
 
 ```python
 # Correct
@@ -182,7 +198,7 @@ long_string = (
 )
 ```
 
-3. Type hints:
+1. Type hints:
 
 ```python
 # Correct
@@ -203,7 +219,7 @@ ruff format .
 prettier --write .
 ```
 
-2. Type checking:
+1. Type checking:
 
 ```bash
 # Check types
@@ -213,7 +229,7 @@ mypy .
 stubgen -p your_package
 ```
 
-3. Security checks:
+1. Security checks:
 
 ```bash
 # Run security audit

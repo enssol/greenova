@@ -1,3 +1,19 @@
+---
+description: Testing standards and guidelines for Greenova, including pytest
+  configuration, test structure, and best practices.
+mode: general
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+  - run_tests
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/test-standards.prompt.md -->
+
 # Testing Standards and Guidelines
 
 ## Test Configuration

@@ -1,3 +1,20 @@
+---
+description:
+  Standardized configuration guidelines for development tools, linters, and
+  formatters used in the Greenova project.
+mode: configuration
+
+tools:
+  - file_search
+  - read_file
+  - replace_string_in_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/configuration.prompt.md -->
+
 # Configuration Standards and Tools
 
 ## Code Formatting Tools

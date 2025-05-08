@@ -1,11 +1,28 @@
+---
+description:
+  Prompt for fixing errors found with devcontainers, especially Python virtual
+  environment and pip issues.
+mode: agent
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/devcontainer-fix.prompt.md -->
+
 # Prompt for Fixing Errors Found with Devcontainers
 
 **Objective**: For the post_start.sh script in the devcontainer, fix the error
-`ModuleNotFoundError: No module named 'pip'` that occurs when the script is run. The
-error occurs when the script attempts to activate the Python virtual environment
-and install Python dependencies. The error message indicates that the pip module
-is not found, which suggests that the virtual environment may not be set up
-correctly or that pip is not installed in the virtual environment.
+`ModuleNotFoundError: No module named 'pip'` that occurs when the script is
+run. The error occurs when the script attempts to activate the Python virtual
+environment and install Python dependencies. The error message indicates that
+the pip module is not found, which suggests that the virtual environment may
+not be set up correctly or that pip is not installed in the virtual
+environment.
 
 **Context**:
 

@@ -1,3 +1,19 @@
+---
+description:
+  Development container configuration standards for Python, Node.js, and VS
+  Code in the Greenova project.
+mode: configuration
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/devcontainer-config.prompt.md -->
+
 # Development Container Configuration Standards
 
 ## Base Container Requirements

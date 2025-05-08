@@ -1,3 +1,19 @@
+---
+description:
+  Technical documentation guidelines and standards for the Greenova project,
+  including formatting, referencing, and style.
+mode: general
+
+tools:
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+---
+
+<!-- filepath: /workspaces/greenova/.github/prompts/technical-writing.prompt.md -->
+
 # Greenova Technical Documentation Guidelines
 
 When generating technical documentation for the Greenova project, follow these
