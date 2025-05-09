@@ -51,16 +51,36 @@ class FallbackWasmModule implements GreenovaWasmModule {
     this.memory = new WebAssembly.Memory({ initial: 1 });
   }
 
-  getTheme(): number { return 0; }
-  setTheme(): void { /* no-op */ }
-  resolveTheme(systemPrefersDark: number): number { return systemPrefersDark ? 1 : 0; }
-  getLastErrorCode(): number { return 0; }
-  getLastErrorDetails(): number { return 0; }
-  recordError(): void { /* no-op */ }
-  clearError(): void { /* no-op */ }
-  linearEasing(current: number, duration: number): number { return current / duration; }
-  easeInOutEasing(current: number, duration: number): number { return current / duration; }
-  calculateAnimationHeight(): number { return 0; }
+  getTheme(): number {
+    return 0;
+  }
+  setTheme(): void {
+    /* no-op */
+  }
+  resolveTheme(systemPrefersDark: number): number {
+    return systemPrefersDark ? 1 : 0;
+  }
+  getLastErrorCode(): number {
+    return 0;
+  }
+  getLastErrorDetails(): number {
+    return 0;
+  }
+  recordError(): void {
+    /* no-op */
+  }
+  clearError(): void {
+    /* no-op */
+  }
+  linearEasing(current: number, duration: number): number {
+    return current / duration;
+  }
+  easeInOutEasing(current: number, duration: number): number {
+    return current / duration;
+  }
+  calculateAnimationHeight(): number {
+    return 0;
+  }
 }
 
 /**
@@ -73,7 +93,10 @@ export async function initializeWasmModule(): Promise<GreenovaWasmModule> {
   }
 
   try {
-    const wasmPath = new URL('/static/as/build/optimized.wasm', window.location.origin).href;
+    const wasmPath = new URL(
+      '/static/as/build/optimized.wasm',
+      window.location.origin
+    ).href;
     const response = await fetchWithRetry(wasmPath);
 
     if (!response.ok) {
@@ -87,7 +110,7 @@ export async function initializeWasmModule(): Promise<GreenovaWasmModule> {
 
     const memory = new WebAssembly.Memory({
       initial: 2,
-      maximum: 10
+      maximum: 10,
     });
 
     const { instance } = await WebAssembly.instantiate(buffer, {
@@ -99,13 +122,15 @@ export async function initializeWasmModule(): Promise<GreenovaWasmModule> {
           lineNumber: number,
           columnNumber: number
         ) => {
-          console.error(
-            'WASM module aborted:',
-            { message, fileName, lineNumber, columnNumber }
-          );
+          console.error('WASM module aborted:', {
+            message,
+            fileName,
+            lineNumber,
+            columnNumber,
+          });
           throw new Error('WASM module aborted');
-        }
-      }
+        },
+      },
     });
 
     if (!instance?.exports) {
@@ -136,7 +161,7 @@ async function fetchWithRetry(
     } catch (error) {
       lastError = error as Error;
       if (i === retries - 1) break;
-      await new Promise(resolve => setTimeout(resolve, backoff * (i + 1)));
+      await new Promise((resolve) => setTimeout(resolve, backoff * (i + 1)));
     }
   }
 

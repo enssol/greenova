@@ -12,6 +12,10 @@ tools:
   - file_search
   - read_file
   - insert_edit_into_file
+  - context7
+  - json
+  - git
+  - sequential-thinking
 ---
 
 <!-- filepath: /workspaces/greenova/.github/prompts/promp-generation.prompt.md -->

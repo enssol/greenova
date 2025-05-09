@@ -50,19 +50,22 @@ export class ErrorHandler {
         message: event.error?.message || 'Unknown error',
         source: event.filename || 'unknown',
         lineno: event.lineno,
-        stack: event.error?.stack
+        stack: event.error?.stack,
       });
       return true;
     });
 
     // Promise rejection handler for unhandled promise rejections
-    window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
-      this.handleError({
-        type: 'promise',
-        message: event.reason?.message || 'Unhandled promise rejection',
-        stack: event.reason?.stack
-      });
-    });
+    window.addEventListener(
+      'unhandledrejection',
+      (event: PromiseRejectionEvent) => {
+        this.handleError({
+          type: 'promise',
+          message: event.reason?.message || 'Unhandled promise rejection',
+          stack: event.reason?.stack,
+        });
+      }
+    );
 
     // HTMX specific error handler for request failures
     document.body.addEventListener('htmx:responseError', (event: Event) => {
@@ -73,7 +76,7 @@ export class ErrorHandler {
         type: 'htmx',
         status: response.status,
         url: htmxEvent.detail.requestConfig.path,
-        message: `HTMX request failed with status ${response.status}`
+        message: `HTMX request failed with status ${response.status}`,
       });
 
       // For 5xx errors, show a user-friendly message in the target
@@ -101,17 +104,17 @@ export class ErrorHandler {
     // Record error in WASM module
     this.wasmModule.recordError(
       this.wasmModule.ERROR_GENERAL,
-      errorInfo.status as number || 0
+      (errorInfo.status as number) || 0
     );
 
     // Create a standardized error object
     const errorData: ErrorDetail = {
-      message: errorInfo.message as string || 'Unknown error',
-      type: errorInfo.type as string || 'general',
+      message: (errorInfo.message as string) || 'Unknown error',
+      type: (errorInfo.type as string) || 'general',
       url: window.location.href,
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
-      ...errorInfo
+      ...errorInfo,
     };
 
     // If we have a viable error and are in production mode, send to server
@@ -128,7 +131,7 @@ export class ErrorHandler {
     // Use a simple fetch with keep-alive: false to ensure error reporting
     // doesn't hang if the page is being unloaded
     const blob = new Blob([JSON.stringify(errorData)], {
-      type: 'application/json'
+      type: 'application/json',
     });
 
     // Only attempt to send if navigator.sendBeacon is available
@@ -142,9 +145,9 @@ export class ErrorHandler {
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRFToken': this.getCSRFToken()
+          'X-CSRFToken': this.getCSRFToken(),
         },
-        keepalive: true
+        keepalive: true,
       }).catch(() => {
         // Silent catch - we don't want errors in error reporting
       });
@@ -179,12 +182,15 @@ export class ErrorHandler {
    * @param error Error object or message
    * @param context Additional context information
    */
-  public reportError(error: Error | string, context: Record<string, unknown> = {}): void {
+  public reportError(
+    error: Error | string,
+    context: Record<string, unknown> = {}
+  ): void {
     this.handleError({
       type: 'manual',
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : null,
-      context: context
+      context: context,
     });
   }
 }

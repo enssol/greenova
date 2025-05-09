@@ -67,29 +67,6 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
-    "snyk": {
-      "type": "stdio",
-      "command": "snyk",
-      "args": ["mcp", "-t", "stdio", "--experimental"],
-      "env": {
-        "SNYK_TOKEN": "${env:SNYK_TOKEN}"
-      }
-    },
-    "calculator": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["mcp-server-calculator"]
-    },
-    "mcp-server-ds": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["mcp-server-ds"]
-    },
-    "mcp-pandoc": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["mcp-pandoc"]
-    },
     "playwright": {
       "type": "stdio",
       "command": "npx",

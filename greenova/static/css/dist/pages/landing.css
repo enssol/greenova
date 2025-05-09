@@ -7,6 +7,12 @@
  * The styling focuses on creating a modern, engaging, and accessible experience.
  */
 
+/* Base styles that work without JavaScript */
+:root {
+  --greenova-content-z-index: 2;
+  --greenova-header-z-index: 10;
+}
+
 /* Hero section styling */
 .hero-section {
   position: relative;
@@ -14,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   background: linear-gradient(
     135deg,
     var(--greenova-background-primary) 0%,
@@ -22,13 +28,19 @@
   );
   padding: calc(var(--greenova-padding-large) * 2)
     var(--greenova-padding-large);
+  opacity: 1;
+  visibility: visible;
 }
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: var(--greenova-content-z-index);
   max-width: 900px;
   text-align: center;
+}
+
+/* Progressive enhancement - animations only with JS */
+.js-enabled .hero-content {
   animation: fadeSlideUp 0.8s ease-out;
 }
 
@@ -38,6 +50,8 @@
   margin-bottom: 1.5rem;
   line-height: 1.2;
   font-weight: 700;
+  opacity: 1;
+  visibility: visible;
 }
 
 .hero-subtitle {
@@ -47,6 +61,103 @@
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* No-JS fallbacks */
+body:not(.js-enabled) .fade-in,
+body:not(.js-enabled) .slide-up,
+body:not(.js-enabled) [data-scroll],
+body:not(.js-enabled) [data-gsap] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  animation: none !important;
+}
+
+/* CSS Custom Properties */
+:root {
+  --greenova-content-z-index: 2;
+  --greenova-header-z-index: 10;
+}
+
+/* Hero section styling */
+.hero-section {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  background: linear-gradient(
+    135deg,
+    var(--greenova-background-primary) 0%,
+    var(--greenova-background-secondary) 100%
+  );
+  padding: calc(var(--greenova-padding-large) * 2)
+    var(--greenova-padding-large);
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero-content {
+  position: relative;
+  z-index: var(--greenova-content-z-index);
+  max-width: 900px;
+  text-align: center;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Progressive enhancement - animations only with JS */
+.js-enabled .hero-content {
+  animation: fade-slide-up 0.8s ease-out;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--greenova-text-primary-dark);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--greenova-text-secondary-dark);
+  margin-bottom: 2.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* No-JS fallbacks */
+body:not(.js-enabled) .fade-in,
+body:not(.js-enabled) .slide-up,
+body:not(.js-enabled) [data-scroll],
+body:not(.js-enabled) [data-gsap] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  animation: none !important;
+}
+
+/* Animations */
+@keyframes fade-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-cta {

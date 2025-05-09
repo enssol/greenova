@@ -34,7 +34,7 @@
                  {% endblock meta_description %}" />
   <meta name="htmx-config"
         content='{ "useTemplateFragments": true, "historyCacheSize": 10, "refreshOnHistoryMiss": true, "defaultSettleDelay": 20, "timeout": 10000, "wsReconnectDelay": 2000 }' />
-{% endblock %}
+{% endblock meta %}
 
 {% block title %}
   {% block page_title %}
@@ -46,24 +46,31 @@
   <!-- Core dependencies -->
   <script src="{% static 'ts/dist/helper.bundle.js' %}" type="module"></script>
   <script src="{% static 'ts/dist/wasm-loader.bundle.js' %}" type="module"></script>
-  <script src="{% static 'ts/dist/theme-manager.bundle.js' %}" type="module"></script>
   <script src="{% static 'ts/dist/error-handler.bundle.js' %}" type="module"></script>
   <script src="{% static 'ts/dist/foldable.bundle.js' %}" type="module"></script>
   <script src="{% static 'ts/dist/app-modules.bundle.js' %}" type="module"></script>
 
+  <!-- GSAP Animation Framework -->
+  <script src="{% static 'js/vendors/gsap/gsap.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/gsap/ScrollTrigger.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/gsap/ScrollSmoother.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/gsap/Flip.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/gsap/MorphSVGPlugin.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/gsap/SplitText.min.js' %}" defer></script>
+
   <!-- HTMX -->
-  <script src="{% static 'js/vendor/htmx/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/htmx/htmx.min.js' %}" defer></script>
 {% django_htmx_script %}
 
   <!-- HTMX Extensions -->
-  <script src="{% static 'js/vendor/htmx/ext/head-support.min.js' %}" defer></script>
-  <script src="{% static 'js/vendor/htmx/ext/loading-states.min.js' %}" defer></script>
-  <script src="{% static 'js/vendor/htmx/ext/class-tools.min.js' %}" defer></script>
-  <script src="{% static 'js/vendor/htmx/ext/path-deps.min.js' %}" defer></script>
-{% endblock %}
+  <script src="{% static 'js/vendors/htmx/ext/head-support.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/htmx/ext/loading-states.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/htmx/ext/class-tools.min.js' %}" defer></script>
+  <script src="{% static 'js/vendors/htmx/ext/path-deps.min.js' %}" defer></script>
 
-{% block extra_css %}
-{% endblock extra_css %}
+  <!-- Hyperscript for client-side interactivity -->
+  <script src="{% static 'js/vendors/_hyperscript.min.js' %}" defer></script>
+{% endblock head_scripts %}
 
 {% block extra_head %}
   {{ block.super }}
@@ -76,64 +83,69 @@
   hx-swap="innerHTML transition:true"
   hx-indicator="#htmx-indicator"
   data-theme="{{ request.session.theme|default:'light' }}"
-{% endblock %}
+{% endblock body_attrs %}
 
 {% block body %}
-  <!-- Skip to main content link for accessibility -->
-  <a class="skip-link" href="#main-content">Skip to content</a>
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Header -->
-  <header role="banner">
-{% include "layouts/_header.html" %}
-  </header>
+  <!-- Wrapper for smooth scrolling -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <!-- Header -->
+      <header role="banner">
+{% include "components/_header.html" %}
+      </header>
 
-  <!-- Main content -->
-  <main id="main-content" role="main" hx-history-elt>
-    {% block content %}
-    {% endblock %}
-  </main>
+      <!-- Main content area -->
+      <main id="main-content" role="main" hx-history-elt>
+        {% block content %}
+        {% endblock content %}
+      </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-{% include "layouts/_footer.html" %}
-  </footer>
-
-  <!-- Loading indicator -->
-  <div id="htmx-indicator" class="htmx-indicator" aria-hidden="true">
-    <div class="spinner">
+      <!-- Footer -->
+{% include "components/_footer.html" %}
     </div>
   </div>
 
+
+  <!-- Loading indicator -->
+  <div id="htmx-indicator" class="htmx-indicator" aria-hidden="true">
+    <div class="loading-spinner" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Common scripts -->
+  <script src="{% static 'ts/dist/theme-manager.bundle.js' %}" defer></script>
+  {% block body_scripts %}
+  {% endblock body_scripts %}
+
   {% block modal %}
-  {% endblock %}
-{% endblock %}
+  {% endblock modal %}
+{% endblock body %}
 
 {% block body_end %}
   <!-- Initialize theme -->
-  <script type="module">
-    import { initializeWasmModule } from "{% static 'ts/dist/wasm-loader.bundle.js' %}";
-    import { ThemeManager } from "{% static 'ts/dist/theme-manager.bundle.js' %}";
-
-    async function initTheme() {
-      try {
-        const wasmModule = await initializeWasmModule();
-        const themeManager = new ThemeManager(wasmModule);
-        themeManager.init();
-
-        // Listen for HTMX events
-        document.body.addEventListener('htmx:afterSettle', () => {
-          themeManager.applyTheme(themeManager.getCurrentTheme());
-        });
-      } catch (error) {
-        console.warn('Theme initialization failed:', error);
+  <script>
+    (function() {
+      function initTheme() {
+        if (window.Greenova && window.Greenova['theme-manager'] && window.Greenova['theme-manager'].ThemeManager) {
+          const ThemeManager = window.Greenova['theme-manager'].ThemeManager;
+          if (window.Greenova && window.Greenova['wasm-loader'] && window.Greenova['wasm-loader'].initializeWasmModule) {
+            window.Greenova['wasm-loader'].initializeWasmModule().then(function(wasmModule) {
+              const themeManager = new ThemeManager(wasmModule);
+              themeManager.init();
+            });
+          } else {
+            const themeManager = new ThemeManager();
+            themeManager.init();
+          }
+        } else {
+          setTimeout(initTheme, 50);
+        }
       }
-    }
-
-    // Initialize as soon as modules are loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTheme);
-    } else {
       initTheme();
-    }
+    })();
   </script>
-{% endblock %}
+{% endblock body_end %}

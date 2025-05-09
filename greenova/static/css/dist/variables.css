@@ -6,230 +6,50 @@
 /* Greenova CSS Variables - Design System Tokens */
 
 :root {
-  /* Color System - Environmental Theme */
+  /* Primary Colours (strictly from project palette) */
+  --greenova-primary-green: #7fb04f; /* Used for primary buttons, headers, highlights */
+  --greenova-primary-orange: #ec7a32; /* Used for warnings, alerts, accents */
+  --greenova-primary-blue: #30aee4; /* Used for links, info, secondary highlights */
 
-  /* Primary Color Palette */
-  --color-green-primary: #7fb04f; /* Main brand green */
-  --color-orange-primary: #ec7a32; /* Main brand orange */
-  --color-blue-primary: #30aee4; /* Main brand blue */
+  /* Secondary Colours */
+  --greenova-secondary-dark-gray: #58595b; /* Text, borders, backgrounds */
+  --greenova-secondary-olive-green: #526827; /* Subtle highlights, secondary buttons */
+  --greenova-secondary-rust-orange: #cc6114; /* Critical alerts, call-to-action */
+  --greenova-secondary-teal-blue: #146890; /* Secondary links, info accents */
 
-  /* Secondary Color Palette */
-  --color-gray-primary: #58595b; /* Dark gray */
-  --color-green-dark: #526827; /* Olive green */
-  --color-orange-dark: #cc6114; /* Rust orange */
-  --color-blue-dark: #146890; /* Teal blue */
+  /* Alias for legacy/compatibility with previous tokens */
+  --greenova-green-primary: var(--greenova-primary-green);
+  --greenova-green-secondary: var(--greenova-secondary-olive-green);
+  --greenova-green-tertiary: var(--greenova-secondary-dark-gray);
+  --greenova-beige-primary: #e5ded0;
+  --greenova-beige-secondary: #ccbdac;
+  --greenova-background-primary: #e8ebe4;
+  --greenova-background-secondary: #e2e7dd;
+  --greenova-text-primary-dark: #000;
+  --greenova-text-secondary-dark: #303030;
+  --greenova-text-tertiary-dark: #b3b3b3;
+  --greenova-text-primary-light: #fff;
 
-  /* Extended Green Palette */
-  --color-green-light: #a3c97a; /* Light green */
-  --color-green-lighter: #d8e8c5; /* Extra light green */
-  --color-green-olive: var(
-    --color-green-dark
-  ); /* Olive green - normalized to match secondary palette */
+  /* Notification Colours */
+  --greenova-notif-primary-high: #ff1f1f;
+  --greenova-notif-secondary-high: #ffb6b6;
+  --greenova-notif-primary-mid: #fae100;
+  --greenova-notif-secondary-mid: #ffef9c;
+  --greenova-notif-primary-low: #2fc709;
+  --greenova-notif-secondary-low: #b1e5a4;
 
-  /* Extended Blue Palette */
-  --color-blue-light: #69c5ed; /* Light blue */
-  --color-blue-lighter: #d0e9f7; /* Extra light blue */
-  --color-blue-deep: #0a4d6e; /* Deep blue */
+  /* Data Colours */
+  --greenova-data-primary: #095256;
+  --greenova-data-secondary: #477d80;
+  --greenova-data-tertiary: #659395;
 
-  /* Extended Orange Palette */
-  --color-orange-light: #f2a574; /* Light orange */
-  --color-orange-lighter: #fce3d4; /* Extra light orange */
-  --color-orange-rust: var(
-    --color-orange-dark
-  ); /* Rust orange - normalized to match secondary palette */
-
-  /* Neutral Colors */
-  --color-neutral-100: #fafafa;
-  --color-neutral-200: #f0f0f0;
-  --color-neutral-300: #e0e0e0;
-  --color-neutral-400: #c0c0c0;
-  --color-neutral-500: #909090;
-  --color-neutral-600: #606060;
-  --color-neutral-700: #404040;
-  --color-neutral-800: #202020;
-  --color-neutral-900: #101010;
-
-  /* Notification Colors */
-  --color-success: #28a745;
-  --color-info: #17a2b8;
-  --color-warning: #ffc107;
-  --color-danger: #dc3545;
-
-  /* Greenova Notification System */
-  --greenova-notif-primary-low: #28a745; /* Low risk - Green */
-  --greenova-notif-primary-mid: #ffa000; /* Medium risk - Amber */
-  --greenova-notif-primary-high: #ff0000; /* High risk - Red */
-  --greenova-notif-secondary-low: #90caf9; /* Low importance - Light blue */
-  --greenova-notif-secondary-mid: #f4c65a; /* Medium importance - Gold */
-  --greenova-notif-secondary-high: #ff9e80; /* High importance - Light red */
-
-  /* Backgrounds */
-  --greenova-bg-primary: var(--color-neutral-100);
-  --greenova-bg-secondary: #ffffff;
-  --greenova-bg-tertiary: var(--color-neutral-200);
-  --greenova-bg-accent: var(--color-green-lighter);
-  --greenova-bg-dashboard: linear-gradient(145deg, #fdfffa, #f5f9ed);
-  --greenova-bg-card: #ffffff;
-  --greenova-bg-sidebar: #ffffff;
-  --greenova-bg-sidebar-active: var(--color-green-lighter);
-
-  /* Text */
-  --greenova-text-primary: var(--color-neutral-900);
-  --greenova-text-secondary: var(--color-neutral-700);
-  --greenova-text-tertiary: var(--color-neutral-600);
-  --greenova-text-muted: var(--color-neutral-500);
-  --greenova-text-light: #ffffff;
-  --greenova-text-link: var(--color-blue-primary);
-  --greenova-text-link-hover: var(--color-blue-dark);
-
-  /* Typography */
-  --greenova-font-family-base:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --greenova-font-family-headings:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --greenova-font-family-monospace:
-    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-
-  --greenova-font-size-base: 1rem; /* 16px */
-  --greenova-font-size-xs: 0.75rem; /* 12px */
-  --greenova-font-size-sm: 0.875rem; /* 14px */
-  --greenova-font-size-lg: 1.125rem; /* 18px */
-  --greenova-font-size-xl: 1.25rem; /* 20px */
-  --greenova-font-size-2xl: 1.5rem; /* 24px */
-  --greenova-font-size-3xl: 1.875rem; /* 30px */
-  --greenova-font-size-4xl: 2.25rem; /* 36px */
-  --greenova-font-size-5xl: 3rem; /* 48px */
-
-  --greenova-font-weight-light: 300;
-  --greenova-font-weight-normal: 400;
-  --greenova-font-weight-medium: 500;
-  --greenova-font-weight-semibold: 600;
-  --greenova-font-weight-bold: 700;
-
-  --greenova-line-height-none: 1;
-  --greenova-line-height-tight: 1.25;
-  --greenova-line-height-snug: 1.375;
-  --greenova-line-height-normal: 1.5;
-  --greenova-line-height-relaxed: 1.625;
-  --greenova-line-height-loose: 2;
-
-  /* Spacing */
-  --greenova-spacing-0: 0;
-  --greenova-spacing-1: 0.25rem; /* 4px */
-  --greenova-spacing-2: 0.5rem; /* 8px */
-  --greenova-spacing-3: 0.75rem; /* 12px */
-  --greenova-spacing-4: 1rem; /* 16px */
-  --greenova-spacing-5: 1.25rem; /* 20px */
-  --greenova-spacing-6: 1.5rem; /* 24px */
-  --greenova-spacing-8: 2rem; /* 32px */
-  --greenova-spacing-10: 2.5rem; /* 40px */
-  --greenova-spacing-12: 3rem; /* 48px */
-  --greenova-spacing-16: 4rem; /* 64px */
-  --greenova-spacing-20: 5rem; /* 80px */
-  --greenova-spacing-24: 6rem; /* 96px */
-  --greenova-spacing-32: 8rem; /* 128px */
-
-  /* Borders */
-  --greenova-border-radius-none: 0;
-  --greenova-border-radius-small: 0.125rem; /* 2px */
-  --greenova-border-radius: 0.25rem; /* 4px */
-  --greenova-border-radius-large: 0.5rem; /* 8px */
-  --greenova-border-radius-xl: 1rem; /* 16px */
-  --greenova-border-radius-full: 9999px;
-
-  --greenova-border-width: 1px;
-  --greenova-border-width-0: 0;
-  --greenova-border-width-2: 2px;
-  --greenova-border-width-4: 4px;
-  --greenova-border-width-8: 8px;
-
-  --greenova-border-color: var(--color-neutral-300);
-  --greenova-border-color-focus: var(--color-green-primary);
-
-  /* Shadows */
-  --greenova-shadow-small: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --greenova-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --greenova-shadow-medium:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --greenova-shadow-large:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --greenova-shadow-xl:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --greenova-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-
-  /* Z-index */
-  --greenova-z-negative: -1;
-  --greenova-z-0: 0;
-  --greenova-z-10: 10;
-  --greenova-z-20: 20;
-  --greenova-z-30: 30;
-  --greenova-z-40: 40;
-  --greenova-z-50: 50;
-  --greenova-z-fixed: 100;
-  --greenova-z-modal: 1000;
-  --greenova-z-popover: 1050;
-  --greenova-z-tooltip: 1100;
-
-  /* Transitions */
-  --greenova-transition-fast: 150ms;
-  --greenova-transition-normal: 300ms;
-  --greenova-transition-slow: 500ms;
-  --greenova-transition-function: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Component Specific */
-
-  /* Button */
-  --greenova-btn-padding-y: 0.5rem;
-  --greenova-btn-padding-x: 1rem;
-  --greenova-btn-line-height: 1.5;
-  --greenova-btn-font-weight: 500;
-  --greenova-btn-border-width: 1px;
-  --greenova-btn-font-size: var(--greenova-font-size-base);
-
-  /* Card */
-  --greenova-card-bg: var(--greenova-bg-card);
-  --greenova-card-border-color: var(--color-neutral-200);
-  --greenova-card-border-radius: var(--greenova-border-radius);
-  --greenova-card-shadow: var(--greenova-shadow);
-  --greenova-card-hover-shadow: var(--greenova-shadow-medium);
-
-  /* Form */
-  --greenova-input-bg: #ffffff;
-  --greenova-input-disabled-bg: var(--color-neutral-200);
-  --greenova-input-color: var(--greenova-text-primary);
-  --greenova-input-border-color: var(--color-neutral-400);
-  --greenova-input-border-width: 1px;
-  --greenova-input-border-radius: var(--greenova-border-radius);
-  --greenova-input-padding-x: 0.75rem;
-  --greenova-input-padding-y: 0.5rem;
-  --greenova-input-focus-border-color: var(--color-green-primary);
-  --greenova-input-focus-box-shadow: 0 0 0 0.2rem rgba(127, 176, 79, 0.25);
-  --greenova-input-placeholder-color: var(--color-neutral-500);
-  --greenova-input-font-size: var(--greenova-font-size-base);
-
-  /* Table */
-  --greenova-table-bg: transparent;
-  --greenova-table-accent-bg: var(--color-neutral-100);
-  --greenova-table-hover-bg: var(--color-green-lighter);
-  --greenova-table-border-color: var(--color-neutral-300);
-  --greenova-table-head-bg: var(--color-neutral-200);
-  --greenova-table-head-color: var(--greenova-text-primary);
-
-  /* Navigation */
-  --greenova-nav-link-color: var(--greenova-text-secondary);
-  --greenova-nav-link-hover-color: var(--color-green-dark);
-  --greenova-nav-link-active-color: var(--color-green-dark);
-  --greenova-nav-link-active-bg: var(--color-green-lighter);
-
-  /* Charts */
-  --greenova-chart-low-risk: var(--greenova-notif-primary-low);
-  --greenova-chart-medium-risk: var(--greenova-notif-primary-mid);
-  --greenova-chart-high-risk: var(--greenova-notif-primary-high);
-  --greenova-chart-grid-line-color: var(--color-neutral-300);
-  --greenova-chart-label-color: var(--greenova-text-secondary);
-  --greenova-chart-tooltip-bg: var(--greenova-bg-secondary);
-  --greenova-chart-tooltip-border-color: var(--color-neutral-300);
+  /* Spacing, border, and shadow tokens */
+  --greenova-spacing: 1rem;
+  --greenova-spacing-small: 0.5rem;
+  --greenova-spacing-large: 2rem;
+  --greenova-padding: 1rem;
+  --greenova-padding-small: 0.5rem;
+  --greenova-padding-large: 2rem;
+  --greenova-border-radius: 0.5rem;
+  --greenova-shadow: 0 2px 8px rgb(0 0 0 / 6%);
 }

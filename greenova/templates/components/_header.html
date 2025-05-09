@@ -1,13 +1,18 @@
+{% load core_tags %}
 <nav class="navbar">
 
   <ul class="navbar-nav">
     {% if request.user.is_authenticated %}
       <!-- Left side navigation -->
       <li class="navbar-nav-item">
-      {% include "layouts/_breadcrumbs.html" %}
-    </li>
+{% include "layouts/_breadcrumbs.html" %}
+      </li>
       <li class="navbar-nav-item">
         <a href="{% url 'users:profile' %}" class="navbar-nav-link">Profile</a>
+      </li>
+      <!-- Theme switcher for all users -->
+      <li class="navbar-nav-item navbar-right" aria-label="Theme switcher">
+{% theme_switcher %}
       </li>
       <!-- Right side navigation -->
       <li class="navbar-nav-item navbar-right">
@@ -26,6 +31,10 @@
            hx-include="[name='csrfmiddlewaretoken']">Logout</a>
       </li>
     {% else %}
+      <!-- Theme switcher for anonymous users -->
+      <li class="navbar-nav-item navbar-right" aria-label="Theme switcher">
+{% theme_switcher %}
+      </li>
       <li class="navbar-nav-item navbar-right">
         <a href="{% url 'account_signup' %}" class="navbar-nav-link">Register</a>
       </li>

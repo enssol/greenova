@@ -19,11 +19,16 @@ interface ModuleInterface {
 class CoreModule implements ModuleInterface {
   setupGlobalEventListeners(): void {
     // Handle flash messages with auto-dismiss
-    const flashMessages = document.querySelectorAll('.message[data-auto-dismiss]');
-    flashMessages.forEach(message => {
+    const flashMessages = document.querySelectorAll(
+      '.message[data-auto-dismiss]'
+    );
+    flashMessages.forEach((message) => {
       setTimeout(() => {
         if (message instanceof HTMLElement && message.setAttribute) {
-          message.setAttribute('classes', 'add fade-out:0s, remove message:1s');
+          message.setAttribute(
+            'classes',
+            'add fade-out:0s, remove message:1s'
+          );
         }
       }, 5000); // 5 second delay before starting fade-out
     });
@@ -95,7 +100,9 @@ class ProjectsModule implements ModuleInterface {
   }
 
   restoreProjectSelection(): void {
-    const projectSelect = document.getElementById('project-select') as HTMLSelectElement;
+    const projectSelect = document.getElementById(
+      'project-select'
+    ) as HTMLSelectElement;
     const lastProjectId = sessionStorage.getItem('lastProjectId');
 
     if (projectSelect && lastProjectId) {
@@ -106,15 +113,22 @@ class ProjectsModule implements ModuleInterface {
   }
 
   updateAddObligationButton(): void {
-    const projectSelect = document.getElementById('project-select') as HTMLSelectElement;
-    const addObligationBtn = document.querySelector('.add-obligation-btn') as HTMLAnchorElement;
+    const projectSelect = document.getElementById(
+      'project-select'
+    ) as HTMLSelectElement;
+    const addObligationBtn = document.querySelector(
+      '.add-obligation-btn'
+    ) as HTMLAnchorElement;
 
     if (projectSelect && addObligationBtn) {
       const projectId = projectSelect.value;
       if (projectId) {
         const currentHref = addObligationBtn.getAttribute('href') || '';
         const baseUrl = currentHref.split('?')[0];
-        addObligationBtn.setAttribute('href', `${baseUrl}?project_id=${projectId}`);
+        addObligationBtn.setAttribute(
+          'href',
+          `${baseUrl}?project_id=${projectId}`
+        );
       }
     }
   }
@@ -167,14 +181,20 @@ class TablesModule implements ModuleInterface {
     this.setupTableScrolling();
 
     // Listen for new content that may contain tables
-    document.addEventListener('htmx:afterSettle', () => this.setupTableScrolling());
+    document.addEventListener('htmx:afterSettle', () =>
+      this.setupTableScrolling()
+    );
   }
 
   setupTableScrolling(): void {
     const tableContainers = document.querySelectorAll('.table-container');
-    tableContainers.forEach(container => {
-      const scrollArea = container.querySelector('.horizontal-scroll') as HTMLElement;
-      const scrollIndicator = container.querySelector('.scroll-indicator') as HTMLElement;
+    tableContainers.forEach((container) => {
+      const scrollArea = container.querySelector(
+        '.horizontal-scroll'
+      ) as HTMLElement;
+      const scrollIndicator = container.querySelector(
+        '.scroll-indicator'
+      ) as HTMLElement;
 
       // Create scroll indicator if it doesn't exist
       if (scrollArea && !scrollIndicator) {
@@ -188,7 +208,9 @@ class TablesModule implements ModuleInterface {
         container.appendChild(indicator);
 
         // Update scroll indicator on scroll
-        scrollArea.addEventListener('scroll', () => this.updateScrollIndicator(scrollArea, thumb));
+        scrollArea.addEventListener('scroll', () =>
+          this.updateScrollIndicator(scrollArea, thumb)
+        );
 
         // Initial update
         this.updateScrollIndicator(scrollArea, thumb);
@@ -205,7 +227,8 @@ class TablesModule implements ModuleInterface {
     const scrollLeft = scrollArea.scrollLeft;
 
     const thumbWidth = (viewportWidth / scrollWidth) * 100;
-    const thumbPosition = (scrollLeft / (scrollWidth - viewportWidth)) * (100 - thumbWidth);
+    const thumbPosition =
+      (scrollLeft / (scrollWidth - viewportWidth)) * (100 - thumbWidth);
 
     // Update thumb style
     thumb.style.width = `${thumbWidth}%`;
@@ -218,20 +241,20 @@ class TablesModule implements ModuleInterface {
     // Extract headers
     const rows = Array.from(table.querySelectorAll('tr'));
     const headers = Array.from(rows[0].querySelectorAll('th')).map(
-      cell => `"${cell.textContent?.trim().replace(/"/g, '""') || ''}"`
+      (cell) => `"${cell.textContent?.trim().replace(/"/g, '""') || ''}"`
     );
 
     // Extract data rows
-    const data = rows.slice(1).map(row => {
+    const data = rows.slice(1).map((row) => {
       return Array.from(row.querySelectorAll('td')).map(
-        cell => `"${cell.textContent?.trim().replace(/"/g, '""') || ''}"`
+        (cell) => `"${cell.textContent?.trim().replace(/"/g, '""') || ''}"`
       );
     });
 
     // Combine headers and data
     const csvContent = [
       headers.join(','),
-      ...data.map(row => row.join(','))
+      ...data.map((row) => row.join(',')),
     ].join('\n');
 
     // Create download link
@@ -262,7 +285,8 @@ class HtmxHandlersModule implements ModuleInterface {
       const htmxEvent = e as CustomEvent;
       const target = htmxEvent.detail.target as HTMLElement;
       if (target.matches('#obligations-container, #chart-container')) {
-        target.innerHTML = '<div class="notice" role="status" aria-busy="true">Loading...</div>';
+        target.innerHTML =
+          '<div class="notice" role="status" aria-busy="true">Loading...</div>';
       }
     });
 
@@ -280,7 +304,10 @@ class HtmxHandlersModule implements ModuleInterface {
     // Handle obligation status changes
     document.addEventListener('htmx:afterSettle', (e: Event) => {
       const htmxEvent = e as CustomEvent;
-      if (htmxEvent.detail.triggerSpec && htmxEvent.detail.triggerSpec.includes('obligation:statusChanged')) {
+      if (
+        htmxEvent.detail.triggerSpec &&
+        htmxEvent.detail.triggerSpec.includes('obligation:statusChanged')
+      ) {
         window.htmx.trigger('#chart-container', 'refreshCharts');
       }
     });
@@ -300,7 +327,11 @@ class HtmxHandlersModule implements ModuleInterface {
         const htmxEvent = e as CustomEvent;
 
         // Only handle successful POST/PUT/DELETE requests (mutations)
-        if (!htmxEvent.detail.successful || htmxEvent.detail.xhr.method === 'GET') return;
+        if (
+          !htmxEvent.detail.successful ||
+          htmxEvent.detail.xhr.method === 'GET'
+        )
+          return;
 
         const path = htmxEvent.detail.requestConfig.path;
         if (path && path.includes('/obligations/')) {
@@ -350,7 +381,7 @@ class FormsModule implements ModuleInterface {
     if (filterCount) {
       const activeFilters = Array.from(
         form.querySelectorAll('select, input[type="text"]')
-      ).filter(el => {
+      ).filter((el) => {
         const element = el as HTMLInputElement | HTMLSelectElement;
         return element.value && element.value !== '';
       }).length;
@@ -361,9 +392,11 @@ class FormsModule implements ModuleInterface {
   }
 
   removeFilter(type: string, value: string): void {
-    const select = document.querySelector(`select[name="${type}"]`) as HTMLSelectElement;
+    const select = document.querySelector(
+      `select[name="${type}"]`
+    ) as HTMLSelectElement;
     if (select) {
-      Array.from(select.options).forEach(option => {
+      Array.from(select.options).forEach((option) => {
         if (option.value === value) {
           option.selected = false;
         }
@@ -403,12 +436,17 @@ class DocumentActionsModule implements ModuleInterface {
     // Handle obligation link clicks
     document.addEventListener('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      if (target.matches('.obligation-link') || target.closest('.obligation-link')) {
+      if (
+        target.matches('.obligation-link') ||
+        target.closest('.obligation-link')
+      ) {
         // Show loading indicator
         document.body.classList.add('loading');
 
         // Store the current project ID in session storage
-        const projectId = document.querySelector<HTMLInputElement>('input[name="project_id"]')?.value;
+        const projectId = document.querySelector<HTMLInputElement>(
+          'input[name="project_id"]'
+        )?.value;
         if (projectId) {
           sessionStorage.setItem('lastProjectId', projectId);
         }

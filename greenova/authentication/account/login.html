@@ -19,7 +19,7 @@
 {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
 {% endelement %}
 {% url 'account_login' as login_url %}
-{% element form form=form method="post" action=login_url tags="entrance,login" %}
+{% element form form=form method="post" action=login_url tags="entrance,login" attrs="hx-boost=false" %}
 {% slot body %}
 {% csrf_token %}
 {% element fields form=form unlabeled=True %}
@@ -58,4 +58,4 @@
   {% if PASSKEY_LOGIN_ENABLED %}
 {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
   {% endif %}
-{% endblock %}
+{% endblock extra_body %}

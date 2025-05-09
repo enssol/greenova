@@ -46,19 +46,19 @@ export class Foldable {
       foldable: '[data-foldable]',
       trigger: '[data-foldable-trigger]',
       content: '[data-foldable-content]',
-      expanded: '[data-foldable-expanded="true"]'
+      expanded: '[data-foldable-expanded="true"]',
     };
 
     this.classes = {
       hidden: 'hidden',
       expanded: 'expanded',
       collapsed: 'collapsed',
-      animating: 'animating'
+      animating: 'animating',
     };
 
     this.attrs = {
       expanded: 'data-foldable-expanded',
-      animationDuration: 'data-animation-duration'
+      animationDuration: 'data-animation-duration',
     };
   }
 
@@ -88,7 +88,7 @@ export class Foldable {
    * @param elements Collection of foldable elements
    */
   private initElements(elements: NodeListOf<Element>): void {
-    elements.forEach(foldable => {
+    elements.forEach((foldable) => {
       // Skip if already initialized
       if (foldable.hasAttribute('data-foldable-initialized')) {
         return;
@@ -105,8 +105,9 @@ export class Foldable {
       }
 
       // Set initial state
-      const isExpanded = foldable.hasAttribute(this.attrs.expanded) &&
-                       foldable.getAttribute(this.attrs.expanded) === 'true';
+      const isExpanded =
+        foldable.hasAttribute(this.attrs.expanded) &&
+        foldable.getAttribute(this.attrs.expanded) === 'true';
 
       // Set ARIA attributes for accessibility
       trigger.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
@@ -133,8 +134,12 @@ export class Foldable {
    * @param foldable The foldable container element
    */
   private toggleFoldable(foldable: Element): void {
-    const trigger = foldable.querySelector(this.selectors.trigger) as HTMLElement;
-    const content = foldable.querySelector(this.selectors.content) as HTMLElement;
+    const trigger = foldable.querySelector(
+      this.selectors.trigger
+    ) as HTMLElement;
+    const content = foldable.querySelector(
+      this.selectors.content
+    ) as HTMLElement;
 
     // Don't toggle if currently animating
     if (content.classList.contains(this.classes.animating)) {
@@ -188,10 +193,12 @@ export class Foldable {
       foldable.setAttribute(this.attrs.expanded, 'false');
 
       // Dispatch custom event
-      foldable.dispatchEvent(new CustomEvent('foldable:collapsed', {
-        bubbles: true,
-        detail: { foldable }
-      }));
+      foldable.dispatchEvent(
+        new CustomEvent('foldable:collapsed', {
+          bubbles: true,
+          detail: { foldable },
+        })
+      );
     }, duration);
   }
 
@@ -235,10 +242,12 @@ export class Foldable {
       foldable.setAttribute(this.attrs.expanded, 'true');
 
       // Dispatch custom event
-      foldable.dispatchEvent(new CustomEvent('foldable:expanded', {
-        bubbles: true,
-        detail: { foldable }
-      }));
+      foldable.dispatchEvent(
+        new CustomEvent('foldable:expanded', {
+          bubbles: true,
+          detail: { foldable },
+        })
+      );
     }, easedDuration);
   }
 
@@ -279,7 +288,7 @@ export class Foldable {
 
     observer.observe(document.body, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
   }
 
@@ -310,7 +319,9 @@ export class Foldable {
   public expand(element: Element): void {
     const foldable = element.closest(this.selectors.foldable);
     if (foldable) {
-      const trigger = foldable.querySelector(this.selectors.trigger) as HTMLElement;
+      const trigger = foldable.querySelector(
+        this.selectors.trigger
+      ) as HTMLElement;
       if (trigger && trigger.getAttribute('aria-expanded') === 'false') {
         this.toggleFoldable(foldable);
       }
@@ -324,7 +335,9 @@ export class Foldable {
   public collapse(element: Element): void {
     const foldable = element.closest(this.selectors.foldable);
     if (foldable) {
-      const trigger = foldable.querySelector(this.selectors.trigger) as HTMLElement;
+      const trigger = foldable.querySelector(
+        this.selectors.trigger
+      ) as HTMLElement;
       if (trigger && trigger.getAttribute('aria-expanded') === 'true') {
         this.toggleFoldable(foldable);
       }

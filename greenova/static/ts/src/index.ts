@@ -41,8 +41,11 @@ async function initializeApp(): Promise<GreenovaApp | void> {
           console.log('Greenova application initialized');
 
           // Initialize all modules
-          Object.keys(app.modules).forEach(module => {
-            if (module !== 'core' && typeof app.modules[module]?.init === 'function') {
+          Object.keys(app.modules).forEach((module) => {
+            if (
+              module !== 'core' &&
+              typeof app.modules[module]?.init === 'function'
+            ) {
               try {
                 app.modules[module].init();
               } catch (err) {
@@ -69,12 +72,12 @@ async function initializeApp(): Promise<GreenovaApp | void> {
             link.id = id;
           }
           document.head.appendChild(link);
-        }
+        },
       },
       modules: new AppModules(),
       errorHandler: new ErrorHandler(wasmModule),
       foldable: new Foldable(wasmModule),
-      theme: new ThemeManager(wasmModule)
+      theme: new ThemeManager(wasmModule),
     };
 
     // Initialize the error handler first
@@ -98,11 +101,11 @@ async function initializeApp(): Promise<GreenovaApp | void> {
       '/static/js/modules/error-handler.js',
       '/static/js/modules/theme-init.js',
       '/static/js/modules/foldable.js',
-      '/static/js/app.js'
+      '/static/js/app.js',
     ];
 
     // Load the legacy JavaScript as fallback
-    legacyScripts.forEach(script => {
+    legacyScripts.forEach((script) => {
       const scriptEl = document.createElement('script');
       scriptEl.src = script;
       document.body.appendChild(scriptEl);
@@ -112,7 +115,7 @@ async function initializeApp(): Promise<GreenovaApp | void> {
 
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  initializeApp().catch(err => {
+  initializeApp().catch((err) => {
     console.error('Critical application initialization error:', err);
   });
 });

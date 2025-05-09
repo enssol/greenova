@@ -56,7 +56,23 @@
           applyTheme('auto');
         }
       });
+
+    // Listen for themeChanged event from hyperscript
+    document.addEventListener('themeChanged', function (e) {
+      const theme = e.detail?.theme;
+      if (!theme) return;
+      // Persist theme selection
+      window.localStorage.setItem(CONFIG.localStorageKey, theme);
+      applyTheme(theme);
+    });
   }
+
+  // Expose setTheme globally for hyperscript
+  window.setTheme = function (theme) {
+    if (!theme) return;
+    window.localStorage.setItem(CONFIG.localStorageKey, theme);
+    applyTheme(theme);
+  };
 
   // Execute immediately
   initTheme();

@@ -117,6 +117,7 @@ class DashboardHomeView(ProjectAwareDashboardMixin, TemplateView):
                     "error": None,
                     "user_roles": user_roles,
                     "show_feedback_link": True,
+                    "overdue_obligations_count": self.get_overdue_obligations_count(),
                     "active_obligations_count": self.get_active_obligations_count(),
                     "active_obligations_trend": self.get_obligations_trend(),
                     "upcoming_deadlines_count": self.get_upcoming_deadlines_count(),
@@ -129,6 +130,9 @@ class DashboardHomeView(ProjectAwareDashboardMixin, TemplateView):
             # Add chart data - this is handled by the ChartMixin parent class
             # but we can add additional charts specific to this view
             self.add_specific_charts(context)
+
+            # Add a flag to check if project selector should exist
+            context["project_selector_exists"] = self.get_projects().exists()
 
         except (AttributeError, ValueError) as e:
             logger.exception("Error in dashboard context: %s", e)
@@ -181,6 +185,19 @@ class DashboardHomeView(ProjectAwareDashboardMixin, TemplateView):
 
         return Obligation.objects.filter(
             status__in=["pending", "in_progress"], **query_filter
+        ).count()
+
+    def get_overdue_obligations_count(self) -> int:
+        """Get count of overdue obligations for the selected project."""
+        project_id = self.selected_project_id
+        query_filter = {}
+        if project_id:
+            query_filter["project_id"] = project_id
+        today = timezone.now().date()
+        return Obligation.objects.filter(
+            action_due_date__lt=today,
+            status__in=["pending", "in_progress"],
+            **query_filter,
         ).count()
 
     def get_obligations_trend(self) -> int:

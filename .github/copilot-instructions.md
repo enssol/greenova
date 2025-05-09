@@ -17,15 +17,35 @@ and manage obligations related to environmental regulations.
 
 ## Frontend Technologies
 
-- **CSS Framework**: Pico's Classless CSS (primary CSS framework) and Tailwind
-  CSS 4.1.5 (secondary CSS framework)
-- **Progressive Enhancement**:
-  - **Base Layer**: Server-side rendered Django templates
-  - **Enhancement Layer**: django-htmx 1.22.0 for AJAX interactions
-  - **Interaction Layer**: django-hyperscript 1.0.2 for simple client-side
-    behaviors
-  - **JavaScript Layer**: Only as last resort when other layers cannot fulfill
-    requirements
+- **Simplicity First**: Always choose the simplest effective solution
+- **Plain Text / HTML First**: Start with semantic HTML before adding
+  complexity
+- **Technology Priority Order**:
+
+1. **Restructured Text (RST)**: Use as the foundational layer for body, content
+   and messages for HTML.
+
+1. **HTML**: Utilize for semantic structure and markup. Do not apply inline
+   styles and scripts.
+
+1. **Protobuf3**: Primary implementation for data serialization.
+
+1. **Classless-CSS**: Apply minimal styling using Classless-PicoCSS as HTML.
+
+1. **django-hyperscript**: Primary implementation for client-side interactions.
+
+1. **django-htmx**: Secondary implementation for client-side interactions only
+   to complient django-hyperscript.
+
+1. **SASS/PostCSS**: Use for advanced styling needs when required.
+
+1. **TypeScript**: Introduce only when django-hyperscript and django-htmx
+   cannot meet the requirements. Use TypeScript for complex logic. Avoid using
+   TypeScript for simple interactions that can be handled by django-hyperscript
+   or django-htmx.
+
+1. **AssemblyScript**: Primary implementation for critical client-side
+   interactions and web assembly (WASM) implementations.
 
 ## Code Style and Organization
 
@@ -96,33 +116,35 @@ and standards. Additional resources such as the github, filesystem, JSON,
 context7, sqlite, git, fetch, sequential-thinking, and docker MCP servers have
 been activated and are available for use by GitHub Copilot.
 
-**Instructions**:
+**Documentation Lookup Instructions**:
 
-1. Identify and remove unnecessary or outdated files, code, or documentation
-   that no longer serves the project's objectives. Clearly define the task's
-   scope to focus only on relevant elements flagged in pre-commit checks.
-2. Organize project resources, including tools, code, and documentation, into a
-   logical structure. Ensure naming conventions and folder hierarchies are
-   consistent, making it easier to locate and work with files.
-3. Create stub files (.pyi files) for internal modules that don't have proper
-   type information.
-4. Add a py.typed marker file to indicate these modules have type information
-5. Refactor the code to address issues such as readability, maintainability,
-   and technical debt. Implement clean coding practices and resolve any flagged
-   issues in the pre-commit output, such as formatting or style violations.
-6. Use automated tools like bandit, autopep8, mypy, eslint, djlint,
-   markdownlint, ShellCheck, and pylint to enforce coding standards. Validate
-   compliance with the project's guidelines and ensure all pre-commit checks
-   pass without errors. Iterate running `pre-commit` to check for any remaining
-   issues after each change. Do not use the command
-   `pre-commit run --all-files`.
-7. Ensure that the code is well-documented, with clear explanations of
-   functions, classes, and modules. Use docstrings and comments to clarify
-   complex logic or important decisions made during development.
-8. Test the code thoroughly to ensure it works as intended and meets the
-   project's requirements. Write unit tests and integration tests as needed,
-   and ensure that all tests pass before finalizing the changes.
-9. Iterate until resolved.
+- When you need more context or details about any of the following external
+  libraries, frameworks, or tools, use the `fetch` MCP server or `context7` MCP
+  server to look up their official documentation:
+
+  - [GSAP Animation](https://gsap.com/docs/v3/)
+  - [PicoCSS Classless](https://picocss.com/docs/classless)
+  - [Hyperscript](https://hyperscript.org/docs/)
+  - [HTMX](https://htmx.org/docs/)
+  - [django-hyperscript](https://github.com/LucLor06/django-hyperscript#readme)
+  - [django-htmx](https://django-htmx.readthedocs.io/en/latest/)
+  - [AssemblyScript](https://www.assemblyscript.org/introduction.html)
+  - [Django](https://docs.djangoproject.com/en/5.2/)
+  - [Protobuf3](https://protobuf.dev/)
+  - [SQLite](https://www.sqlite.org/docs.html)
+  - [django-pb-model](https://pypi.org/project/django-pb-model/)
+  - [Matplotlib](https://matplotlib.org/stable/users/index)
+  - [django_matplotlib](https://github.com/scidam/django_matplotlib)
+  - [Plotly](https://plotly.com/python/)
+  - [Pandas](https://pandas.pydata.org/docs/)
+  - [NumPy](https://numpy.org/doc/stable/user/index.html#user)
+  - [django-csp](https://django-csp.readthedocs.io/en/latest/)
+  - [django-template-partials](https://github.com/carltongibson/django-template-partials?tab=readme-ov-file#basic-usage)
+  - [dj-all-auth](https://github.com/deviserops/dj-all-auth)
+  - [python-dotenv-vault](https://github.com/dotenv-org/python-dotenv-vault)
+
+- For project-specific configuration files and standards, always use
+  `use context7` to lookup documentation from the context7 MCP server.
 
 ## File Operations and Encoding
 
@@ -334,6 +356,15 @@ content %}
 
 Always use `use context7` to lookup documentation from the context7 MCP server.
 This provides access to all project-specific configuration files and standards.
+
+**External Documentation Lookup**: For any of the following external libraries
+or frameworks, use the `fetch` or `context7` MCP server to retrieve and
+reference their official documentation as needed:
+
+- GSAP Animation, PicoCSS Classless, Hyperscript, HTMX, django-hyperscript,
+  django-htmx, AssemblyScript, Django, Protobuf3, SQLite, django-pb-model,
+  Matplotlib, django_matplotlib, Plotly, Pandas, NumPy, django-csp,
+  django-template-partials, dj-all-auth, python-dotenv-vault.
 
 **Additional Resources**: The github, filesystem, JSON, context7, sqlite, git,
 fetch, sequential-thinking and docker MCP servers have been switched on and

@@ -28,23 +28,34 @@ function copyWasmFiles() {
 }
 
 // Run TypeScript compilation
+const projectPath = path.resolve(
+  __dirname,
+  '../greenova/static/ts/tsconfig.json'
+);
+console.log(`Using TypeScript config at: ${projectPath}`);
+
 exec(
-  'npx tsc --project ../greenova/static/ts/tsconfig.json',
+  `npx tsc --project "${projectPath}" --pretty`,
   {
     cwd: __dirname,
   },
   (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error: ${error.message}`);
-      process.exit(1);
+    if (stdout) {
+      console.log(`Compiler output: ${stdout}`);
     }
+
     if (stderr) {
       console.error(`Stderr: ${stderr}`);
-      process.exit(1);
     }
-    console.log(`Stdout: ${stdout}`);
 
-    // After successful TypeScript compilation, copy WASM files
-    copyWasmFiles();
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      console.error('TypeScript compilation failed. Check the errors above.');
+      process.exit(1);
+    } else {
+      console.log('TypeScript compilation completed successfully.');
+      // After successful TypeScript compilation, copy WASM files
+      copyWasmFiles();
+    }
   }
 );

@@ -3,6 +3,8 @@
 
 # Production server
 gunicorn>=23.0.0,<24.0.0
+uvicorn>=0.34.2,<0.35.0
+uvicorn-worker>=0.3.0,<0.4.0
 
 # Performance monitoring
 autopep8==2.0.4  # Required by django-silk,

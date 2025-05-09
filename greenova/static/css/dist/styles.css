@@ -1,5 +1,7 @@
 /* Non-critical styles that can be loaded after initial rendering */
 
+@import url('base/reset.css');
+
 /* Import PicoCSS framework */
 @import url('vendor/pico.classless.css');
 
@@ -10,6 +12,12 @@
 
 /* Import base styles */
 @import url('base/accessibility.css');
+@import url('base/typography.css');
+@import url('base/variables.css');
+
+/* Import theme styles */
+@import url('themes/light.css');
+@import url('themes/dark.css');
 
 /* Import utility styles */
 @import url('utils/compat.css');
@@ -18,11 +26,14 @@
 @import url('utils/spacing.css');
 @import url('utils/utilities.css');
 
-
 /* Import layout styles */
+@import url('layouts/main.css');
+@import url('layouts/dashboard.css');
 @import url('layouts/footer.css');
 @import url('layouts/desktop.css');
+@import url('layouts/sidebar.css');
 @import url('layouts/web.css');
+@import url('layouts/grid.css');
 
 /* Import component styles */
 @import url('components/animations.css');
@@ -33,7 +44,9 @@
 @import url('components/chat.css');
 @import url('components/dropdown.css');
 @import url('components/filter.css');
+@import url('components/footer.css');
 @import url('components/form.css');
+@import url('components/hero.css');
 @import url('components/list.css');
 @import url('components/loader.css');
 @import url('components/modal.css');
@@ -42,6 +55,7 @@
 @import url('components/pagination.css');
 @import url('components/table.css');
 @import url('components/widgets.css');
+@import url('components/stats-section.css');
 
 /* Import page-specific styles */
 @import url('pages/company.css');
@@ -49,11 +63,15 @@
 @import url('pages/error.css');
 @import url('pages/feedback.css');
 @import url('pages/landing.css');
+@import url('pages/landing_enhanced.css');
 @import url('pages/login.css');
 @import url('pages/mechanism.css');
 @import url('pages/procedure.css');
 @import url('pages/registration.css');
 @import url('pages/user-profile.css');
+
+/* Import PostCSS secondary styles */
+@import url('non-critical-styles.css');
 
 /* Enhanced components */
 .card {
@@ -69,7 +87,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--greenova-spacing);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
   padding-bottom: var(--greenova-spacing-small);
 }
 
@@ -85,7 +103,7 @@
 }
 
 .card-footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgb(0 0 0 / 10%);
   margin-top: var(--greenova-spacing);
   padding-top: var(--greenova-spacing-small);
   display: flex;
@@ -154,7 +172,7 @@
 
 .form-control:focus {
   border-color: var(--color-green-primary);
-  box-shadow: 0 0 0 0.2rem rgba(127, 176, 79, 0.25);
+  box-shadow: 0 0 0 0.2rem rgb(127 176 79 / 25%);
   outline: 0;
 }
 
@@ -172,7 +190,7 @@
 .table th,
 .table td {
   padding: 0.75rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
 }
 
 .table th {
@@ -182,11 +200,11 @@
 }
 
 .table tbody tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgb(0 0 0 / 2%);
 }
 
 .table tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgb(0 0 0 / 4%);
 }
 
 /* Status indicators */

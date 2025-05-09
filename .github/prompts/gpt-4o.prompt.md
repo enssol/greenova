@@ -1,112 +1,160 @@
 ---
-description:
-  Automated issue resolution for logout, landing page, and JS errors in
-  Greenova.
+
+description: Add a card to the left of Active Obligations on the dashboard that displays the count of overdue obligations in the Greenova Django app.
 mode: agent
 
 tools:
-  - filesystem
-  - sequential-thinking
-  - json
+
+- github
+- file_search
+- read_file
+- insert_edit_into_file
+- semantic_search
+- get_errors
+- sequential-thinking
+- Context7
+- filesystem
+
 ---
 
-# GitHub Copilot Prompt Template for Automated Issue Resolution
+# GitHub Copilot Prompt Template for Overdue Obligations Card Feature
 
 ## Goal
 
-Fix the following issues:
-
-1. Logging out from the `/dashboard/` redirects to `/landing/` but displays a
-   blank page until the user refreshes the page.
-2. Reloading the `/landing/` page causes it to flash briefly before
-   disappearing.
-3. New JavaScript errors:
-   - `Uncaught SyntaxError: Unexpected token ')'` in `theme-manager.js` and
-     `wasm-loader.js`
-   - `Uncaught SyntaxError: Unexpected token '{'` in `theme-manager.js`
-   - `Uncaught SyntaxError: Failed to execute 'insertBefore' on 'Node': Identifier 'logo' has already been declared`
-     in `htmx.min.js`
-   - `Uncaught (in promise) TypeError: Failed to fetch` in `toolbar.js`
+Add a new card to the dashboard, positioned to the left of the "Active Obligations" card, that displays the count of overdue obligations for the selected project.
 
 ## Context
 
-- **Environment**:
-  - Django Version: 5.2.1
-  - Python Version: 3.12.9
-  - Database: SQLite3
-- **Issue Details**:
-  - The `/landing/` page should load automatically and display its content
-    immediately after the logout action, and it should remain stable upon
-    reload.
-  - JavaScript errors are preventing proper functionality and need to be
-    resolved.
-- **Additional Files**:
-  - The following files were added to the `landing` app and may assist with
-    solving the logic problem:
-    - `commons.py`
-    - `constants.py`
-    - `context_processors.py`
-    - `middleware.py`
-    - `mixins.py`
-    - `permissions.py`
-    - `serializers.py`
-    - `signals.py`
-    - `tasks.py`
-    - `validators.py`
-    - `templatetags/landing_tags.py`
+- The dashboard currently displays summary cards for Active Obligations, Upcoming Deadlines, Projects Overview, and Mechanisms Overview.
+- There is no card showing the count of overdue obligations, which is a key compliance metric.
+- The new card should match the style and structure of existing metric cards and be placed to the left of the "Active Obligations" card.
+- The count should be dynamically calculated based on the selected project (if any) and update via HTMX as needed.
+- The project uses Django 5.2.1, SQLite3, and follows a modular app structure.
 
 ## Objectives
 
-1. Investigate the logout functionality in the `dashboard` app to identify the
-   cause of the blank page and flashing issues.
-2. Check the templates for the `/landing/` page to ensure they are correctly
-   structured.
-3. Analyze the newly added files in the `landing` app for potential logic
-   issues or missing configurations.
-4. Debug and fix the JavaScript errors in `theme-manager.js`, `wasm-loader.js`,
-   `htmx.min.js`, and `toolbar.js`.
-5. Refactor the code, templates, or newly added files as needed to resolve the
-   issues.
-6. Test the logout process and `/landing/` page to ensure they work correctly
-   and remain stable upon reload.
+- Add a new dashboard card for overdue obligations, styled consistently with existing cards.
+- Calculate the overdue obligations count in the dashboard view logic.
+- Ensure the card updates correctly when the project selection changes (HTMX support).
+- Update tests and documentation as needed.
 
 ## Sources
 
-- Relevant files in the workspace:
-  - `greenova/dashboard/views.py`
-  - `greenova/dashboard/templates/dashboard/`
-  - `greenova/landing/templates/landing/`
-  - `greenova/urls.py`
-  - `greenova/landing/commons.py`
-  - `greenova/landing/constants.py`
-  - `greenova/landing/context_processors.py`
-  - `greenova/landing/middleware.py`
-  - `greenova/landing/mixins.py`
-  - `greenova/landing/permissions.py`
-  - `greenova/landing/serializers.py`
-  - `greenova/landing/signals.py`
-  - `greenova/landing/tasks.py`
-  - `greenova/landing/validators.py`
-  - `greenova/landing/templatetags/landing_tags.py`
-- Relevant commands:
-  - `python manage.py runserver`
-  - `python manage.py test`
+- `greenova/dashboard/templates/dashboard/partials/dashboard_content.html` (dashboard cards markup)
+- `greenova/dashboard/views.py` (dashboard context and logic)
+- `obligations/models.py` (Obligation model definition)
+- `dashboard/tests/` (dashboard tests)
+- Project style and UI documentation (see context7)
 
 ## Expectations
 
-1. Use the filesystem MCP server to read the `views.py` file in the `dashboard`
-   app to analyze the logout functionality.
-2. Use the filesystem MCP server to check the templates for the `/landing/`
-   page to ensure they are correctly structured.
-3. Use the filesystem MCP server to analyze the newly added files in the
-   `landing` app for potential logic issues or missing configurations.
-4. Use the sequential-thinking MCP server to identify the root cause of the
-   blank page, flashing issues, and JavaScript errors.
-5. Refactor the logout functionality, templates, or newly added files as needed
-   to resolve the issues.
-6. Debug and fix the JavaScript errors in `theme-manager.js`, `wasm-loader.js`,
-   `htmx.min.js`, and `toolbar.js`.
-7. Test the logout process and `/landing/` page to ensure they work correctly
-   and remain stable upon reload.
+- Copilot should update the dashboard template and view logic to include the overdue obligations card.
+- The card should appear to the left of "Active Obligations" and update dynamically.
+- All code should follow project coding and style guidelines.
+- Tests and documentation should be updated as needed.
 
 ## Acceptance Criteria
+
+- The dashboard displays a new card to the left of "Active Obligations" showing the overdue obligations count.
+- The count is accurate and updates with project selection.
+- All tests and pre-commit checks pass.
+- The solution is documented and does not break other dashboard features.
+
+## Instructions
+
+- Update the dashboard template and view logic to add the overdue obligations card.
+- Ensure dynamic updates and correct placement.
+- Update or add tests and documentation.
+- Iterate until all acceptance criteria are met.
+
+---
+
+description: Fix OperationalError 'no such column:
+responsibility_responsibility.company_id' when accessing /obligations/create/
+in Greenova Django app. mode: agent
+
+tools:
+
+- github
+- file_search
+- read_file
+- insert_edit_into_file
+- semantic_search
+- get_errors
+- sequential-thinking
+- Context7
+- filesystem
+
+---
+
+# GitHub Copilot Prompt Template for Responsibility Model Migration Issue
+
+## Goal
+
+Resolve the database error 'no such column:
+responsibility_responsibility.company_id' when accessing the obligations
+creation form at `/obligations/create/` in the Greenova Django application.
+
+## Context
+
+- The error occurs when rendering the obligations creation form, specifically
+  when displaying the responsibilities field in the template
+  `obligations/form/new_obligation.html`.
+- The stack trace indicates that the `Responsibility` model references a
+  `company_id` column that does not exist in the database.
+- This is likely due to a missing or unapplied database migration after adding
+  or modifying a ForeignKey or field in the `Responsibility` model.
+- The error prevents users from creating new obligations and breaks the
+  obligations workflow.
+- The project uses Django 5.2.1 and SQLite3.
+
+## Objectives
+
+- Diagnose why the `company_id` column is missing from the
+  `responsibility_responsibility` table.
+- Ensure all model changes for the `Responsibility` model are reflected in the
+  database schema.
+- Apply or generate the necessary migrations to add the `company_id` column if
+  required.
+- Confirm that the obligations creation form renders without error and the
+  responsibilities field works as intended.
+- Document the changes and rationale for the solution.
+
+## Sources
+
+- `greenova/responsibility/models.py` (Responsibility model definition)
+- `greenova/obligations/forms.py` (Obligation form logic)
+- `greenova/obligations/views.py` (Obligation creation view)
+- `greenova/obligations/templates/obligations/form/new_obligation.html`
+  (Obligation form template)
+- `db.sqlite3` (database schema)
+- Django migration files in `greenova/responsibility/migrations/`
+- Project migration and database documentation (see context7)
+
+## Expectations
+
+- Copilot should use all available MCP servers to inspect model definitions,
+  migrations, and database schema.
+- Generate and apply missing migrations as needed.
+- Refactor code or templates if model relationships have changed.
+- Run pre-commit checks and tests to ensure the fix is robust.
+- Document all changes and the reasoning behind them.
+
+## Acceptance Criteria
+
+- The obligations creation form at `/obligations/create/` renders without
+  error.
+- The responsibilities field displays and functions correctly.
+- The `company_id` column exists in the `responsibility_responsibility` table
+  if required by the model.
+- All migrations are up to date and applied.
+- All pre-commit checks and tests pass.
+- The solution is documented and does not break other workflows.
+
+## Instructions
+
+- Investigate the `Responsibility` model and its migrations.
+- Generate and apply any missing migrations.
+- Test the obligations creation form after the fix.
+- Document your changes and rationale.
+- Iterate until all acceptance criteria are met.

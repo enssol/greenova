@@ -27,7 +27,7 @@ export class ThemeManager {
     this.config = {
       rootAttribute: 'data-theme',
       localStorageKey: 'greenova-theme',
-      defaultScheme: 'auto'
+      defaultScheme: 'auto',
     };
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this.currentTheme = this.getStoredTheme();
@@ -56,9 +56,12 @@ export class ThemeManager {
     const rootElement = document.documentElement;
     if (!rootElement) return;
 
-    const effectiveTheme = theme === 'auto'
-      ? (this.getSystemPreference() ? 'dark' : 'light')
-      : theme;
+    const effectiveTheme =
+      theme === 'auto'
+        ? this.getSystemPreference()
+          ? 'dark'
+          : 'light'
+        : theme;
 
     rootElement.setAttribute(this.config.rootAttribute, effectiveTheme);
     this.currentTheme = theme;
@@ -69,7 +72,8 @@ export class ThemeManager {
    */
   private getStoredTheme(): ThemeScheme {
     try {
-      return (window.localStorage?.getItem(this.config.localStorageKey) || this.config.defaultScheme) as ThemeScheme;
+      return (window.localStorage?.getItem(this.config.localStorageKey) ||
+        this.config.defaultScheme) as ThemeScheme;
     } catch {
       return this.config.defaultScheme as ThemeScheme;
     }
@@ -153,10 +157,11 @@ export class ThemeManager {
    * Set up theme toggle button listeners
    */
   private setupThemeToggleListeners(): void {
-    document.querySelectorAll('[data-theme-toggle]').forEach(toggle => {
+    document.querySelectorAll('[data-theme-toggle]').forEach((toggle) => {
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
-        const targetTheme = (toggle.getAttribute('data-theme-value') || 'auto') as ThemeScheme;
+        const targetTheme = (toggle.getAttribute('data-theme-value') ||
+          'auto') as ThemeScheme;
         this.setTheme(targetTheme);
       });
     });
@@ -183,7 +188,7 @@ export class ThemeManager {
     try {
       window.dispatchEvent(
         new CustomEvent('themeChanged', {
-          detail: { theme }
+          detail: { theme },
         })
       );
     } catch (error) {

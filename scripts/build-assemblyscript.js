@@ -32,7 +32,7 @@ const ascPath = path.resolve('node_modules/.bin/asc');
 
 // Build optimized version
 exec(
-  `${ascPath} ${entryFile} --outFile ${path.join(OUTPUT_DIR, 'optimized.wasm')} --textFile ${path.join(OUTPUT_DIR, 'optimized.wat')} --sourceMap --measure -O3 --shrinkLevel 2 --noAssert`,
+  `${ascPath} ${entryFile} --outFile ${path.join(OUTPUT_DIR, 'optimized.wasm')} --textFile ${path.join(OUTPUT_DIR, 'optimized.wat')} --sourceMap --measure -O3 --shrinkLevel 2 --noAssert --initialMemory=1`,
   (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);

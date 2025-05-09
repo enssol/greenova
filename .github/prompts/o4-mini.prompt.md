@@ -69,7 +69,7 @@ tools:
   with css code styling in them and decide how to refactor the empty
   stylesheets and integrate them into the entire styling solution.
 - Use the filesystem mcp server to read the
-  `greenova/static/css/dist/vendor/pico.classless.css`,
+  `greenova/static/css/dist/vendors/pico.classless.css`,
   `greenova/static/css/dist/critical-secondary-styles.css` and
   `greenova/static/css/dist/secondary-styles.css` files.
 - Use the sequential thinking mcp server to analyze the what code it needs to
@@ -124,7 +124,7 @@ tools:
 - Use the sequential-thinking mcp server to analyse and ensure no conflicts
   with custom css styling in `greenova/static/css/dist/critical-styles.css` and
   `greenova/static/css/dist/styles.css`, compared with the primary css
-  framework `greenova/static/css/dist/vendor/pico.classless.css` and with the
+  framework `greenova/static/css/dist/vendors/pico.classless.css` and with the
   secondary framework created by postcss in the files
   `greenova/static/css/dist/critical-secondary-styles.css` and
   `greenova/static/css/dist/secondary-styles.css` and can refer back to the
@@ -229,7 +229,7 @@ tools:
 - `greenova/static/css/dist/utils/compat.css`
 - `greenova/static/css/dist/utils/display.css`
 - `greenova/static/css/dist/utils/spacing.css`
-- `greenova/static/css/dist/vendor/pico.classless.css`
+- `greenova/static/css/dist/vendors/pico.classless.css`
 - `greenova/static/css/dist/critical-styles.css`
 - `greenova/static/css/dist/critical-secondary-styles.css`
 - `greenova/static/css/dist/debug-styles.css`

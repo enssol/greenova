@@ -3,11 +3,11 @@
 
 {% block title %}
 Welcome to Greenova
-{% endblock %}
+{% endblock title %}
 
 {% block meta_description %}
 Greenova helps environmental professionals monitor compliance status and manage regulatory obligations efficiently.
-{% endblock %}
+{% endblock meta_description %}
 
 {% block meta %}
 {{ block.super }}
@@ -20,56 +20,48 @@ Greenova helps environmental professionals monitor compliance status and manage 
 
   <!-- HTMX configuration for post-logout handling -->
   {% if is_post_logout %}
-    <meta name="htmx-config"
-          content='{"refreshOnHistoryMiss": true, "swapStyle": "transition:true"}' />
+    <meta name="htmx-config" content='{"refreshOnHistoryMiss": true}' />
   {% endif %}
-{% endblock %}
+{% endblock meta %}
 
 {% block extra_css %}
+  <style>
+    /* No-JS Fallback Styles */
+    .no-js-visible {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+    /* Add these styles for initial page load */
+    body:not(.js-enabled) .fade-in,
+    body:not(.js-enabled) .slide-up,
+    body:not(.js-enabled) .reveal-element,
+    body:not(.js-enabled) .reveal-text {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  </style>
   <link rel="stylesheet" href="{% static 'css/dist/pages/landing.css' %}" />
   <link rel="stylesheet"
+        href="{% static 'css/dist/pages/landing_enhanced.css' %}" />
+  <link rel="stylesheet"
         href="{% static 'css/dist/components/animations.css' %}" />
-{% endblock %}
+{% endblock extra_css %}
 
 {% block extra_head %}
-  <!-- GSAP CDN with fallback -->
+  <!-- JS feature detection -->
   <script>
-  // Set a timeout for GSAP loading
-  const GSAP_TIMEOUT = 3000;
-  window.gsapLoaded = new Promise((resolve, reject) => {
-    const timeoutId = setTimeout(() => {
-      reject(new Error('GSAP loading timeout'));
-    }, GSAP_TIMEOUT);
-
-    window.addEventListener('gsap-loaded', () => {
-      clearTimeout(timeoutId);
-      resolve();
-    });
-  });
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js-enabled');
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"
-          onload="window.dispatchEvent(new Event('gsap-loaded'))"
-          onerror="console.warn('GSAP failed to load, falling back to basic animations')"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"
-          defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"
-          defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js" defer></script>
-{% endblock %}
+  <!-- Landing page specific scripts -->
+  <script src="{% static 'ts/dist/landing.bundle.js' %}" defer></script>
+{% endblock extra_head %}
 
 {% block content %}
-  <!-- Post-logout handler with smooth transition -->
-  {% if is_post_logout %}
-    <div id="reload-trigger"
-         hx-trigger="load delay:100ms"
-         hx-get="{% url 'landing:home' %}"
-         hx-target="body"
-         hx-swap="innerHTML transition:true">
-    </div>
-  {% endif %}
-
   <!-- Main content with progressive enhancement -->
-  <div class="hero-logo-container fade-in" data-no-gsap-fallback>
+  <div class="hero-logo-container no-js-visible">
     <img src="{% static 'img/favicon.svg' %}"
          alt="Greenova Logo"
          class="hero-logo"
@@ -79,13 +71,7 @@ Greenova helps environmental professionals monitor compliance status and manage 
     <span class="hero-brand-title">Greenova</span>
   </div>
 
-  <main id="main-content"
-        hx-boost="true"
-        hx-push-url="true"
-        hx-target="main"
-        hx-swap="innerHTML transition:true">
-
-    <!-- Content sections -->
+  <main id="main-content" class="no-js-visible">
 {% include "landing/sections/_hero.html" %}
 {% include "landing/sections/_features.html" %}
 {% include "landing/sections/_stats.html" %}
@@ -93,31 +79,4 @@ Greenova helps environmental professionals monitor compliance status and manage 
 {% include "landing/sections/_testimonials.html" %}
 {% include "landing/sections/_cta.html" %}
   </main>
-
-  <!-- Initialize landing page module with fallback -->
-  <script type="module">
-  import init from "{% static 'ts/dist/landing.bundle.js' %}";
-  
-  try {
-    // Wait for GSAP to load or timeout
-    await window.gsapLoaded;
-    init();
-  } catch (error) {
-    console.warn('Falling back to basic animations:', error);
-    // Add basic CSS animations class when GSAP fails
-    document.body.classList.add('basic-animations');
-  }
-  </script>
-
-  <!-- Fallback styles for when GSAP fails -->
-  <style>
-  .basic-animations [data-no-gsap-fallback] {
-    animation: fadeIn 0.5s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  </style>
-{% endblock %}
+{% endblock content %}

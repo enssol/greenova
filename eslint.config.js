@@ -3,6 +3,11 @@ import js from '@eslint/js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FlatCompat } from '@eslint/eslintrc';
+import tsParser from '@typescript-eslint/parser';
+import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
+
+// Fix: Use default import for CommonJS module and destructure configs
+const { configs: tsConfigs } = tsEslintPlugin;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,40 +17,60 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
+// ESLint FlatConfig expects an array of config objects
 export default [
   {
-    // Ignore paths that should not be linted
     ignores: [
-      'greenova/media/**/*', // Uploaded media files
-      'greenova/staticfiles/**/*', // Collected static files
-      'greenova/logs/**/*', // Log files
-      'node_modules/**/*', // Node.js dependencies
-      '.venv/**', // Python virtual environment
-      '.vscode/**/*', // VS Code settings
-      'dist/**/*', // Distribution files
-      'vendor/**', // Vendor libraries
+      'greenova/media/**/*',
+      'greenova/staticfiles/**/*',
+      'greenova/logs/**/*',
+      'node_modules/**/*',
+      '.venv/**',
+      '.vscode/**/*',
+      'dist/**/*',
+      'vendor/**',
+      'scripts/*.js',
+      'scripts/**/*.js',
+      'greenova/static/js/**/*',
+      'greenova/static/as/**/*',
+      'greenova/static/ts/dist/**/*',
+      'greenova/static/js/vendors/**/*',
+      'greenova/theme/static_src/tailwind.config.js',
+      './webpack.config.js',
+      './postcss.config.js',
+      './stylelint.config.js',
+      './eslint.config.js',
+      './tailwind.config.js',
+      './*.config.js', // Only root config files
+      // Do NOT ignore greenova/static/ts/src/**/* (main TS source)
     ],
   },
   ...compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       globals: {
-        ...globals.browser, // Browser global variables
-        ...globals.node, // Node.js global variables
+        ...globals.browser,
+        ...globals.node,
       },
-      ecmaVersion: 2024, // Use ECMAScript 2024 features
-      sourceType: 'module', // Use ES modules
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      parser: tsParser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsEslintPlugin,
     },
     rules: {
-      indent: ['error', 2], // Enforce 2-space indentation
-      'linebreak-style': ['error', 'unix'], // Enforce Unix-style line endings
-      quotes: ['error', 'single', { avoidEscape: true }], // Enforce single quotes
-      semi: ['error', 'always'], // Enforce semicolons
-      'no-unused-vars': 'warn', // Warn about unused variables
-      'no-console': 'warn', // Warn about console statements
-      'prettier/prettier': ['error', { singleQuote: true }], // Enforce Prettier rules
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
+      'prettier/prettier': ['error', { singleQuote: true }],
+      ...tsConfigs.recommended.rules,
+    },
+    settings: {
+      fix: true,
     },
   },
 ];
-
-// Added comments to explain the purpose of specific rules and ignored paths.

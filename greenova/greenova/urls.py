@@ -1,6 +1,5 @@
 import logging
 
-from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -71,9 +70,10 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("settings/", include("settings.urls", namespace="settings")),
     # Sentry error page to verify Sentry is working
     path("sentry-debug/", trigger_error),
-] + debug_toolbar_urls()
+]
+# + debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+#    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]

@@ -63,10 +63,10 @@ Dashboard | Greenova
               data-classes="add slide-in-from-top:0.3s">
         <div class="dashboard-welcome-content">
           <h1>
-Welcome, {{ request.user|display_name }}
+            Welcome, {{ request.user|display_name }}
           </h1>
           <p>
-Environmental Compliance Management System Dashboard
+            Environmental Compliance Management System Dashboard
           </p>
         </div>
         <div class="dashboard-welcome-actions">
@@ -90,10 +90,10 @@ Environmental Compliance Management System Dashboard
           <section class="dashboard-empty-state" aria-label="Select a project">
             <div class="empty-message">
               <h2>
-Please select a project to view your dashboard.
+                Please select a project to view your dashboard.
               </h2>
               <p>
-Choose a project from the selector above to load charts, tables, and compliance data.
+                Choose a project from the selector above to load charts, tables, and compliance data.
               </p>
             </div>
           </section>
@@ -101,121 +101,4 @@ Choose a project from the selector above to load charts, tables, and compliance 
       </div>
     </main>
   </div>
-
-  <!-- Chat Widget will be included but repositioned via CSS -->
-{% include "chatbot/partials/chat_widget.html" %}
 {% endblock content %}
-
-{% block footer %}
-{% endblock footer %}
-
-{% block extra_js %}
-  <script type="text/hyperscript">
-    // Toggle sidebar collapse sections
-    behavior SidebarCollapser
-      on click
-        toggle .expanded on the closest <div.sidebar-collapse />
-        toggle @aria-expanded
-        set expanded to @aria-expanded
-        set targetId to @aria-controls
-        set target to the <div id={targetId}/>
-        if expanded
-          set target.style.maxHeight to target.scrollHeight + "px"
-        else
-          set target.style.maxHeight to "0px"
-        end
-      end
-    end
-  </script>
-
-  <script type="text/javascript">
-    // Function to handle chart container visibility
-    function handleChartContainers() {
-      // Find all chart containers with loading indicators
-      document.querySelectorAll('.chart-content').forEach(function(container) {
-        // If this container has both a loading indicator and a chart,
-        // ensure the chart remains visible
-        const hasChart = container.querySelector('img[src^="data:image/png;base64"]');
-        const loadingIndicator = container.querySelector('.loading-indicator');
-
-        if (hasChart && loadingIndicator) {
-          // Hide the loading indicator if there's already a chart
-          loadingIndicator.style.display = 'none';
-        }
-      });
-    }
-
-    // Function to preserve dashboard metrics section
-    function preserveDashboardMetrics() {
-      const metrics = document.getElementById('dashboard-metrics-container');
-      if (metrics) {
-        // Mark the metrics section to be preserved during HTMX swaps
-        htmx.config.preserveForSwap = function(elt) {
-          if (elt.id === 'dashboard-metrics-container') {
-            return true;
-          }
-          return htmx.config.defaultPreserveForSwap(elt);
-        };
-      }
-    }
-
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      handleChartContainers();
-      preserveDashboardMetrics();
-
-      // Listen for projectSelected event from the view
-      document.body.addEventListener('projectSelected', function(event) {
-        console.log('Project selected event received', event.detail);
-        // Set the project selector value if it exists
-        const projectSelect = document.getElementById('project-selector');
-        if (projectSelect && event.detail && event.detail.id) {
-          projectSelect.value = event.detail.id;
-
-          // Manually trigger secondary content updates if needed
-          const upcomingObligations = document.getElementById('upcoming-obligations-table');
-          if (upcomingObligations) {
-            htmx.trigger(upcomingObligations, 'load');
-          }
-
-          const projectsAtRisk = document.getElementById('projects-at-risk-table');
-          if (projectsAtRisk) {
-            htmx.trigger(projectsAtRisk, 'load');
-          }
-        }
-      });
-
-      // Add listener for when charts are loaded via HTMX
-      document.body.addEventListener('htmx:afterOnLoad', function() {
-        handleChartContainers();
-      });
-
-      // Listen for dashboard loaded events
-      document.body.addEventListener('dashboardLoaded', function() {
-        console.log('Dashboard loaded event received');
-        handleChartContainers();
-      });
-      
-      // Monitor HTMX requests to ensure persistence
-      document.body.addEventListener('htmx:beforeSwap', function(event) {
-        if (event.detail.target && event.detail.target.id === 'dashboard-content-container') {
-          console.log('Dashboard content swap in progress');
-        }
-      });
-      
-      document.body.addEventListener('htmx:afterSwap', function(event) {
-        if (event.detail.target && event.detail.target.id === 'dashboard-content-container') {
-          console.log('Dashboard content swap completed');
-          handleChartContainers();
-          
-          // Ensure metrics are properly displayed after swaps
-          const metricsSection = document.getElementById('dashboard-metrics-container');
-          if (metricsSection) {
-            metricsSection.style.display = 'flex';
-            metricsSection.style.opacity = '1';
-          }
-        }
-      });
-    });
-  </script>
-{% endblock extra_js %}

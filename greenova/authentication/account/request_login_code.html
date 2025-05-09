@@ -12,7 +12,7 @@
 {% blocktranslate %}You will receive a special code for a password-free sign-in.{% endblocktranslate %}
 {% endelement %}
 {% url 'account_request_login_code' as login_url %}
-{% element form form=form method="post" action=login_url tags="entrance,login" %}
+{% element form form=form method="post" action=login_url tags="entrance,login" hx-boost="false" %}
 {% slot body %}
 {% csrf_token %}
 {% element fields form=form unlabeled=True %}

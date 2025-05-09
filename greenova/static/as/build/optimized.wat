@@ -14,7 +14,7 @@
  (global $greenova/static/as/assembly/index/THEME_LIGHT i32 (i32.const 0))
  (global $greenova/static/as/assembly/index/THEME_DARK i32 (i32.const 1))
  (global $greenova/static/as/assembly/index/THEME_AUTO i32 (i32.const 2))
- (memory $0 0)
+ (memory $0 1)
  (export "ERROR_NONE" (global $greenova/static/as/assembly/index/ERROR_NONE))
  (export "ERROR_GENERAL" (global $greenova/static/as/assembly/index/ERROR_GENERAL))
  (export "ERROR_THEME" (global $greenova/static/as/assembly/index/ERROR_THEME))

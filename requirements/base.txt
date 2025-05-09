@@ -24,6 +24,7 @@ django-debug-toolbar>=5.2.0,<6.0.0  # via -r base.in
 django-htmx>=1.23.0,<2.0.0  # via -r base.in
 django-hyperscript>=1.5.0,<2.0.0  # via -r base.in
 django-matplotlib>=0.1,<1.0  # via -r base.in
+django-pandas>=0.6.7,<0.7.0  # via -r base.in
 django-pb-model>=0.3.0,<1.0.0  # via -r base.in
 django-pdb>=0.6.2,<1.0.0  # via -r base.in
 django-select2>=8.4.0,<9.0.0  # via -r base.in
@@ -38,8 +39,10 @@ kiwisolver==1.4.8         # via -r base.in, matplotlib
 matplotlib>=3.10.0,<4.0.0  # via -r base.in
 numpy>=1.26.0,<1.27.0     # Updated for Python 3.12 compatibility
 packaging==25.0           # via -r base.in, build, matplotlib
+pandas>=2.2.3,<2.3.0           # via -r base.in, matplotlib
 pillow>=11.2.0,<12.0.0    # via -r base.in, matplotlib
 pip-tools>=7.3.0          # via -r base.in
+plotly>=6.0.1,<7.0.0      # via -r base.in
 protobuf==6.30.2          # via -r base.in, django-pb-model
 pycodestyle==2.13.0       # via autopep8
 pycparser==2.22           # via -r base.in, cffi
