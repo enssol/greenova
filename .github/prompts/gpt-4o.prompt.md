@@ -1,20 +1,17 @@
 ---
-
 description: Add a card to the left of Active Obligations on the dashboard that displays the count of overdue obligations in the Greenova Django app.
 mode: agent
 
 tools:
-
-- github
-- file_search
-- read_file
-- insert_edit_into_file
-- semantic_search
-- get_errors
-- sequential-thinking
-- Context7
-- filesystem
-
+  - github
+  - file_search
+  - read_file
+  - insert_edit_into_file
+  - semantic_search
+  - get_errors
+  - sequential-thinking
+  - Context7
+  - filesystem
 ---
 
 # GitHub Copilot Prompt Template for Overdue Obligations Card Feature

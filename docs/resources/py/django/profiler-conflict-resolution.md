@@ -45,6 +45,7 @@ This solution was chosen because:
 1. **Silk provides more comprehensive profiling**: Silk is specifically designed for profiling and offers more detailed analysis of Python function execution than Django Debug Toolbar's profiling panel.
 
 2. **Project configuration**: The project has extensive Silk-specific configuration showing it's the preferred profiling tool:
+
    - Custom paths for storing profiling results
    - Garbage collection settings
    - Authentication and authorization controls
