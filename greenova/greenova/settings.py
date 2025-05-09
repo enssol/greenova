@@ -224,8 +224,6 @@ if DEBUG:
 validate_settings()
 
 # Security Headers Configuration
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = "DENY"
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = (
     "'self'",
@@ -483,23 +481,41 @@ APP_VERSION = "0.0.6"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Disable security features for development
-# SECURE_BROWSER_XSS_FILTER = False
-# SECURE_CONTENT_TYPE_NOSNIFF = False
-# X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allow frames for development tools
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
+CSRF_TRUSTED_ORIGINS = ["https://app.greenova.com.au"]
+# Additional security settings
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript from reading session cookies
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+CORS_ALLOW_HEADERS = ["Content-Type", "Authorization"]
 
 # Simplify cache to basic memory cache
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.dummy.DummyCache",  # No caching
-    }
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "greenova-cache",
+        "TIMEOUT": 300,  # 5 minutes default timeout
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000,  # Maximum number of entries before old ones are cleaned
+        },
+    },
 }
+
+# Add browser cache settings (these work with runserver)
+CACHE_MIDDLEWARE_SECONDS = 60  # How long pages should be cached (1 minute)
+
+# Set cache-control headers for static files
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+# Set cache control for static files
+STATIC_FILE_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
 
 # Create logs directory if it doesn't exist
 LOGS_DIR = os.path.join(str(BASE_DIR).replace(" ", "_").replace(":", "_"), "logs")
