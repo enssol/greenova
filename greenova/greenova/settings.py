@@ -252,6 +252,7 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     # Core Django apps (must be first)
     "django.contrib.admin",
     "django.contrib.auth",
@@ -315,6 +316,7 @@ DJANGO_MATPLOTLIB_FIG_DEFAULTS: MatplotlibFigDefaults = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",  # First for security headers
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Add whitenoise middleware
     "csp.middleware.CSPMiddleware",  # Add CSP middleware early
     "corsheaders.middleware.CorsMiddleware",  # CORS headers should be early
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -469,7 +471,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
