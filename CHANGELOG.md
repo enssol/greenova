@@ -51,29 +51,19 @@ experience.
 ### Added
 
 - **Company Management Module**
-
   - Introduced company management with user relationships and mixins for
     company-scoped views.
-
 - **Auditing Module**
-
   - Implemented history tracking for key operations.
-
 - **Authentication Framework**
-
   - Configured `LOGIN_URL` to use authentication namespace.
   - Enhanced multi-factor authentication support.
-
 - **Obligation Management**
-
   - Improved obligation list templates and interactive hyperlinks for status
     counts.
-
 - **Development Environment**
-
   - Enhanced virtual environment setup with `post_start.sh`.
   - Added detailed `.devcontainer/README.md` and new entrypoint script.
-
 - **Documentation**
   - Added and updated markdown files for configuration, code style, and
     devcontainer setup.
@@ -81,27 +71,19 @@ experience.
 ### Changed
 
 - **Frontend Refactor**
-
   - Comprehensive overhaul of landing page, static assets, and template
     structure.
   - Migrated SCSS to modular CSS and consolidated style variables.
-
 - **Backend Improvements**
-
   - Refactored company and authentication models for clarity and
     maintainability.
   - Improved progress reporting and logging in data import processes.
-
 - **Build System**
-
   - Refactored `post_start.sh` for maintainability.
   - Updated static TypeScript build artifacts and settings.
-
 - **Environment Configuration**
-
   - Migrated to dotenv-vault for secure environment management.
   - Enhanced `.envrc` and `.env.example` for better variable management.
-
 - **User Experience**
   - Enhanced user profile functionality with role relationship display.
   - Streamlined migrations and improved dashboard widgets.
@@ -113,19 +95,15 @@ experience.
 ### Removed
 
 - **Legacy Bandit Files**
-
   - Deleted `.bandit`, `.banditignore`, and `.banditrc` security config files.
-
 - **Obsolete Scripts and Static Assets**
   - Removed outdated test/config files and redundant static resources.
 
 ### Fixed
 
 - **Authentication**
-
   - Resolved company creation authentication test issues.
   - Fixed login redirect and obligation import bugs.
-
 - **Formatting and Configuration**
   - Addressed formatting issues in Copilot prompt and profiler conflict
     resolution.
