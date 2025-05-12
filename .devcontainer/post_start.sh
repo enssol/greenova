@@ -16,25 +16,6 @@ log() {
   echo "$(date): $1" | tee -a "$LOG_FILE"
 }
 
-# Fix SSH directory and file permissions for the vscode user
-log "Fixing SSH directory and file permissions"
-SSH_DIR="/home/vscode/.ssh"
-if [ -d "$SSH_DIR" ]; then
-  sudo chown -R vscode:vscode "$SSH_DIR"
-  sudo chmod 700 "$SSH_DIR"
-  find "$SSH_DIR" -type f -name "id_*" -exec chmod 600 {} \;
-  find "$SSH_DIR" -type f -name "*.pem" -exec chmod 600 {} \;
-  find "$SSH_DIR" -type f -name "*.pub" -exec chmod 700 {} \;
-  if [ -f "$SSH_DIR/allowed_signers" ]; then
-    chmod 644 "$SSH_DIR/allowed_signers"
-  fi
-fi
-
-# Fix workspace permissions
-log "Ensuring workspace permissions are correct (ownership and mode)"
-sudo chown -R vscode:vscode "$WORKSPACE_DIR"
-sudo chmod -R 755 "$WORKSPACE_DIR"
-
 # Ensure we're not in a virtual environment
 if [ -n "$VIRTUAL_ENV" ]; then
   log "Deactivating any active virtual environment"
