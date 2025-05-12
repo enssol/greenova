@@ -13,28 +13,47 @@ echo "$(date): Starting post_start.sh script" | tee -a "$LOG_FILE"
 
 # Function to log messages
 log() {
-    echo "$(date): $1" | tee -a "$LOG_FILE"
+  echo "$(date): $1" | tee -a "$LOG_FILE"
 }
+
+# Fix SSH directory and file permissions for the vscode user
+log "Fixing SSH directory and file permissions"
+SSH_DIR="/home/vscode/.ssh"
+if [ -d "$SSH_DIR" ]; then
+  sudo chown -R vscode:vscode "$SSH_DIR"
+  sudo chmod 700 "$SSH_DIR"
+  find "$SSH_DIR" -type f -name "id_*" -exec chmod 600 {} \;
+  find "$SSH_DIR" -type f -name "*.pem" -exec chmod 600 {} \;
+  find "$SSH_DIR" -type f -name "*.pub" -exec chmod 644 {} \;
+  if [ -f "$SSH_DIR/allowed_signers" ]; then
+    chmod 600 "$SSH_DIR/allowed_signers"
+  fi
+fi
+
+# Fix workspace permissions
+log "Ensuring workspace permissions are correct (ownership and mode)"
+sudo chown -R vscode:vscode "$WORKSPACE_DIR"
+sudo chmod -R 755 "$WORKSPACE_DIR"
 
 # Ensure we're not in a virtual environment
 if [ -n "$VIRTUAL_ENV" ]; then
-    log "Deactivating any active virtual environment"
-    # shellcheck disable=SC1091
-    deactivate 2>/dev/null || true
-    unset VIRTUAL_ENV
+  log "Deactivating any active virtual environment"
+  # shellcheck disable=SC1091
+  deactivate 2>/dev/null || true
+  unset VIRTUAL_ENV
 fi
 
 # Clean up any stale virtual environment
 log "Cleaning up virtual environment"
 if [ -d "$VENV_DIR" ]; then
-    # Try to unmount the virtual environment if it's mounted
-    if mountpoint -q "$VENV_DIR" 2>/dev/null; then
-        log "Unmounting virtual environment"
-        sudo umount -l "$VENV_DIR" 2>/dev/null || true
-    fi
+  # Try to unmount the virtual environment if it's mounted
+  if mountpoint -q "$VENV_DIR" 2>/dev/null; then
+    log "Unmounting virtual environment"
+    sudo umount -l "$VENV_DIR" 2>/dev/null || true
+  fi
 
-    # Remove the directory
-    sudo rm -rf "$VENV_DIR" 2>/dev/null || true
+  # Remove the directory
+  sudo rm -rf "$VENV_DIR" 2>/dev/null || true
 fi
 
 # Fix workspace permissions before doing anything else, ignoring errors
@@ -64,9 +83,9 @@ source "$VENV_DIR/bin/activate"
 
 # Create Fish activation script if it doesn't exist
 if [ ! -f "$VENV_DIR/bin/activate.fish" ]; then
-    log "Creating Fish activation script"
-    mkdir -p "$VENV_DIR/bin"
-    cat > "$VENV_DIR/bin/activate.fish" << 'EOL'
+  log "Creating Fish activation script"
+  mkdir -p "$VENV_DIR/bin"
+  cat >"$VENV_DIR/bin/activate.fish" <<'EOL'
 # This file must be used with "source <venv>/bin/activate.fish" *from fish*
 # you cannot run it directly
 
@@ -132,8 +151,8 @@ if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
     set -gx _OLD_FISH_PROMPT_OVERRIDE "$VIRTUAL_ENV"
 end
 EOL
-    chmod +x "$VENV_DIR/bin/activate.fish"
-    log "Fish activation script created"
+  chmod +x "$VENV_DIR/bin/activate.fish"
+  log "Fish activation script created"
 fi
 
 # Install base requirements
@@ -142,33 +161,33 @@ python -m pip install --upgrade pip setuptools wheel
 
 # Install project dependencies
 if [ -f "$WORKSPACE_DIR/requirements/dev.txt" ]; then
-    log "Installing project dependencies"
-    python -m pip install -r "$WORKSPACE_DIR/requirements/dev.txt" --constraint "$WORKSPACE_DIR/requirements/constraints.txt"
+  log "Installing project dependencies"
+  python -m pip install -r "$WORKSPACE_DIR/requirements/dev.txt" --constraint "$WORKSPACE_DIR/requirements/constraints.txt"
 else
-    log "Requirements file not found: $WORKSPACE_DIR/requirements/dev.txt"
-    exit 1
+  log "Requirements file not found: $WORKSPACE_DIR/requirements/dev.txt"
+  exit 1
 fi
 
 # Update uvx
 if [ -f "$WORKSPACE_DIR/.venv/bin/uvx" ]; then
-    log "Updating uvx"
-    "$WORKSPACE_DIR/.venv/bin/uvx" self update
+  log "Updating uvx"
+  "$WORKSPACE_DIR/.venv/bin/uvx" self update
 else
-    log "uvx not found, installing it"
-    pip install --disable-pip-version-check --no-cache-dir uvx
+  log "uvx not found, installing it"
+  pip install --disable-pip-version-check --no-cache-dir uvx
 fi
 
 # Install Node.js dependencies if needed
 if [ -f "$WORKSPACE_DIR/package.json" ]; then
-    log "Installing Node.js dependencies"
-    cd "$WORKSPACE_DIR" && npm install
+  log "Installing Node.js dependencies"
+  cd "$WORKSPACE_DIR" && npm install
 fi
 
 # Set up Fish shell configuration if it doesn't exist
 if [ ! -f "/home/vscode/.config/fish/config.fish" ]; then
-    log "Setting up Fish shell configuration"
-    mkdir -p /home/vscode/.config/fish
-    cat > /home/vscode/.config/fish/config.fish << 'EOL'
+  log "Setting up Fish shell configuration"
+  mkdir -p /home/vscode/.config/fish
+  cat >/home/vscode/.config/fish/config.fish <<'EOL'
 # Set up environment variables
 set -gx PYTHONPATH /workspaces/greenova:/workspaces/greenova/greenova $PYTHONPATH
 set -gx PYTHONSTARTUP /workspaces/greenova/pythonstartup
@@ -198,7 +217,7 @@ fi
 
 # Create a fish function for common project commands
 mkdir -p /home/vscode/.config/fish/functions
-cat > /home/vscode/.config/fish/functions/greenova.fish << 'EOL'
+cat >/home/vscode/.config/fish/functions/greenova.fish <<'EOL'
 function greenova --description "Greenova project helper"
     set -l cmd $argv[1]
     set -l args $argv[2..-1]
@@ -271,12 +290,12 @@ find "$WORKSPACE_DIR/scripts" -name "*.fish" -exec chmod +x {} \; 2>/dev/null ||
 
 # Final checks
 log "Performing final checks"
-if python -m pip --version > /dev/null 2>&1; then
-    log "Setup completed successfully"
-    python -m pip --version
+if python -m pip --version >/dev/null 2>&1; then
+  log "Setup completed successfully"
+  python -m pip --version
 else
-    log "Setup failed - pip is not working correctly"
-    exit 1
+  log "Setup failed - pip is not working correctly"
+  exit 1
 fi
 
 # Print success message

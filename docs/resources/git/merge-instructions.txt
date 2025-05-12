@@ -45,7 +45,7 @@ git diff upstream/main origin/staging -- greenova/company/models.py greenova/gre
   greenova/authentication/urls.py greenova/greenova/urls.py > logs/critical_files_diff.log
 
 # Review analysis logs before proceeding
-cat logs/*.log > upstream_merge_analysis.log
+cat logs/*.log > logs/upstream_merge_analysis.log
 ```
 
 ### Repository Optimization
@@ -75,24 +75,40 @@ git tag -l | grep v0.0.5
 # If missing, fetch it explicitly
 git fetch upstream tag v0.0.5
 
+# Ensure integration/v0.0.6 exists locally
+git branch -a | grep integration/v0.0.6
+# If missing, fetch or create it:
+# git fetch origin integration/v0.0.6:integration/v0.0.6
+
 # Show all commits between v0.0.5 and integration/v0.0.6
-git log upstream/v0.0.5..integration/v0.0.6 --oneline --graph --decorate
+git log v0.0.5..integration/v0.0.6 --oneline --graph --decorate > logs/commits_v0.0.5_to_v0.0.6.log
 
 # Show all files changed
-git diff --stat upstream/v0.0.5..integration/v0.0.6
+git diff --stat v0.0.5..integration/v0.0.6 > logs/diffstat_v0.0.5_to_v0.0.6.log
 
 # Show the full diff
-git diff upstream/v0.0.5..integration/v0.0.6
+git diff v0.0.5..integration/v0.0.6 > logs/diff_v0.0.5_to_v0.0.6.diff
 
 # Compare with upstream/main
-git log upstream/main..integration/v0.0.6 --oneline --graph --decorate
-git diff --stat upstream/main..integration/v0.0.6
+git log upstream/main..integration/v0.0.6 --oneline --graph --decorate > logs/commits_main_to_v0.0.6.log
+git diff v0.0.5..integration/v0.0.6 > logs/diff_v0.0.5_to_v0.0.6.diff
 
 # List PR merge commits only
-git log --merges upstream/v0.0.5..integration/v0.0.6 --oneline
+git log --merges v0.0.5..integration/v0.0.6 --oneline > logs/pr_merges_v0.0.5_to_v0.0.6.log
 
-# Redirect output to a file for changelog editing
-git log upstream/v0.0.5..integration/v0.0.6 --oneline > changelog-draft.txt
+# Generate a GitHub-flavored Markdown changelog summary
+# This will create logs/changelog-notes.md with a formatted summary of all commits
+# and PR merges between v0.0.5 and integration/v0.0.6
+
+echo "# Changelog for v0.0.6\n" > logs/changelog-notes.md
+echo "## Commits between v0.0.5 and v0.0.6" >> logs/changelog-notes.md
+echo '\n```' >> logs/changelog-notes.md
+git log v0.0.5..integration/v0.0.6 --oneline >> logs/changelog-notes.md
+echo '\n```' >> logs/changelog-notes.md
+echo '\n## PR Merges between v0.0.5 and v0.0.6' >> logs/changelog-notes.md
+echo '\n```' >> logs/changelog-notes.md
+git log --merges v0.0.5..integration/v0.0.6 --oneline >> logs/changelog-notes.md
+echo '\n```' >> logs/changelog-notes.md
 ```
 
 ## 3. Merge Strategy
