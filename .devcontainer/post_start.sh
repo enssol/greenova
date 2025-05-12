@@ -24,9 +24,9 @@ if [ -d "$SSH_DIR" ]; then
   sudo chmod 700 "$SSH_DIR"
   find "$SSH_DIR" -type f -name "id_*" -exec chmod 600 {} \;
   find "$SSH_DIR" -type f -name "*.pem" -exec chmod 600 {} \;
-  find "$SSH_DIR" -type f -name "*.pub" -exec chmod 644 {} \;
+  find "$SSH_DIR" -type f -name "*.pub" -exec chmod 700 {} \;
   if [ -f "$SSH_DIR/allowed_signers" ]; then
-    chmod 600 "$SSH_DIR/allowed_signers"
+    chmod 644 "$SSH_DIR/allowed_signers"
   fi
 fi
 
