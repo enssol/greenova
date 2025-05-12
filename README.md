@@ -69,43 +69,56 @@ The application follows a modular design with clear separation of concerns:
 
 1. Clone the repository:
 
-   ```bash
+   ```fish
    git clone https://github.com/enssol/greenova.git
    cd greenova
    ```
 
 2. Create and activate a virtual environment:
 
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```fish
+   python3 -m venv .venv
+   source .venv/bin/activate.fish
    ```
 
-3. Install Python dependencies:
+3. Install pip-tools and compile requirements:
 
-   ```bash
-   pip install -r requirements.txt
+   ```fish
+   pip install --upgrade pip pip-tools
+   pip-compile requirements/requirements.in
+   pip-compile requirements/requirements-dev.in
+   pip-compile requirements/requirements-prod.in
+   pip-compile --all-build-deps --all-extras --output-file=requirements/constraints.txt --strip-extras requirements/requirements.in
    ```
 
-4. Install Node.js dependencies:
+4. Install Python dependencies with pip-sync:
 
-   ```bash
+   ```fish
+   pip-sync requirements/requirements.txt requirements/requirements-dev.txt -c requirements/constraints.txt
+   ```
+
+5. Install Node.js dependencies:
+
+   ```fish
    npm install
    ```
 
-5. Apply migrations:
+6. Apply migrations:
 
-   ```bash
+   ```fish
    python manage.py migrate
    ```
 
-6. Create a superuser:
+> **Note:** All dependencies are managed with pip-tools and constraints.txt for
+> reproducibility. See requirements/README.md for details.
+
+7. Create a superuser:
 
    ```bash
    python manage.py createsuperuser
    ```
 
-7. Run the development server:
+8. Run the development server:
 
    ```bash
    python manage.py runserver
@@ -119,12 +132,13 @@ The dependencies are organized as follows:
 
 ### Requirements Directory
 
-- **`requirements/base.txt`**: Contains essential runtime dependencies required
-  for the application to function.
-- **`requirements/dev.txt`**: References `base.txt` and includes additional
-  dependencies for development, such as testing and linting tools.
-- **`requirements/prod.txt`**: References `base.txt` and includes
-  production-specific dependencies, such as WSGI servers.
+- **`requirements/requirements.in`**: Contains essential runtime dependencies
+  required for the application to function.
+- **`requirements/requirements-dev.in`**: References `requirements.in` and
+  includes additional dependencies for development, such as testing and linting
+  tools.
+- **`requirements/requirements-prod.in`**: References `requirements.in` and
+  includes production-specific dependencies, such as WSGI servers.
 - **`requirements/constraints.txt`**: Pins versions for all dependencies (both
   direct and indirect) to ensure reproducible builds.
 
@@ -135,7 +149,7 @@ The dependencies are organized as follows:
   - Install dependencies using:
 
     ```bash
-    pip install -r requirements/dev.txt --constraint requirements/constraints.txt
+    pip-sync requirements/requirements.txt requirements/requirements-dev.txt -c requirements/constraints.txt
     ```
 
 - **Production Environment**:
@@ -143,14 +157,14 @@ The dependencies are organized as follows:
   - Install dependencies using:
 
     ```bash
-    pip install -r requirements/prod.txt --constraint requirements/constraints.txt
+    pip-sync requirements/requirements.txt requirements/requirements-prod.txt -c requirements/constraints.txt
     ```
 
 ### Devcontainer Setup
 
 The `.devcontainer` configuration automatically installs the development
-dependencies (`requirements/dev.txt`) when the container is built or started.
-This ensures a consistent development environment.
+dependencies (`requirements/requirements-dev.in`) when the container is built
+or started. This ensures a consistent development environment.
 
 ### Setup.py
 

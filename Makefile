@@ -1,4 +1,4 @@
-.PHONY: app install venv dotenv-pull dotenv-push check run run-django run-tailwind compile-proto check-tailwind tailwind tailwind-install update update-recurring-dates normalize-frequencies clean-csv prod lint-templates format-templates check-templates format-lint
+.PHONY: app install install-dev install-prod compile sync sync-prod venv dotenv-pull dotenv-push check run run-django run-tailwind compile-proto check-tailwind tailwind tailwind-install update update-recurring-dates normalize-frequencies clean-csv prod lint-templates format-templates check-templates format-lint
 
 # Change to greenova directory before running commands
 CD_CMD = cd greenova &&
@@ -11,7 +11,9 @@ PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
 
 # Variables
-REQUIREMENTS=requirements/dev.txt
+REQUIREMENTS=requirements/requirements.txt
+DEV_REQUIREMENTS=requirements/requirements-dev.txt
+PROD_REQUIREMENTS=requirements/requirements-prod.txt
 CONSTRAINTS=requirements/constraints.txt
 SETUP_SCRIPT=setup.py
 
@@ -26,8 +28,43 @@ venv:
 install:
 	@echo "Installing dependencies..."
 	$(PYTHON) -m pip install --upgrade pip
+	$(PIP) install pip-tools
 	$(PIP) install -r $(REQUIREMENTS) -c $(CONSTRAINTS)
 	@echo "Dependencies installed."
+
+install-dev:
+	@echo "Installing dev dependencies..."
+	$(PYTHON) -m pip install --upgrade pip
+	$(PIP) install pip-tools
+	$(PIP) install -r $(REQUIREMENTS) -r $(DEV_REQUIREMENTS) -c $(CONSTRAINTS)
+	@echo "Dev dependencies installed."
+
+install-prod:
+	@echo "Installing prod dependencies..."
+	$(PYTHON) -m pip install --upgrade pip
+	$(PIP) install pip-tools
+	$(PIP) install -r $(REQUIREMENTS) -r $(PROD_REQUIREMENTS) -c $(CONSTRAINTS)
+	@echo "Prod dependencies installed."
+
+# Compile requirements files
+compile:
+	@echo "Compiling requirements..."
+	$(VENV)/bin/pip-compile requirements/requirements.in
+	$(VENV)/bin/pip-compile requirements/requirements-dev.in
+	$(VENV)/bin/pip-compile requirements/requirements-prod.in
+	$(VENV)/bin/pip-compile --all-build-deps --all-extras --output-file=requirements/constraints.txt --strip-extras requirements/requirements.in
+	@echo "Requirements compiled."
+
+# Sync environment to requirements
+sync:
+	@echo "Syncing environment to requirements..."
+	$(VENV)/bin/pip-sync requirements/requirements.txt requirements/requirements-dev.txt -c requirements/constraints.txt
+	@echo "Environment synced."
+
+sync-prod:
+	@echo "Syncing environment to production requirements..."
+	$(VENV)/bin/pip-sync requirements/requirements.txt requirements/requirements-prod.txt -c requirements/constraints.txt
+	@echo "Production environment synced."
 
 # Freeze installed dependencies to requirements.txt
 freeze:
@@ -171,6 +208,11 @@ help:
 	@echo "  make tailwind     - Start Tailwind CSS server"
 	@echo "  make venv           - Create virtual environment"
 	@echo "  make install        - Install dependencies"
+	@echo "  make install-dev    - Install dev dependencies"
+	@echo "  make install-prod   - Install prod dependencies"
+	@echo "  make compile        - Compile requirements files"
+	@echo "  make sync           - Sync environment to requirements"
+	@echo "  make sync-prod      - Sync environment to production requirements"
 	@echo "  make clean          - Remove virtual environment and clean temporary files"
 	@echo "  make freeze		 - Freeze dependencies"
 	@echo "  make dotenv-pull	 - Pull .env file from dotenv-vault"

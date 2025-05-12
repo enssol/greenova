@@ -136,27 +136,35 @@ EOL
   log "Fish activation script created"
 fi
 
-# Install base requirements
-log "Installing base Python packages"
-python -m pip install --upgrade pip setuptools wheel
+# Install pip-tools and compile requirements
+log "Installing pip-tools and compiling requirements"
+$VENV_DIR/bin/pip install --upgrade pip pip
+$VENV_DIR/bin/pip install --upgrade pip wheel
+$VENV_DIR/bin/pip install --upgrade pip setuptools
+$VENV_DIR/bin/pip install --upgrade pip pip-tools
 
-# Install project dependencies
-if [ -f "$WORKSPACE_DIR/requirements/dev.txt" ]; then
-  log "Installing project dependencies"
-  python -m pip install -r "$WORKSPACE_DIR/requirements/dev.txt" --constraint "$WORKSPACE_DIR/requirements/constraints.txt"
-else
-  log "Requirements file not found: $WORKSPACE_DIR/requirements/dev.txt"
-  exit 1
+for req in requirements.in requirements-dev.in requirements-prod.in; do
+  in_file="$WORKSPACE_DIR/requirements/$req"
+  txt_file="${in_file%.in}.txt"
+  if [ "$in_file" -nt "$txt_file" ]; then
+    log "Compiling $in_file to $txt_file"
+    $VENV_DIR/bin/pip-compile "$in_file"
+  fi
+done
+
+# Always regenerate constraints.txt if any requirements changed
+if [ "$WORKSPACE_DIR/requirements/requirements.in" -nt "$WORKSPACE_DIR/requirements/constraints.txt" ]; then
+  log "Compiling constraints.txt"
+  $VENV_DIR/bin/pip-compile --all-extras \
+    --output-file="$WORKSPACE_DIR/requirements/constraints.txt" \
+    "$WORKSPACE_DIR/requirements/requirements.in"
 fi
 
-# Update uvx
-if [ -f "$WORKSPACE_DIR/.venv/bin/uvx" ]; then
-  log "Updating uvx"
-  "$WORKSPACE_DIR/.venv/bin/uvx" self update
-else
-  log "uvx not found, installing it"
-  pip install --disable-pip-version-check --no-cache-dir uvx
-fi
+# Sync environment
+log "Syncing environment to requirements"
+$VENV_DIR/bin/pip-sync \
+  $WORKSPACE_DIR/requirements/requirements.txt \
+  $WORKSPACE_DIR/requirements/requirements-dev.txt
 
 # Install Node.js dependencies if needed
 if [ -f "$WORKSPACE_DIR/package.json" ]; then

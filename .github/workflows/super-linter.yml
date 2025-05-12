@@ -67,6 +67,8 @@ jobs:
           PYTHON_ISORT_CONFIG_FILE: isort.cfg # Use isort configuration from isort.cfg
           VALIDATE_PYLINT: true # Enable Pylint validation
           PYTHON_PYLINT_CONFIG_FILE: .pylintrc-django # Use Django-specific Pylint configuration
+          # Requirements and constraints
+          # All Python installs should use requirements/requirements.txt and requirements/constraints.txt
           # JavaScript linting
           VALIDATE_JAVASCRIPT_ES: true # Enable JavaScript validation
           JAVASCRIPT_ES_CONFIG_FILE: eslint.config.js # Use ESLint configuration

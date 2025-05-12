@@ -61,7 +61,7 @@ repos:
 
   # 4. Python formatting and linting (Ruff as primary)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.8
+    rev: v0.11.9
     hooks:
       - id: ruff
         types_or: [python, pyi]
@@ -71,7 +71,7 @@ repos:
 
   # 5. Additional Python linting
   - repo: https://github.com/pycqa/pylint
-    rev: v3.3.6
+    rev: v3.3.7
     hooks:
       - id: pylint
         name: pylint (python)
@@ -152,7 +152,7 @@ repos:
     hooks:
       - id: codespell
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    rev: v0.18.0
     hooks:
       - id: markdownlint-cli2
         args: ['--config', '.markdownlint-cli2.jsonc', '--fix']

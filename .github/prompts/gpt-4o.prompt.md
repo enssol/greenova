@@ -1,79 +1,117 @@
 ---
-description: Diagnose and resolve static asset MIME type and 404 errors for WASM, CSS, JS, SVG, and favicon resources in the Greenova Django app.
-mode: agent
+description: Standardize and automate Python environment setup for Greenova
+using pip-tools, constraints files, and best practices, updating all relevant
+scripts and configuration files. mode: agent
 
 tools:
-  - github
-  - file_search
-  - read_file
-  - insert_edit_into_file
-  - semantic_search
-  - get_errors
-  - sequential-thinking
-  - Context7
-  - filesystem
+
+- github
+- file_search
+- read_file
+- insert_edit_into_file
+- semantic_search
+- get_errors
+- sequential-thinking
+- Context7
+- fetch
+- filesystem
+
 ---
 
-# GitHub Copilot Prompt Template for Static Asset MIME Type and 404 Errors
+# GitHub Copilot Prompt Template for Python Environment Standardization with pip-tools and Constraints
 
 ## Goal
 
-Resolve issues where static WASM, CSS, JS, SVG, and favicon resources are not loading due to 404 errors or incorrect MIME types, resulting in browser errors such as:
-
-- "Refused to apply style from '<URL>' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled."
-- "Failed to load resource: the server responded with a status of 404 ()"
-- "Refused to execute script from '<URL>' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled."
+Standardize and automate the setup of the Python development and production
+environments for the Greenova Django project using pip-tools and constraints
+files, following best practices from official documentation and the wider
+Python community.
 
 ## Context
 
-- The Greenova Django app is serving static assets (WASM, CSS, JS, SVG, favicon) from `/static/` and `/img/` URLs.
-- Browsers are refusing to load these assets due to 404 errors or because the server is returning `text/html` instead of the correct MIME type.
-- This breaks site styling, interactivity, and icons.
-- The project uses Django 5.2.1, Node.js 20.19.1, npm 11.3.0, and a modular app structure.
-- Static files are managed via Django's staticfiles system and may be built with tools like Tailwind, PostCSS, or Webpack.
+- The Greenova project uses Django 5.2, Python 3.12.9, Node.js 20.19.1, and npm
+  11.3.0.
+- The project currently has multiple requirements files (base.in, base.txt,
+  dev.in, dev.txt, prod.in, prod.txt, requirements.txt, constraints.txt) and
+  related scripts (Makefile, post_start.sh, entrypoint.sh).
+- There is a need to:
+  - Use pip-tools to manage requirements and generate requirements.txt for
+    installation.
+  - Use a constraints.txt file for pinning versions and reproducibility (see
+    <https://luminousmen.com/post/pip-constraints-files> for reference).
+  - Follow best practices from pip-tools documentation
+    (<https://github.com/jazzband/pip-tools/>).
+  - Rename or consolidate requirements files as needed for clarity and
+    maintainability, updating all references in scripts and configs.
+  - Ensure all scripts (Makefile, post_start.sh, entrypoint.sh, CI configs,
+    etc.) use the new requirements file structure.
+  - Use Context7 and fetch MCP server to look up documentation and standards as
+    needed.
 
 ## Objectives
 
-- Diagnose why static assets are returning 404 or incorrect MIME types.
-- Ensure all static files (WASM, CSS, JS, SVG, favicon, etc.) are present in the correct locations and collected for deployment.
-- Confirm Django's staticfiles settings, storage, and middleware are correctly configured for both development and production.
-- Ensure the web server (if used in production) is configured to serve static files with correct MIME types.
-- Update documentation and tests as needed.
+- Audit and refactor all requirements files:
+  - Use pip-tools best practices for requirements file naming and structure.
+  - Ensure constraints.txt is used for version pinning and reproducibility.
+  - Remove unused or duplicate requirements files.
+  - Update all references in scripts and configs to match the new structure.
+- Update setup.py, pyproject.toml, .pre-commit-config.yaml, post_start.sh,
+  entrypoint.sh, Makefile, pylint.yaml, super-linter.yaml, and all
+  requirements/ files to:
+  - Use the new requirements file structure.
+  - Use pip-tools for requirements management and installation.
+  - Reference constraints.txt where appropriate.
+- Ensure the environment can be set up and installed using pip-tools and the
+  new requirements files.
+- Document the new workflow and file structure.
 
 ## Sources
 
-- `greenova/settings.py` (Django staticfiles and storage configuration)
-- `static/` and `staticfiles/` directories (asset locations)
-- `templates/` (static asset references in HTML)
-- Build scripts (e.g., Tailwind, PostCSS, Webpack configs)
-- Deployment and server configuration (Django's `runserver 0.0.0.0:80`, systemd config `greenova.service`, Cloudflare's reverse proxy managing SSL from Cloudlfare's Dashboard web UI service because of the `greenova` domain)
-- Project static, staticfiles and deployment documentation (see context7)
+- requirements/ directory (all requirements files)
+- setup.py
+- pyproject.toml
+- .pre-commit-config.yaml
+- .devcontainer/post_start.sh
+- .devcontainer/entrypoint.sh
+- Makefile
+- .github/workflows/pylint.yml
+- .github/workflows/super-linter.yml
+- pip-tools documentation: <https://github.com/jazzband/pip-tools/>
+- pip constraints file best practices:
+  <https://luminousmen.com/post/pip-constraints-files>
+- Context7 for project-specific standards
 
 ## Expectations
 
-- Copilot should inspect staticfiles settings, asset build output, and deployment configuration.
-- All static assets should load with correct MIME types and no 404 errors.
-- The solution should work for both development (`runserver`) and production deployments.
-- All code and configuration should follow project and Django best practices.
-- Documentation and tests should be updated as needed.
+- All requirements files follow pip-tools and Python best practices.
+- Only the necessary requirements files exist, with clear naming and structure.
+- All scripts and configs reference the correct requirements files.
+- The environment can be set up using pip-tools and the new requirements files.
+- Constraints.txt is used for version pinning and reproducibility.
+- Documentation is updated to reflect the new workflow.
+- All pre-commit checks and tests pass.
 
 ## Acceptance Criteria
 
-- All WASM, CSS, JS, SVG, and favicon resources load without 404 or MIME type errors.
-- Browser console is free of static asset loading errors.
-- Static assets are served with correct MIME types.
-- The solution works in both development and production environments.
+- requirements/ directory contains only the necessary and properly named
+  requirements files (e.g., requirements.in, requirements-dev.in,
+  requirements-prod.in, requirements.txt, requirements-dev.txt,
+  requirements-prod.txt, constraints.txt).
+- All scripts and configs (Makefile, post_start.sh, entrypoint.sh, CI
+  workflows, etc.) reference the correct requirements files.
+- pip-tools is used to generate requirements.txt and install dependencies.
+- constraints.txt is used for version pinning and reproducibility.
+- The environment can be set up and installed using the documented workflow.
 - All pre-commit checks and tests pass.
-- The solution is documented and does not break other workflows.
+- Documentation is updated and clear.
 
 ## Instructions
 
-- Use `sequential-thinking` to break down the problem into smaller tasks.
-- Use `Context7` to gather information about the project structure and configuration.
-- Use `file_search` to locate relevant files and settings.
-- Use `read_file` to inspect the contents of files related to staticfiles configuration, asset build output, and deployment setup.
-- Investigate staticfiles configuration, asset build output, and deployment setup.
-- Fix any issues with asset paths, collection, or MIME types.
-- Test in both development and production environments.
-- Update documentation and tests as needed.
+- Use Context7 and fetch MCP server to look up pip-tools and constraints file
+  best practices.
+- Audit and refactor all requirements files, renaming or consolidating as
+  needed.
+- Update all scripts and configs to use the new requirements file structure.
+- Ensure pip-tools is used for requirements management and installation.
+- Document the new workflow and file structure.
 - Iterate until all acceptance criteria are met.

@@ -4,52 +4,52 @@
 #
 #    pip-compile --constraint=requirements/constraints.txt --output-file=requirements/base.txt requirements/base.in
 #
-asgiref==3.8.1
+asgiref
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django
     #   django-htmx
-autopep8==2.3.2
+autopep8
     # via
     #   -c requirements/constraints.txt
     #   django-silk
-brotli==1.1.0
+brotli
     # via whitenoise
-build==1.2.2.post1
+build
     # via
     #   -c requirements/constraints.txt
     #   pip-tools
-certifi==2025.4.26
+certifi
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   sentry-sdk
-cffi==1.17.1
+cffi
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   cryptography
-click==8.1.8
+click
     # via
     #   -c requirements/constraints.txt
     #   pip-tools
-contourpy==1.3.2
+contourpy
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-cryptography==41.0.7
+cryptography
     # via
     #   -c requirements/constraints.txt
     #   fido2
     #   python-dotenv-vault
-cycler==0.12.1
+cycler
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-django==5.2.1
+django
     # via
     #   -c requirements/constraints.txt
     #   django-appconf
@@ -62,92 +62,92 @@ django==5.2.1
     #   django-silk
     #   django-tailwind
     #   django-template-partials
-django-appconf==1.1.0
+django-appconf
     # via
     #   -c requirements/constraints.txt
     #   django-select2
-django-csp==4.0
+django-csp
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-debug-toolbar==5.2.0
+django-debug-toolbar
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-htmx==1.23.0
+django-htmx
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-hyperscript==1.5.2
+django-hyperscript
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-matplotlib==0.1
+django-matplotlib
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-pandas==0.6.7
+django-pandas
     # via -r requirements/base.in
-django-pb-model==0.3.3
+django-pb-model
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-pdb==0.6.2
+django-pdb
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-select2==8.4.0
+django-select2
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-silk==5.3.2
+django-silk
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-tailwind==4.0.1
+django-tailwind
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-django-template-partials==24.4
+django-template-partials
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-fido2==1.2.0
+fido2
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-fonttools==4.57.0
+fonttools
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-gprof2dot==2025.4.14
+gprof2dot
     # via
     #   -c requirements/constraints.txt
     #   django-silk
-hyperscript-dump==1.0.4
+hyperscript-dump
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django-hyperscript
-kiwisolver==1.4.8
+kiwisolver
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-matplotlib==3.10.3
+matplotlib
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-narwhals==1.38.2
+narwhals
     # via plotly
-numpy==1.26.4
+numpy
     # via
     #   -c requirements/constraints.txt
     #   contourpy
     #   matplotlib
     #   pandas
-packaging==25.0
+packaging
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
@@ -155,94 +155,94 @@ packaging==25.0
     #   django-csp
     #   matplotlib
     #   plotly
-pandas==2.2.3
+pandas
     # via
     #   -r requirements/base.in
     #   django-pandas
-pillow==11.2.1
+pillow
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-pip-tools==7.4.1
+pip-tools
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-plotly==6.0.1
+plotly
     # via -r requirements/base.in
-protobuf==6.30.2
+protobuf
     # via
     #   -r requirements/base.in
     #   django-pb-model
-pycodestyle==2.13.0
+pycodestyle
     # via
     #   -c requirements/constraints.txt
     #   autopep8
-pycparser==2.22
+pycparser
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   cffi
-pyparsing==3.2.3
+pyparsing
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
-pyproject-hooks==1.2.0
+pyproject-hooks
     # via
     #   -c requirements/constraints.txt
     #   build
     #   pip-tools
-python-dateutil==2.9.0.post0
+python-dateutil
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   matplotlib
     #   pandas
-python-dotenv==0.21.1
+python-dotenv
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   python-dotenv-vault
-python-dotenv-vault==0.6.4
+python-dotenv-vault
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-pytz==2025.2
+pytz
     # via pandas
-qrcode==8.2
+qrcode
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-sentry-sdk==2.27.0
+sentry-sdk
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
-six==1.17.0
+six
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django-pandas
     #   python-dateutil
-sqlparse==0.5.3
+sqlparse
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   django
     #   django-debug-toolbar
     #   django-silk
-tzdata==2025.2
+tzdata
     # via pandas
-urllib3==2.4.0
+urllib3
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/base.in
     #   sentry-sdk
-wheel==0.45.1
+wheel
     # via
     #   -c requirements/constraints.txt
     #   pip-tools
-whitenoise[brotli]==6.9.0
+whitenoise[brotli]
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:

@@ -35,6 +35,9 @@ setup(
     license="AGPL-3.0-or-later",
     packages=find_packages(),
     include_package_data=True,
+    # Dependency management is handled via pip-tools and requirements/*.in files.
+    # See requirements/README.rst and docs/REQUIREMENTS_WORKFLOW.md for workflow.
+    # Do not add dependencies here; use requirements/requirements.in and pip-compile.
     install_requires=[
         "Django>=5.0.0,<5.3.0",
         "django-allauth>=0.60.0,<1.0.0",

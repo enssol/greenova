@@ -1,4 +1,4 @@
-# Installation Guide
+# Installation Guide (Updated for pip-tools and constraints)
 
 ## System Requirements
 
@@ -10,7 +10,45 @@
 
 1. Clone the repository:
 
-```bash
-# Corrected missing fenced code block language
-pip install -r requirements.txt
-```
+   ```fish
+   git clone https://github.com/enssol/greenova.git
+   cd greenova
+   ```
+
+2. Create and activate a virtual environment:
+
+   ```fish
+   python3 -m venv .venv
+   source .venv/bin/activate.fish
+   ```
+
+3. Install pip-tools and compile requirements:
+
+   ```fish
+   pip install --upgrade pip pip-tools
+   pip-compile requirements/requirements.in
+   pip-compile requirements/requirements-dev.in
+   pip-compile requirements/requirements-prod.in
+   pip-compile --all-build-deps --all-extras --output-file=requirements/constraints.txt --strip-extras requirements/requirements.in
+   ```
+
+4. Install dependencies with pip-sync:
+
+   ```fish
+   pip-sync requirements/requirements.txt requirements/requirements-dev.txt -c requirements/constraints.txt
+   ```
+
+5. Install Node.js dependencies:
+
+   ```fish
+   npm install
+   ```
+
+6. Apply migrations:
+
+   ```fish
+   python manage.py migrate
+   ```
+
+> **Note:** All dependencies are managed with pip-tools and constraints.txt for
+> reproducibility. See requirements/README.md for details.

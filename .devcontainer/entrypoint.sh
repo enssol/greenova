@@ -5,14 +5,16 @@ set -e
 mkdir -p /workspaces/greenova/logs
 
 # Log start time
-echo "Container started at $(date)" > /workspaces/greenova/logs/container.log
+echo "Container started at $(date)" >/workspaces/greenova/logs/container.log
 
 # Ensure uvx is available in the PATH
 export PATH="/workspaces/greenova/.venv/bin:$PATH"
 
+# Ensure pip-tools and requirements are up to date (see post_start.sh for main logic)
+
 # Set up fish shell configuration
 mkdir -p /home/vscode/.config/fish
-cat > /home/vscode/.config/fish/config.fish << 'EOL'
+cat >/home/vscode/.config/fish/config.fish <<'EOL'
 # Environment variables
 set -gx PYTHONPATH /workspaces/greenova:/workspaces/greenova/greenova $PYTHONPATH
 set -gx PATH /workspaces/greenova/.venv/bin $PATH

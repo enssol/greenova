@@ -2,9 +2,9 @@
 -r base.txt
 
 # Performance monitoring
-gprof2dot>=2025.4.0,<2026.0.0
+gprof2dot
 
 # Production server
-gunicorn>=23.0.0,<24.0.0
-uvicorn>=0.34.2,<0.35.0
-uvicorn-worker>=0.3.0,<0.4.0
+gunicorn
+uvicorn
+uvicorn-worker
