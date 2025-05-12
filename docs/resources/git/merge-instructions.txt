@@ -1,65 +1,29 @@
 # Greenova Merge Instructions - Comprehensive Strategy
 
-## 1. PRs Analysis
+## Reference Project Standards and Prompts
 
-### PRs with High Risk of Conflicts (Priority Order)
+Before starting any merge or conflict resolution, review the following project standards and prompt files for required conventions and best practices:
 
-0. **cherry-pick/selected-pr-updates** - Extensive Foundational Changes
-   - Risk Areas: Authentication templates, company models, obligation templates, core components, dev environment
-   - Key files:
-     - Multiple authentication templates
-     - greenova/company/models.py (deletes middleware.py)
-     - greenova/obligations/templates/* (removes obligation_list.html)
-     - .devcontainer configuration files
-     - Environment configuration files (.env.vault)
+- `.github/instructions/.copilot-commit-message-instructions.md`: Commit message guidelines
+- `.github/instructions/.copilot-pull-request-description-instructions.md`: Pull request description template
+- `.github/instructions/.copilot-review-instructions.md`: Code review checklist
+- `.github/prompts/code-style.prompt.md`: Code style and formatting standards
+- `.github/prompts/merge-strategy.prompt.md`: Merge conflict resolution strategies
+- `.github/prompts/pre-commit-fix.prompt.md`: Pre-commit and code quality enforcement
+- `.github/prompts/configuration.prompt.md`: Toolchain and configuration standards
 
-1. **PR #131** - Authentication URLs and Core Changes
-   - Risk Areas: URL routing, settings, authentication flow
-   - Key files:
-     - greenova/authentication/urls.py (new)
-     - greenova/greenova/settings.py
-     - greenova/greenova/urls.py
-     - greenova/company/test_company.py
+**Always ensure your workflow, commit messages, PRs, and code changes comply with these documents.**
 
-2. **PR #102** - Company Management Module
-   - Risk Areas: Database models, middleware, company functionality
-   - Key files:
-     - greenova/company/models.py
-     - greenova/company/middleware.py (new)
-     - greenova/company/mixins.py (new)
-     - greenova/company/views.py
+---
 
-3. **PR #128** - Task Configuration and Import Changes
-   - Risk Areas: Data import, task configuration
-   - Key files:
-     - greenova/dummy_data.csv
-     - greenova/obligations/management/commands/import_obligations.py
-     - .vscode/tasks.json
-
-4. **PR #103** - Development Environment Configuration
-   - Risk Areas: Environment setup, dependencies
-   - Key files:
-     - .devcontainer/devcontainer.json
-     - requirements.txt
-     - .env.vault
-
-### Safe to Merge PRs (In Order)
-
-1. **PR #90** - Makefile Updates (Safest, minimal changes)
-2. **PR #99** - Obligation List UI Updates
-3. **PR #97** - User Profile Updates
-4. **PR #104** - Environment Variable Updates
-5. **PR #144** - Core Feature Updates
-6. **PR #145** - Auditing Module (After core updates)
-
-## 2. Repository Health Check and Preparation
+## 1. Repository Health Check and Preparation
 
 ### Pre-Merge Analysis
 
 ```bash
 # Create a detailed comparison report
 mkdir -p logs
-git fetch --all
+git fetch --all --tags
 
 # Repository status and commit history comparison
 git status > logs/repo_status.log
@@ -92,6 +56,43 @@ git reflog expire --expire=now --all
 git gc --prune=now --aggressive
 git repack -Ad
 git fsck
+```
+
+## 2. Changelog and Pre-Release Notes Preparation
+
+Before merging, update your CHANGELOG.md and prepare pre-release notes for v0.0.6.
+
+### Diff and Changelog Generation
+
+```bash
+# Fetch all tags and branches from upstream
+git fetch upstream --tags
+git fetch upstream
+
+# Verify the v0.0.5 tag exists
+git tag -l | grep v0.0.5
+
+# If missing, fetch it explicitly
+git fetch upstream tag v0.0.5
+
+# Show all commits between v0.0.5 and integration/v0.0.6
+git log upstream/v0.0.5..integration/v0.0.6 --oneline --graph --decorate
+
+# Show all files changed
+git diff --stat upstream/v0.0.5..integration/v0.0.6
+
+# Show the full diff
+git diff upstream/v0.0.5..integration/v0.0.6
+
+# Compare with upstream/main
+git log upstream/main..integration/v0.0.6 --oneline --graph --decorate
+git diff --stat upstream/main..integration/v0.0.6
+
+# List PR merge commits only
+git log --merges upstream/v0.0.5..integration/v0.0.6 --oneline
+
+# Redirect output to a file for changelog editing
+git log upstream/v0.0.5..integration/v0.0.6 --oneline > changelog-draft.txt
 ```
 
 ## 3. Merge Strategy
@@ -299,7 +300,59 @@ git merge --ff-only feature/issue53
 python manage.py test auditing
 ```
 
-## 4. Comprehensive Testing Protocol
+## 4. Merge integration/v0.0.6 into staging
+
+```bash
+git checkout staging
+git pull origin staging
+git merge integration/v0.0.6
+# Resolve any conflicts if prompted
+git push origin staging
+```
+
+## 5. Merge staging into upstream main
+
+If you have write access to the upstream repo:
+
+```bash
+git checkout main
+git pull upstream main
+git merge staging
+# Resolve any conflicts if prompted
+git push upstream main
+```
+
+If you do NOT have direct write access, push to your fork and open a pull request:
+
+```bash
+git push origin main
+# Then open a PR from your fork's main to upstream/main
+```
+
+## 6. Tag the new pre-release v0.0.6
+
+From your main branch (after merging):
+
+```bash
+git checkout main
+git pull upstream main
+git tag -a v0.0.6 -m "Pre-release v0.0.6"
+git push upstream v0.0.6
+```
+
+If you use GitHub’s Releases feature, go to the Releases page and:
+
+- Click Draft a new release
+- Set Tag version to v0.0.6
+- Target main branch
+- Mark as pre-release
+- Add release notes if needed, then publish
+
+- **Ensure all commit messages, PR descriptions, and code changes follow the standards in the referenced prompt and instruction files.**
+- **Run pre-commit and code quality checks as described in `.github/prompts/pre-commit-fix.prompt.md` before finalizing.**
+- **Use the code review checklist in `.github/instructions/.copilot-review-instructions.md` for final review.**
+
+## 7. Comprehensive Testing Protocol
 
 After each merge and after all merges:
 
@@ -352,44 +405,47 @@ EOF
 python test_core_functionality.py
 ```
 
-## 5. Final Integration with Upstream
+## 8. Final Verification and Release
+
+- Ensure the v0.0.6 tag appears in GitHub under Tags/Releases.
+- Confirm main branch and staging both contain the latest changes from integration/v0.0.6.
+- Update version numbers in relevant files.
+- Update CHANGELOG.md with all included changes.
+- Tag the release in the production repository if not already done:
 
 ```bash
-# Create a production-ready merge branch
-git checkout -b production-merge-2025-05 upstream/main
-
-# Squash merge from integration branch
-git merge --squash integration/v0.0.6
-
-# Create a comprehensive commit message
-git commit -m "release(v0.0.6): May 2025 comprehensive update
-
-- Authentication namespace integration (#131)
-- Company management module enhancements (#102)
-- Import obligation improvements (#128)
-- User profile updates (#97)
-- Development environment optimizations (#103)
-- Auditing module implementation (#145)
-
-Contains migrations 00XX-00XX
-Fixes #72, #87, #88, #37"
-
-# Run final verification
-python manage.py test
-make lint
-
-# Verify clean linear history with no merge conflicts
-git log --graph --oneline -n 10
-
-# Push to upstream (requires proper permissions)
-git push upstream production-merge-2025-05:main
-
-# Post verification
-git fetch upstream
-git log --graph --oneline upstream/main -n 5
+git tag -a v0.0.6 -m "Release v0.0.6 - May 2025 Update"
+git push upstream v0.0.6
 ```
 
-## 6. Conflict Resolution Guidelines
+- **Ensure all commit messages, PR descriptions, and code changes follow the standards in the referenced prompt and instruction files.**
+- **Run pre-commit and code quality checks as described in `.github/prompts/pre-commit-fix.prompt.md` before finalizing.**
+- **Use the code review checklist in `.github/instructions/.copilot-review-instructions.md` for final review.**
+
+## 9. Post-Integration Maintenance
+
+After successful upstream integration:
+
+```bash
+# Update local main
+git checkout main
+git pull upstream main
+git push origin main
+
+# Clean up branches
+git branch -D integration/v0.0.6 production-merge-2025-05
+git remote prune origin
+
+# Optimize repository
+git gc --aggressive
+git prune
+
+# Run final database integrity check
+python manage.py dbshell
+# Run: PRAGMA integrity_check;
+```
+
+## 10. Conflict Resolution Guidelines
 
 ### Cherry-Pick Branch Conflicts
 
@@ -461,7 +517,7 @@ git log --graph --oneline upstream/main -n 5
    - Maintain transaction integrity
    - Keep progress reporting functionality
 
-## 7. Alternative Strategies
+## 11. Alternative Strategies
 
 If the recommended order causes issues:
 
@@ -484,41 +540,6 @@ git log pr/mhahmad0/102 --oneline
 git cherry-pick <commit-hash>
 ```
 
-## 8. Post-Integration Maintenance
-
-After successful upstream integration:
-
-```bash
-# Update local main
-git checkout main
-git pull upstream main
-git push origin main
-
-# Clean up branches
-git branch -D integration/v0.0.6 production-merge-2025-05
-git remote prune origin
-
-# Optimize repository
-git gc --aggressive
-git prune
-
-# Run final database integrity check
-python manage.py dbshell
-# Run: PRAGMA integrity_check;
-```
-
-## 9. Documentation Updates
-
-After successful integration, update:
-
-1. CHANGELOG.md with all included changes
-2. Update version numbers in relevant files
-3. Tag the release in the production repository
-```bash
-git tag -a v0.0.6 -m "Release v0.0.6 - May 2025 Update"
-git push upstream v0.0.6
-```
-
 ---
 
-**Note**: This plan has been optimized based on detailed analysis of the current repository state to minimize conflicts while maintaining code quality and functionality. Always perform backups before proceeding.
+**Note**: This plan is aligned with all project standards and prompt files. Always consult the referenced documentation for up-to-date requirements and best practices before and during merges.

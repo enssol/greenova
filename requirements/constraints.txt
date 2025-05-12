@@ -45,7 +45,7 @@ kiwisolver==1.4.8
 matplotlib>=3.10.0,<4.0.0
 matplotlib-stubs>=0.2.0,<1.0.0
 mypy>=1.15.0,<2.0.0
-numpy==2.2.5  # Pinned to production version
+numpy==1.26.4  # Pinned to production version
 packaging==25.0
 pandas-stubs>=2.2.3.250308
 pillow>=11.2.0,<12.0.0
